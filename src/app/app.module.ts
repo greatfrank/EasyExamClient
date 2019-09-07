@@ -8,7 +8,6 @@ import { FooterComponent } from './footer/footer.component';
 import { SloganComponent } from './welcome/slogan/slogan.component';
 import { FeaturesComponent } from './welcome/features/features.component';
 import { SignComponent } from './welcome/sign/sign.component';
-import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -17,8 +16,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     FooterComponent,
     SloganComponent,
     FeaturesComponent,
-    SignComponent,
-    NavbarComponent
+    SignComponent
   ],
   imports: [
     BrowserModule,
