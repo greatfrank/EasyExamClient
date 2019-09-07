@@ -1,0 +1,16 @@
+<div id="features" class="features py-5 bg-light">
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-3 text-center" *ngFor="let feature of features">
+        <img [src]="'/assets/images/'+feature.icon" alt="" class="img-fluid feature-icon mb-2">
+        <h3>{{feature.title}}</h3>
+        <p>{{feature.desc}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        Tutorial
+      </div>
+    </div>
+  </div>
+</div>

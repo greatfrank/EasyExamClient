@@ -1,0 +1,30 @@
+<div id="footer" class="footer">
+  <div class="container">
+    <div class="row py-3">
+      <div class="col">
+        <div class="row align-items-center">
+          <div class="col-3">
+            <img src="/assets/images/auth-qrcode.jpg" alt="frank li qrcode" class="img-fluid qrcode-img img-thumbnail">
+          </div>
+          <div class="col">
+            <ul class="list-unstyled mt-3 py-0">
+              <li *ngFor="let contact of contacts" class="my-1">
+                <span class="mr-3">{{contact.key}}</span>
+                <span class="ml-2" *ngIf="contact.name!='home'">{{contact.value}}</span>
+                <a target="_blank" class="text-warning ml-2" [attr.href]="contact.value" *ngIf="contact.name=='home'">{{contact.value}}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <p class="lead text-success text-weight-normal">技术栈</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center pb-3 pt-4">
+        Copyright &copy; {{current_year}} 版权所有者 : 李鹏
+      </div>
+    </div>
+  </div>
+</div>

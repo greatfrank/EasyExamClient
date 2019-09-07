@@ -3,10 +3,22 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { FooterComponent } from './footer/footer.component';
+import { SloganComponent } from './welcome/slogan/slogan.component';
+import { FeaturesComponent } from './welcome/features/features.component';
+import { SignComponent } from './welcome/sign/sign.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WelcomeComponent,
+    FooterComponent,
+    SloganComponent,
+    FeaturesComponent,
+    SignComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
