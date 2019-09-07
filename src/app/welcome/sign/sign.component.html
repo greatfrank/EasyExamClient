@@ -17,27 +17,28 @@
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-      <form class="px-3">
+      <form class="px-4">
         <h3 class="text-center my-3">登 录 | Login</h3>
         <div class="form-group">
-          <input type="text" class="form-control">
+          <label for="login-stu-id">学号</label>
+          <input type="text" name="login-stu-id" id="login-stu-id" class="form-control">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control">
+          <label for="login-stu-password">密码</label>
+          <input type="password" name="login-stu-password" id="login-stu-password" class="form-control">
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group text-right">
-          <button class="btn btn-primary"><i class="fas fa-check-square mr-2"></i>登录</button>
+        <div class="form-group text-right mt-4">
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-shield-alt mr-2"></i>重写
+          </button>
+          <button type="button" class="btn btn-primary ml-2">
+            <i class="fas fa-check-square mr-2"></i>登录
+          </button>
         </div>
       </form>
     </div>
     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <form class="px-3">
+      <form class="px-4">
         <h3 class="text-center my-3">注 册 | Sign up</h3>
         <div class="form-group">
           <input type="text" class="form-control">
@@ -55,8 +56,8 @@
           <input type="text" class="form-control">
         </div>
         <div class="form-group text-right">
-            <button class="btn btn-danger"><i class="fas fa-sign-in-alt mr-2"></i>注册</button>
-          </div>
+          <button class="btn btn-danger"><i class="fas fa-sign-in-alt mr-2"></i>注册</button>
+        </div>
       </form>
     </div>
   </div>
