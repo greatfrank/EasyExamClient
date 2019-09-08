@@ -35,6 +35,45 @@ export class FooterComponent implements OnInit {
     }
   ]
 
+  technologyStack=[
+    {
+      icon:'angular.png',
+      title:'Angular'
+    },
+    {
+      icon:'bootstrap.png',
+      title:'Bootstrap'
+    },
+    {
+      icon:'fontawesome.png',
+      title:'Font Awesome'
+    },
+    {
+      icon:'jquery.png',
+      title:'jQuery'
+    },
+    {
+      icon:'nodejs.svg',
+      title:'NodeJS'
+    },
+    {
+      icon:'golang.svg',
+      title:'Golang'
+    },
+    {
+      icon:'gin.png',
+      title:'Gin'
+    },
+    {
+      icon:'graphql.png',
+      title:'GraphQL'
+    },
+    {
+      icon:'mysql.png',
+      title:'MySQL'
+    }
+  ]
+
   constructor() { }
 
   ngOnInit() {
