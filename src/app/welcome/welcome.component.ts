@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from "../backend.service";
-
+import { GlobalData } from "../global/global-data";
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
@@ -16,7 +16,10 @@ export class WelcomeComponent implements OnInit {
 
   fetchAllTeachers(tableName: string) {
     this.backendService.fetchAllByTableName(tableName).subscribe(data => {
-      console.log(data);
+      var teachers = data['response']
+      GlobalData.teachers = teachers
+      console.log(teachers);
+
     })
   }
 
