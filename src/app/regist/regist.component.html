@@ -1,0 +1,89 @@
+<div id="regist" class="regist bg-dark text-light">
+    <div class="container">
+        <div class="row py-5 justify-content-between">
+            <div class="col-5 py-3">
+                <h3 class="mb-4">
+                    <span class="text-primary font-weight-bold">教师</span> 注册 | Teacher
+                </h3>
+                <form #teacherRegist class="regist-form">
+                    <div class="form-group">
+                        <label for="tea-id">工号</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" id="tea-id">
+                    </div>
+                    <div class="form-group">
+                        <label for="tea-username">姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username" id="tea-username">
+                    </div>
+                    <div class="form-group">
+                        <label for="tea-password">密码</label>
+                        <input type="password" class="form-control" placeholder="Teacher Password" id="tea-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="tea-email">邮箱</label>
+                        <input type="email" class="form-control" placeholder="Teacher Email" id="tea-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="tea-id">学院/系部</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" id="tea-id" disabled value="电子信息学院">
+                    </div>
+                    <div class="form-group mt-4">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-check mr-2"></i>
+                            注 册
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-5 py-3">
+                <h3 class="mb-4">
+                   <span class="text-success font-weight-bold">学生</span> 注册 | Student
+                </h3>
+                <form #teacherRegist class="regist-form">
+                    <div class="form-group">
+                        <label for="stu-id">学号</label>
+                        <input type="text" class="form-control" placeholder="Student ID" id="stu-id">
+                    </div>
+                    <div class="form-group">
+                        <label for="tea-username">姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username" id="tea-username">
+                    </div>
+                    <div class="form-group">
+                        <label for="stu-class">班级</label>
+                        <select name="stu-class" id="stu-class" class="form-control">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                            <option value="">3</option>
+                            <option value="">4</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="stu-password">密码</label>
+                        <input type="password" class="form-control" placeholder="Student Password" id="stu-password">
+                    </div>
+                    <div class="form-group lead my-4">
+                        <span class="mr-5">
+                            <input type="radio" name="gender"> 男
+                        </span>
+                        <span>
+                            <input type="radio" name="gender"> 女
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="stu-email">邮箱</label>
+                        <input type="email" class="form-control" placeholder="Student Email" id="stu-email">
+                    </div>
+                    <div class="form-group">
+                        <label for="stu-phone">电话</label>
+                        <input type="text" class="form-control" placeholder="Student Phone" id="stu-phone">
+                    </div>
+                    <div class="form-group mt-4">
+                        <button class="btn btn-success">
+                            <i class="fas fa-check mr-2"></i>
+                            注 册
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

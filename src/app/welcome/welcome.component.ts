@@ -11,7 +11,11 @@ export class WelcomeComponent implements OnInit {
   constructor(private backendService: BackendService) { }
 
   ngOnInit() {
-    this.fetchAllTeachers("teachers")
+
+    if (!GlobalData.teachers) {
+      this.fetchAllTeachers("teachers")
+    }
+
   }
 
   fetchAllTeachers(tableName: string) {
@@ -19,7 +23,6 @@ export class WelcomeComponent implements OnInit {
       var teachers = data['response']
       GlobalData.teachers = teachers
       console.log(teachers);
-
     })
   }
 

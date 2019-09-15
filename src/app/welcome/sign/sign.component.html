@@ -1,92 +1,41 @@
-<div id="sign" class="sign bg-white pb-1">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link px-5 active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-        aria-selected="true">
-        <i class="fas fa-flag mr-2"></i>
-        登录
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link px-5" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-        aria-selected="false">
-        <i class="fas fa-sign-in-alt mr-2"></i>
-        注册
-      </a>
-    </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-      <form class="px-4" #loginForm="ngForm">
-        <h3 class="text-center my-3">登 录 | Login</h3>
-        <div class="form-group">
-          <label for="login-stu-id">工号 / 学号</label>
-          <input type="text" name="login-stu-id" id="login-stu-id" class="form-control" #id required
-            [(ngModel)]="login.id">
-        </div>
-        <div class="form-group">
-          <label for="login-stu-password">密码</label>
-          <input type="password" name="login-stu-password" id="login-stu-password" class="form-control" #password
-            required [(ngModel)]="login.password">
-        </div>
-        <div class="form-group mt-4">
-          <span class="mr-5 lead">
-            <label></label>
-            <input type="radio" name="login-role" class="mr-2" value="teacher" #role required
-              [(ngModel)]="login.role">教 师
-          </span>
-          <span class="lead">
-            <label></label>
-            <input type="radio" name="login-role" class="mr-2" value="student" #role required
-              [(ngModel)]="login.role">学 生
-          </span>
-        </div>
-        <div class="form-group mt-4" *ngIf="loginError">
-          <div class="alert alert-danger py-1 text-center" role="alert">
-            登录信息错误，请再试一次
-          </div>
-        </div>
-        <div class="form-group text-right mt-4">
-          <button type="reset" class="btn btn-secondary">
-            <i class="fas fa-redo-alt mr-2"></i>重写
-          </button>
-          <button type="button" class="btn btn-primary ml-2" (click)="execLogin()" [disabled]="!loginForm.form.valid">
-            <i class="fas fa-flag mr-2"></i>登录
-          </button>
-        </div>
-      </form>
+<div id="sign" class="sign bg-white">
+  <form class="px-4 py-3 login-form" #loginForm="ngForm">
+    <h3 class="text-center mt-2 mb-4">登 录 | Login</h3>
+    <div class="form-group">
+      <label for="login-stu-id">工号 / 学号</label>
+      <input type="text" name="login-stu-id" id="login-stu-id" class="form-control" #id required [(ngModel)]="login.id">
     </div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-      <form class="px-4">
-        <h3 class="text-center my-3">注 册 | Sign up</h3>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control">
-        </div>
-        <div class="form-group text-right">
-          <button type="reset" class="btn btn-secondary">
-            <i class="fas fa-redo-alt mr-2"></i>重写
-          </button>
-          <button class="btn btn-danger ml-2"><i class="fas fa-sign-in-alt mr-2"></i>注册</button>
-        </div>
-      </form>
+    <div class="form-group">
+      <label for="login-stu-password">密码</label>
+      <input type="password" name="login-stu-password" id="login-stu-password" class="form-control" #password required
+        [(ngModel)]="login.password">
     </div>
-  </div>
-
-
-
-
-
-
+    <div class="form-group mt-4">
+      <span class="mr-5">
+        <label></label>
+        <input type="radio" name="login-role" class="mr-2" value="teacher" #role required [(ngModel)]="login.role">教 师
+      </span>
+      <span class="lead">
+        <label></label>
+        <input type="radio" name="login-role" class="mr-2" value="student" #role required [(ngModel)]="login.role">学 生
+      </span>
+    </div>
+    <div class="form-group mt-4" *ngIf="loginError">
+      <div class="alert alert-danger py-1 text-center" role="alert">
+        登录信息错误，请再试一次
+      </div>
+    </div>
+    <div class="form-group text-right mt-4">
+      <button type="reset" class="btn btn-secondary btn-sm">
+        <i class="fas fa-redo-alt mr-2"></i>重写
+      </button>
+      <button type="button" class="btn btn-primary btn-sm ml-2" (click)="execLogin()" [disabled]="!loginForm.form.valid">
+        <i class="fas fa-flag mr-2"></i>登录
+      </button>
+    </div>
+    <hr>
+    <div class="text-center">
+      <a [routerLink]="[ '/regist' ]">新用户注册</a>
+    </div>
+  </form>
 </div>
