@@ -13,30 +13,46 @@
                 <h3 class="mb-4">
                     <span class="text-primary font-weight-bold">教师</span> 注册 | Teacher
                 </h3>
-                <form #teacherRegistForm="ngForm" class="regist-form" novalidate>
+                <form [formGroup]="teacherForm" (ngSubmit)="onSubmit()" class="regist-form">
                     <div class="form-group">
-                        <label for="teacherId">工号</label>
-                        <input type="text" class="form-control" placeholder="Teacher ID" id="teacherId" name="teacherId" pattern="[0-9]*" #teacherId="ngModel" required [(ngModel)]="teacher.id">
-                        <small class="form-text text-muted">必须全部是数字</small>
+                        <label>工号</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" formControlName="id"
+                            [ngClass]="{'input-error': teacherForm.controls['id'].invalid && (teacherForm.controls['id'].dirty || teacherForm.controls['id'].touched)}">
+                        <small
+                            *ngIf="teacherForm.controls['id'].invalid && (teacherForm.controls['id'].dirty || teacherForm.controls['id'].touched)"
+                            class="form-text text-muted">必须全部是数字</small>
                     </div>
+
                     <div class="form-group">
-                        <label for="teacherUsername">姓名</label>
-                        <input type="text" class="form-control" placeholder="Teacher Username" id="teacherUsername" name="teacherUsername" #teacherUsername required [(ngModel)]="teacher.username">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username"
+                            formControlName="username"
+                            [ngClass]="{'input-error': teacherForm.controls['username'].invalid && (teacherForm.controls['username'].dirty || teacherForm.controls['username'].touched)}">
                     </div>
+
                     <div class="form-group">
-                        <label for="teacherPassword">密码</label>
-                        <input type="password" class="form-control" placeholder="Teacher Password" id="teacherPassword" name="teacherPassword" #teacherPassword required [(ngModel)]="teacher.password">
+                        <label>密码</label>
+                        <input type="password" class="form-control" placeholder="Teacher Password"
+                            formControlName="password"
+                            [ngClass]="{'input-error': teacherForm.controls['password'].invalid && (teacherForm.controls['password'].dirty || teacherForm.controls['password'].touched)}">
                     </div>
+
                     <div class="form-group">
-                        <label for="teacherEmail">邮箱</label>
-                        <input type="email" class="form-control" placeholder="Teacher Email" id="teacherEmail" name="teacherEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #teacherEmail required [(ngModel)]="teacher.email">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" placeholder="Teacher Email" formControlName="email"
+                            [ngClass]="{'input-error': teacherForm.controls['email'].invalid && (teacherForm.controls['email'].dirty || teacherForm.controls['email'].touched)}">
+                        <small class="form-text text-muted"
+                            *ngIf="teacherForm.controls['email'].invalid && (teacherForm.controls['email'].dirty || teacherForm.controls['email'].touched)">邮箱格式不正确</small>
                     </div>
+
                     <div class="form-group">
-                        <label for="teacherDepartment">学院/系部</label>
-                        <input type="text" class="form-control" placeholder="Teacher ID" id="teacherDepartment" disabled name="teacherDepartment" #teacherDepartment required [(ngModel)]="teacher.department">
+                        <label>学院/系部</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" formControlName="department"
+                            [ngClass]="{'input-error': teacherForm.controls['department'].invalid && (teacherForm.controls['department'].dirty || teacherForm.controls['department'].touched)}">
                     </div>
+
                     <div class="form-group mt-4">
-                        <button class="btn btn-primary" (click)="registTeacher()" [disabled]="!teacherRegistForm.form.valid">
+                        <button type="submit" class="btn btn-primary" [disabled]="!teacherForm.valid">
                             <i class="fas fa-check mr-2"></i>
                             注 册
                         </button>
@@ -45,7 +61,7 @@
             </div>
             <div class="col-5 py-3">
                 <h3 class="mb-4">
-                   <span class="text-success font-weight-bold">学生</span> 注册 | Student
+                    <span class="text-success font-weight-bold">学生</span> 注册 | Student
                 </h3>
                 <form #teacherRegist class="regist-form">
                     <div class="form-group">

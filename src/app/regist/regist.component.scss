@@ -1,9 +1,7 @@
 .regist{
-    .ng-valid[required], .ng-valid.required{
-        border:none;
-    }
-    .ng-invalid:not(form){
-        border:solid 1px orange;
+    .input-error{
+        border: solid 2px red;
+        background-color: yellow;
     }
     .regist-form{
         background-color:white;
