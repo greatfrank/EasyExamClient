@@ -1,0 +1,12 @@
+.regist{
+    .ng-valid[required], .ng-valid.required{
+        border:none;
+    }
+    .ng-invalid:not(form){
+        border:solid 1px orange;
+    }
+    .regist-form{
+        background-color:white;
+        padding:1rem;
+    }
+}

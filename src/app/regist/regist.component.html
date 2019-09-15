@@ -1,33 +1,42 @@
-<div id="regist" class="regist bg-dark text-light">
+<div id="regist" class="regist bg-dark text-secondary">
     <div class="container">
-        <div class="row py-5 justify-content-between">
+        <div class="row">
+            <div class="col py-4">
+                <a [routerLink]="[ '/' ]" class="text-white">
+                    <i class="fas fa-angle-left mr-1"></i>
+                    返 回
+                </a>
+            </div>
+        </div>
+        <div class="row pb-5 justify-content-between">
             <div class="col-5 py-3">
                 <h3 class="mb-4">
                     <span class="text-primary font-weight-bold">教师</span> 注册 | Teacher
                 </h3>
-                <form #teacherRegist class="regist-form">
+                <form #teacherRegistForm="ngForm" class="regist-form" novalidate>
                     <div class="form-group">
-                        <label for="tea-id">工号</label>
-                        <input type="text" class="form-control" placeholder="Teacher ID" id="tea-id">
+                        <label for="teacherId">工号</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" id="teacherId" name="teacherId" pattern="[0-9]*" #teacherId="ngModel" required [(ngModel)]="teacher.id">
+                        <small class="form-text text-muted">必须全部是数字</small>
                     </div>
                     <div class="form-group">
-                        <label for="tea-username">姓名</label>
-                        <input type="text" class="form-control" placeholder="Teacher Username" id="tea-username">
+                        <label for="teacherUsername">姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username" id="teacherUsername" name="teacherUsername" #teacherUsername required [(ngModel)]="teacher.username">
                     </div>
                     <div class="form-group">
-                        <label for="tea-password">密码</label>
-                        <input type="password" class="form-control" placeholder="Teacher Password" id="tea-password">
+                        <label for="teacherPassword">密码</label>
+                        <input type="password" class="form-control" placeholder="Teacher Password" id="teacherPassword" name="teacherPassword" #teacherPassword required [(ngModel)]="teacher.password">
                     </div>
                     <div class="form-group">
-                        <label for="tea-email">邮箱</label>
-                        <input type="email" class="form-control" placeholder="Teacher Email" id="tea-email">
+                        <label for="teacherEmail">邮箱</label>
+                        <input type="email" class="form-control" placeholder="Teacher Email" id="teacherEmail" name="teacherEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #teacherEmail required [(ngModel)]="teacher.email">
                     </div>
                     <div class="form-group">
-                        <label for="tea-id">学院/系部</label>
-                        <input type="text" class="form-control" placeholder="Teacher ID" id="tea-id" disabled value="电子信息学院">
+                        <label for="teacherDepartment">学院/系部</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" id="teacherDepartment" disabled name="teacherDepartment" #teacherDepartment required [(ngModel)]="teacher.department">
                     </div>
                     <div class="form-group mt-4">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-primary" (click)="registTeacher()" [disabled]="!teacherRegistForm.form.valid">
                             <i class="fas fa-check mr-2"></i>
                             注 册
                         </button>

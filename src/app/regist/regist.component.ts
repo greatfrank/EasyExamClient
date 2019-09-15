@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Teacher } from "../model/teacher";
+import { Student } from "../model/student";
 
 @Component({
   selector: 'app-regist',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistComponent implements OnInit {
 
-  constructor() { }
+  teacher = new Teacher()
+  student = new Student()
+
+  constructor(
+  ) { }
 
   ngOnInit() {
+    this.teacher.department = '电子信息学院'
+
+  }
+
+  registTeacher() {
+    console.log(this.teacher)
   }
 
 }
