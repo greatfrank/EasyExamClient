@@ -1,4 +1,5 @@
+import { Teacher } from '../model/teacher'
+
 export class GlobalData {
-    static teachers?: string
-    static currentStudent?: string
+    static currentTeacher: Teacher
 }

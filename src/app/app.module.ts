@@ -12,6 +12,7 @@ import { SloganComponent } from './welcome/slogan/slogan.component';
 import { FeaturesComponent } from './welcome/features/features.component';
 import { SignComponent } from './welcome/sign/sign.component';
 import { RegistComponent } from './regist/regist.component';
+import { ManageCenterComponent } from './manage-center/manage-center.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { RegistComponent } from './regist/regist.component';
     SloganComponent,
     FeaturesComponent,
     SignComponent,
-    RegistComponent
+    RegistComponent,
+    ManageCenterComponent
   ],
   imports: [
     BrowserModule,

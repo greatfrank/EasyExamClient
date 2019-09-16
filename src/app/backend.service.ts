@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Teacher } from "./model/teacher";
+import { Observable } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,8 +16,17 @@ export class BackendService {
 
   constructor(private httpClient: HttpClient) { }
 
-  fetchAllByTableName(tableName: string) {
-    return this.httpClient.post("/fetch/" + tableName, httpOptions)
+  fetchAllByTableName(tableName: string, body?: any) {
+    return this.httpClient.post("/fetch/" + tableName, body, httpOptions)
+  }
+
+  addNewByTableName(tableName: string, jsonObj: any): Observable<any> {
+    let params = new URLSearchParams()
+    Object.keys(jsonObj).forEach(key => {
+      params.append(key, jsonObj[key])
+    });
+    let body = params.toString()
+    return this.httpClient.post<Teacher>('/new/' + tableName, body, httpOptions)
   }
 
 }
