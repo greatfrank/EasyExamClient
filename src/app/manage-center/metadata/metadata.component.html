@@ -31,20 +31,62 @@
                                     <option [value]="year" *ngFor="let num of classNums">{{num}}</option>
                                 </select>
                             </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-primary">添加</button>
+                            </div>
                         </form>
                     </div>
                     <div class="col">
-                        List
+                        Class List
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <p class="lead font-weight-normal">课程 | Course</p>
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <div class="form-group">
+                                <label>名称</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>学分</label>
+                                <input type="number" class="form-control">
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-success">添加</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Course List
+                    </div>
+                </div>
 
             </div>
             <div class="col-12">
                 <p class="lead font-weight-normal">考试 | Examination</p>
-
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <div class="form-group">
+                                <label>本次考试针对的课程</label>
+                                <select name="course_id" class="form-control">
+                                    <option value="">course 1</option>
+                                    <option value="">course 2</option>
+                                    <option value="">course 3</option>
+                                </select>
+                            </div>
+                            <div class="form-group text-right">
+                                <button class="btn btn-danger">添加</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Course List
+                    </div>
+                </div>
             </div>
         </div>
     </div>

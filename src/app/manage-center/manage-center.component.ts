@@ -14,13 +14,16 @@ export class ManageCenterComponent implements OnInit {
   menuList = [
     {
       title: '统计信息',
-      name: 'statistic',
       icon: 'fa-chart-bar',
       url: 'statistic'
     },
     {
+      title: '题库资源',
+      icon: 'fa-chart-bar',
+      url: 'question-bank'
+    },
+    {
       title: '基础数据',
-      name: 'metadata',
       icon: 'fa-coins',
       url: 'metadata'
     },

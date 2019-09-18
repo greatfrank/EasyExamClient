@@ -5,6 +5,7 @@ import { RegistComponent } from "../app/regist/regist.component";
 import { ManageCenterComponent } from './manage-center/manage-center.component';
 import { StatisticComponent } from './manage-center/statistic/statistic.component';
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
+import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
 const routes: Routes = [
   {
     path: '',
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'statistic',
         component: StatisticComponent
+      },
+      {
+        path: 'question-bank',
+        component: QuestionBankComponent
       },
       {
         path: 'metadata',
