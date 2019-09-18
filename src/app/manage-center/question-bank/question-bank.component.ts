@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuestionBankComponent implements OnInit {
 
+  currentChoice = {
+    "id": "",
+    "question": "",
+    "charters": [],
+    "options": [],
+    "standard_answer": [],
+    "explanation": ""
+  }
+
   constructor() { }
 
   ngOnInit() {

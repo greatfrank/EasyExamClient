@@ -1,1 +1,191 @@
-<p>question-bank works!</p>
+<div id="question-bank" class="question-bank">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p class="lead font-weight-bold">选择题（单选/多选）</p>
+                <div class="row">
+                    <div class="col">
+                        <form class="question-bank-form">
+                            <div class="form-group">
+                                <label>课程</label>
+                                <select name="course_id" class="form-control">
+                                    <option value="">Java</option>
+                                    <option value="">Python</option>
+                                    <option value="">Web</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>题目</label>
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>选项</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="在这里直接填写选项的内容。不需要带有 A、B、C、D">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success" type="button">添加选项</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="mr-4">
+                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                    </span>
+                                    <span class="mr-4">
+                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                    </span>
+                                    <span class="mr-4">
+                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                    </span>
+                                    <span class="mr-4">
+                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>本题详解（选填）</label>
+                                <textarea name="explaination" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group text-right mt-4">
+                                <button class="btn btn-secondary" type="reset">重置</button>
+                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Choice list
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <p class="lead font-weight-bold">填空题（一个或多个空）</p>
+                <div class="row">
+                    <div class="col">
+                        <form class="question-bank-form">
+                            <div class="form-group">
+                                <label>课程</label>
+                                <select name="course_id" class="form-control">
+                                    <option value="">Java</option>
+                                    <option value="">Python</option>
+                                    <option value="">Web</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>题目</label>
+                                <textarea placeholder="书写规范： XXX___XXX, ___XXX, XXX___。"
+                                    class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>选项</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="在这里直接按照题目中空位的顺序，填写标准答案。">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-success" type="button">添加答案</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="mr-4">First</span>
+                                    <span class="mr-4">Second</span>
+                                    <span class="mr-4">Third</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>本题详解（选填）</label>
+                                <textarea name="explaination" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group text-right mt-4">
+                                <button class="btn btn-secondary" type="reset">重置</button>
+                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Choice list
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <p class="lead font-weight-bold">判断题</p>
+                <div class="row">
+                    <div class="col">
+                        <form class="question-bank-form">
+                            <div class="form-group">
+                                <label>课程</label>
+                                <select name="course_id" class="form-control">
+                                    <option value="">Java</option>
+                                    <option value="">Python</option>
+                                    <option value="">Web</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>题目</label>
+                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>标准答案</label>
+                                <div>
+                                    <div class="form-check form-check-inline mr-5">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio1">正确 / 是 / True</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                            id="inlineRadio2" value="option2">
+                                        <label class="form-check-label" for="inlineRadio2">错误 / 否 / False</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>本题详解（选填）</label>
+                                <textarea name="explaination" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group text-right mt-4">
+                                <button class="btn btn-secondary" type="reset">重置</button>
+                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Choice list
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mt-5">
+                <p class="lead font-weight-bold">简答题</p>
+                <div class="row">
+                    <div class="col">
+                        <form class="question-bank-form">
+                            <div class="form-group">
+                                <label>课程</label>
+                                <select name="course_id" class="form-control">
+                                    <option value="">Java</option>
+                                    <option value="">Python</option>
+                                    <option value="">Web</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>题目</label>
+                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>参考答案</label>
+                                <textarea name="standard_answer" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>本题详解（选填）</label>
+                                <textarea name="explaination" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group text-right mt-4">
+                                <button class="btn btn-secondary" type="reset">重置</button>
+                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        Choice list
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
