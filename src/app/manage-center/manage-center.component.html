@@ -35,12 +35,20 @@
     </nav>
     <!-- Navbar: end -->
     <div class="container-fluid">
-        <div class="row">
+        <div class="row px-2 py-4">
             <div class="col-2">
-                fdsafasf
+                <div class="row">
+                    <div class="list-group w-100">
+                        <a (click)="selectMenu(i)" [routerLink]="menu.url"
+                            class="list-group-item list-group-item-action" [ngClass]="{'active': i==currentMenuIndex}"
+                            *ngFor="let menu of menuList; let i=index">
+                            <i class="fas mr-4" [ngClass]="menu.icon"></i>{{menu.title}}
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="col">
-                fdsafasfa
+                <router-outlet></router-outlet>
             </div>
         </div>
     </div>

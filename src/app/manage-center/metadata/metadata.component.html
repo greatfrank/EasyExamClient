@@ -1,0 +1,51 @@
+<div class="metadata" class="metadata">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p class="lead font-weight-normal">班级 | Class</p>
+                <div class="row">
+                    <div class="col">
+                        <form class="metadata-form">
+                            <div class="form-group">
+                                <label>专业</label>
+                                <select name="class-major" class="form-control">
+                                    <option [value]="major" *ngFor="let major of majors">{{major}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>类型</label>
+                                <select name="class-type" class="form-control">
+                                    <option value="高职">高职</option>
+                                    <option value="五年制">五年制</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>入学年份</label>
+                                <select name="class-regist-year" class="form-control">
+                                    <option [value]="year" *ngFor="let year of registYears">{{year}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>班级编号</label>
+                                <select name="class-regist-year" class="form-control">
+                                    <option [value]="year" *ngFor="let num of classNums">{{num}}</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col">
+                        List
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <p class="lead font-weight-normal">课程 | Course</p>
+
+            </div>
+            <div class="col-12">
+                <p class="lead font-weight-normal">考试 | Examination</p>
+
+            </div>
+        </div>
+    </div>
+</div>

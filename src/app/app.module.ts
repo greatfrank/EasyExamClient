@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
@@ -13,6 +13,8 @@ import { FeaturesComponent } from './welcome/features/features.component';
 import { SignComponent } from './welcome/sign/sign.component';
 import { RegistComponent } from './regist/regist.component';
 import { ManageCenterComponent } from './manage-center/manage-center.component';
+import { MetadataComponent } from './manage-center/metadata/metadata.component';
+import { StatisticComponent } from './manage-center/statistic/statistic.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
     FeaturesComponent,
     SignComponent,
     RegistComponent,
-    ManageCenterComponent
+    ManageCenterComponent,
+    MetadataComponent,
+    StatisticComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,7 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [{provide:LocationStrategy,useClass:HashLocationStrategy}],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
