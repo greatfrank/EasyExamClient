@@ -43,7 +43,7 @@ export class SignComponent implements OnInit {
               teacher[key] = jsonObj[key]
             })
             GlobalData.currentTeacher = teacher
-            this.router.navigateByUrl('manage-center')
+            this.router.navigateByUrl('manage-center/statistic')
           } else {
             alert('登录信息有误，请重试')
           }

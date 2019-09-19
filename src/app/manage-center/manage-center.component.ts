@@ -18,14 +18,14 @@ export class ManageCenterComponent implements OnInit {
       url: 'statistic'
     },
     {
-      title: '题库资源',
-      icon: 'fa-chart-bar',
-      url: 'question-bank'
-    },
-    {
       title: '基础数据',
       icon: 'fa-coins',
       url: 'metadata'
+    },
+    {
+      title: '题库资源',
+      icon: 'fa-chart-bar',
+      url: 'question-bank'
     },
   ]
 
