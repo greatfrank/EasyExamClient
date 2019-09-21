@@ -41,10 +41,11 @@
                         </form>
                     </div>
                     <div class="col-7">
-                        <div class="row py-2 lead" *ngFor="let obj of sources['classes']; let i=index">
+                        <div class="row py-2" *ngFor="let obj of sources['classes']; let i=index">
                             <div class="col-1 bg-primary text-center text-white">{{i+1}}</div>
                             <div class="col-3">ID：{{obj['id']}}</div>
-                            <div class="col font-weight-bold">{{obj['type']}} {{obj['major']}} {{obj['regist_year']}}-{{obj['num']}} <span class="text-primary">班</span></div>
+                            <div class="col font-weight-bold">{{obj['type']}} {{obj['major']}}
+                                {{obj['regist_year']}}-{{obj['num']}} <span class="text-primary">班</span></div>
                         </div>
                         <hr>
                         <p class="text-right lead">共计：{{sources['classes'].length}}</p>
@@ -53,8 +54,8 @@
             </div>
             <div class="col-12">
                 <p class="lead font-weight-bold">课程 | Course</p>
-                <div class="row">
-                    <div class="col">
+                <div class="row justify-content-between">
+                    <div class="col-4">
                         <form [formGroup]="courseForm" (ngSubmit)="onSubmit('courses')">
                             <div class="form-group">
                                 <label>名称</label>
@@ -73,8 +74,14 @@
                             </div>
                         </form>
                     </div>
-                    <div class="col">
-                        Course List
+                    <div class="col-7">
+                        <div class="row py-2" *ngFor="let obj of sources['courses']; let i=index">
+                            <div class="col-1 bg-success text-center text-white">{{i+1}}</div>
+                            <div class="col-3">ID：{{obj['id']}}</div>
+                            <div class="col font-weight-bold">{{obj['name']}} <span class="text-success">学分: {{obj['credit']}}</span></div>
+                        </div>
+                        <hr>
+                        <p class="text-right lead">共计：{{sources['courses'].length}}</p>
                     </div>
                 </div>
 
