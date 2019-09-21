@@ -4,6 +4,7 @@ import { GlobalData } from 'src/app/global/global-data';
 import { FormBuilder, Validators } from "@angular/forms";
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-question-bank',
@@ -12,9 +13,8 @@ import { UtilityService } from "../../utility.service";
 })
 export class QuestionBankComponent implements OnInit {
 
-  //[disabled]="!choiceForm.valid"
+  // 单选题
   choiceForm = this.fb.group({
-    id: [''],
     course_id: ['', Validators.required],
     question: ['', Validators.required],
     currentOption: [''],
@@ -23,6 +23,17 @@ export class QuestionBankComponent implements OnInit {
     explanation: ['']
   })
   isSubmitingChoice = false
+
+  // 填空题
+  fillForm = this.fb.group({
+    course_id: ['', Validators.required],
+    question: ['', Validators.required],
+    currentAnswer: [''],
+    standard_answer: [[], Validators.required],
+    explanation: ['']
+  })
+  isSubmitingFill = false
+
 
   sources: any
 
@@ -37,7 +48,9 @@ export class QuestionBankComponent implements OnInit {
   }
 
   /**
+   * =======================
    * Choice 单选题
+   * =======================
   */
   addOptionForChoice() {
     let arr = this.choiceForm.get('options').value
@@ -90,6 +103,67 @@ export class QuestionBankComponent implements OnInit {
         alert('提交失败，请重试')
       }
     })
+  }
+
+  /**
+   * =======================
+   * Fill 填空题
+   * =======================
+   */
+  addAnswerForFill() {
+    let arr = this.fillForm.get('standard_answer').value
+    arr.push(this.fillForm.get('currentAnswer').value)
+    this.fillForm.patchValue({
+      standard_answer: arr
+    })
+    this.fillForm.get('currentAnswer').reset()
+  }
+
+  removeAnswerForFill(index) {
+    let arr = this.fillForm.get('standard_answer').value
+    arr.splice(index, 1)
+    this.fillForm.patchValue({
+      standard_answer: arr
+    })
+
+  }
+
+  onFillSubmit() {
+    /**
+     * {
+  "question":"题干",
+  "standard_answer":["a1","a2"],
+  "explanation":""  
+}
+     */
+
+    let self = this
+
+    this.isSubmitingFill = true
+
+    let content = {
+      question: this.fillForm.get('question').value,
+      standard_answer: this.fillForm.get('standard_answer').value,
+      explanation: this.fillForm.get('explanation').value
+    }
+
+    let body = {
+      id: this.utilityService.getIdByTimestamp(),
+      course_id: this.fillForm.get('course_id').value,
+      content: JSON.stringify(content)
+    }
+
+    this.backendService.addNewByTableName('fills', body).subscribe(data => {
+      self.isSubmitingFill = false
+      if (data['effect_rows'] == 1 && data['message'] == 'complete') {
+        self.fillForm.reset()
+        alert('提交成功')
+      } else {
+        alert('提交失败，请重试')
+      }
+    })
+
+
   }
 
 }
