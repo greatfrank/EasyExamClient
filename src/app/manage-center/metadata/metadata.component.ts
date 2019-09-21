@@ -54,8 +54,6 @@ export class MetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('metadata');
-
     let self = this
     for (let index = 2014; index < 2030; index++) {
       this.registYears.push(index)

@@ -40,8 +40,6 @@ export class ManageCenterComponent implements OnInit {
   constructor(private backendService: BackendService) { }
 
   ngOnInit() {
-    console.log('manage center');
-    
     let self = this
     Object.keys(this.sources).forEach(key => {
       self.backendService.fetchAllByTableName(key).subscribe(data => {
