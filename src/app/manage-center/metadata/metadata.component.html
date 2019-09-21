@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <p class="lead font-weight-bold">班级 | Class</p>
+                <h1 class="py-2 mb-4 bg-primary text-white text-center">班 级 | Class</h1>
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="classForm" (ngSubmit)="onSubmit('classes')">
@@ -52,11 +52,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <p class="lead font-weight-bold">课程 | Course</p>
+            <div class="col-12 mt-5">
+                <h1 class="py-2 mb-4 text-white text-center bg-success">课 程 | Course</h1>
                 <div class="row justify-content-between">
                     <div class="col-4">
-                        <form [formGroup]="courseForm" (ngSubmit)="onSubmit('courses')">
+                        <form class="metadata-form" [formGroup]="courseForm" (ngSubmit)="onSubmit('courses')">
                             <div class="form-group">
                                 <label>名称</label>
                                 <input type="text" placeholder="课程名称" class="form-control" formControlName="name">
@@ -86,7 +86,7 @@
                 </div>
 
             </div>
-            <div class="col-12">
+            <!-- <div class="col-12">
                 <p class="lead font-weight-bold">考试 | Examination</p>
                 <div class="row">
                     <div class="col">
@@ -112,7 +112,7 @@
                         Course List
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

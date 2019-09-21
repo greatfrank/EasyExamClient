@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { Course } from 'src/app/model/course';
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
 import { Class } from 'src/app/model/class';
+import { GlobalData } from 'src/app/global/global-data';
 
 @Component({
   selector: 'app-metadata',
@@ -43,11 +44,8 @@ export class MetadataComponent implements OnInit {
   course = new Course()
   isSubmitingCourse = false
 
-  // sources
-  sources = {
-    classes: [],
-    courses: []
-  }
+  // sources for list
+  sources:any
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +54,8 @@ export class MetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('metadata');
+
     let self = this
     for (let index = 2014; index < 2030; index++) {
       this.registYears.push(index)
@@ -69,18 +69,10 @@ export class MetadataComponent implements OnInit {
       this.classNums.push(num)
     }
 
-
-    Object.keys(this.sources).forEach(key => {
-      self.backendService.fetchAllByTableName(key).subscribe(data => {
-        console.log(data['response']);
-
-        self.sources[key] = data['response']
-      })
-    })
-
-
-
+    console.log(GlobalData.globalSources);
+    this.sources = GlobalData.globalSources
   }
+
 
   onSubmit(tableName: string): void {
     let self = this

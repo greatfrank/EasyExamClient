@@ -9,14 +9,15 @@
                             <div class="form-group">
                                 <label>课程</label>
                                 <select name="course_id" class="form-control">
-                                    <option value="">Java</option>
-                                    <option value="">Python</option>
-                                    <option value="">Web</option>
+                                    <option value="" disabled selected></option>
+                                    <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>题目</label>
-                                <textarea class="form-control"></textarea>
+                                <textarea class="form-control"
+                                    placeholder="书写规范： XXXXXXXXXXX (        ) XXXX (        ) XXX。"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>选项</label>
@@ -28,16 +29,16 @@
                                 </div>
                                 <div>
                                     <span class="mr-4">
-                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                        <input type="checkbox" name="standard-answer" class="mr-2">A
                                     </span>
                                     <span class="mr-4">
-                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                        <input type="checkbox" name="standard-answer" class="mr-2">A
                                     </span>
                                     <span class="mr-4">
-                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                        <input type="checkbox" name="standard-answer" class="mr-2">A
                                     </span>
                                     <span class="mr-4">
-                                        <input type="radio" name="standard-answer" class="mr-2">A
+                                        <input type="checkbox" name="standard-answer" class="mr-2">A
                                     </span>
                                 </div>
                             </div>
@@ -64,9 +65,9 @@
                             <div class="form-group">
                                 <label>课程</label>
                                 <select name="course_id" class="form-control">
-                                    <option value="">Java</option>
-                                    <option value="">Python</option>
-                                    <option value="">Web</option>
+                                    <option value="" disabled selected></option>
+                                    <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -111,9 +112,9 @@
                             <div class="form-group">
                                 <label>课程</label>
                                 <select name="course_id" class="form-control">
-                                    <option value="">Java</option>
-                                    <option value="">Python</option>
-                                    <option value="">Web</option>
+                                    <option value="" disabled selected></option>
+                                    <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -158,9 +159,9 @@
                             <div class="form-group">
                                 <label>课程</label>
                                 <select name="course_id" class="form-control">
-                                    <option value="">Java</option>
-                                    <option value="">Python</option>
-                                    <option value="">Web</option>
+                                    <option value="" disabled selected></option>
+                                    <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="form-group">

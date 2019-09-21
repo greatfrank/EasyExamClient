@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { StatisticComponent } from "./statistic/statistic.component";
 import { MetadataComponent } from "./metadata/metadata.component";
+import { BackendService } from "../backend.service";
+import { GlobalData } from "../global/global-data";
 
 @Component({
   selector: 'app-manage-center',
   templateUrl: './manage-center.component.html',
-  styleUrls: ['./manage-center.component.scss']
+  styleUrls: ['./manage-center.component.scss'],
+  providers: [BackendService]
 })
 export class ManageCenterComponent implements OnInit {
 
@@ -24,14 +27,28 @@ export class ManageCenterComponent implements OnInit {
     },
     {
       title: '题库资源',
-      icon: 'fa-chart-bar',
+      icon: 'fa-list',
       url: 'question-bank'
     },
   ]
 
-  constructor() { }
+  sources = {
+    classes: [],
+    courses: []
+  }
+
+  constructor(private backendService: BackendService) { }
 
   ngOnInit() {
+    console.log('manage center');
+    
+    let self = this
+    Object.keys(this.sources).forEach(key => {
+      self.backendService.fetchAllByTableName(key).subscribe(data => {
+        self.sources[key] = data['response']
+        GlobalData.globalSources[key] = data['response']
+      })
+    })
   }
 
   selectMenu(index) {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalData } from 'src/app/global/global-data';
 
 @Component({
   selector: 'app-question-bank',
@@ -16,9 +17,14 @@ export class QuestionBankComponent implements OnInit {
     "explanation": ""
   }
 
+  sources: any
+
   constructor() { }
 
   ngOnInit() {
+    this.sources = GlobalData.globalSources
+    console.log(this.sources);
+    
   }
 
 }
