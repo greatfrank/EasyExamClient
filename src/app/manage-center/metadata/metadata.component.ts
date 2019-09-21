@@ -13,6 +13,7 @@ import { Class } from 'src/app/model/class';
 })
 export class MetadataComponent implements OnInit {
 
+  // for select menus init data
   majors = [
     '计算机应用技术',
     '大数据与安全',
@@ -30,9 +31,9 @@ export class MetadataComponent implements OnInit {
     regist_year: ['', Validators.required],
     num: ['', Validators.required],
   })
+  classesTableHeads = Object.keys(this.classForm.value)
   class = new Class()
   isSubmitingClass = false
-  classesList = []
 
   courseForm = this.fb.group({
     id: [''], // int(11)
@@ -41,7 +42,12 @@ export class MetadataComponent implements OnInit {
   })
   course = new Course()
   isSubmitingCourse = false
-  coursesList = []
+
+  // sources
+  sources = {
+    classes: [],
+    courses: []
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -50,8 +56,7 @@ export class MetadataComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('metadata');
-
+    let self = this
     for (let index = 2014; index < 2030; index++) {
       this.registYears.push(index)
     }
@@ -63,12 +68,22 @@ export class MetadataComponent implements OnInit {
       }
       this.classNums.push(num)
     }
+
+
+    Object.keys(this.sources).forEach(key => {
+      self.backendService.fetchAllByTableName(key).subscribe(data => {
+        console.log(data['response']);
+
+        self.sources[key] = data['response']
+      })
+    })
+
+
+
   }
 
   onSubmit(tableName: string): void {
     let self = this
-
-
     switch (tableName) {
       case 'classes':
         this.isSubmitingClass = true
@@ -103,8 +118,7 @@ export class MetadataComponent implements OnInit {
       default:
         break
     }
-
-
   }
+
 
 }
