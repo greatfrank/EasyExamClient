@@ -98,6 +98,9 @@ export class QuestionBankComponent implements OnInit {
       self.isSubmitingChoice = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         self.choiceForm.reset()
+        self.choiceForm.patchValue({
+          options: []
+        })
         alert('提交成功')
       } else {
         alert('提交失败，请重试')
@@ -157,6 +160,9 @@ export class QuestionBankComponent implements OnInit {
       self.isSubmitingFill = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         self.fillForm.reset()
+        self.fillForm.patchValue({
+          standard_answer: []
+        })
         alert('提交成功')
       } else {
         alert('提交失败，请重试')
