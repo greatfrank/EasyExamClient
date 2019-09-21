@@ -66,8 +66,6 @@ export class MetadataComponent implements OnInit {
       }
       this.classNums.push(num)
     }
-
-    console.log(GlobalData.globalSources);
     this.sources = GlobalData.globalSources
   }
 
@@ -81,7 +79,6 @@ export class MetadataComponent implements OnInit {
           id: this.utilityService.getIdByTimestamp()
         })
         this.backendService.addNewByTableName(tableName, this.classForm.value).subscribe(data => {
-          console.log(data);
           if (data['effect_rows'] == 1 && data['message'] == 'complete') {
             alert('添加成功')
             self.classForm.reset()
@@ -95,7 +92,6 @@ export class MetadataComponent implements OnInit {
           id: this.utilityService.getIdByTimestamp()
         })
         this.backendService.addNewByTableName(tableName, this.courseForm.value).subscribe(data => {
-          console.log(data);
           if (data['effect_rows'] == 1 && data['message'] == 'complete') {
             alert('添加成功')
             self.courseForm.reset()
