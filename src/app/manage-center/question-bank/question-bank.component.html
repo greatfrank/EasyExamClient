@@ -83,7 +83,8 @@
                             <div class="form-group">
                                 <label>
                                     标准答案
-                                    <span class="alert alert-warning py-0 px-1 ml-3 text-center" role="alert"><i class="fas fa-exclamation-triangle mr-2"></i>答案的顺序必须与题目中的空位顺序一致。</span>
+                                    <span class="alert alert-warning py-0 px-1 ml-3 text-center" role="alert"><i
+                                            class="fas fa-exclamation-triangle mr-2"></i>答案的顺序必须与题目中的空位顺序一致。</span>
                                 </label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="在这里直接按照题目中空位的顺序，填写标准答案。"
@@ -95,9 +96,11 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <span class="mr-4 lead font-weight-bold text-primary" *ngFor="let answer of fillForm.get('standard_answer').value; let i=index">
+                                    <span class="mr-4 lead font-weight-bold text-primary"
+                                        *ngFor="let answer of fillForm.get('standard_answer').value; let i=index">
                                         {{answer}}
-                                        <button class="btn btn-sm btn-danger px-1 py-0" type="button" (click)="removeAnswerForFill(i)"><i class="fas fa-ban"></i></button>
+                                        <button class="btn btn-sm btn-danger px-1 py-0" type="button"
+                                            (click)="removeAnswerForFill(i)"><i class="fas fa-ban"></i></button>
                                     </span>
                                 </div>
                             </div>
@@ -125,10 +128,10 @@
                 <p class="lead font-weight-bold">判断题</p>
                 <div class="row">
                     <div class="col">
-                        <form class="question-bank-form">
+                        <form class="question-bank-form" [formGroup]="judgeForm" (ngSubmit)="onJudgeSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
-                                <select name="course_id" class="form-control">
+                                <select name="course_id" class="form-control" formControlName="course_id">
                                     <option value="" disabled selected></option>
                                     <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
                                     </option>
@@ -136,30 +139,36 @@
                             </div>
                             <div class="form-group">
                                 <label>题目</label>
-                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"></textarea>
+                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"
+                                    formControlName="question"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>标准答案</label>
                                 <div>
-                                    <div class="form-check form-check-inline mr-5">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                            id="inlineRadio1" value="option1">
-                                        <label class="form-check-label" for="inlineRadio1">正确 / 是 / True</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
-                                            id="inlineRadio2" value="option2">
-                                        <label class="form-check-label" for="inlineRadio2">错误 / 否 / False</label>
-                                    </div>
+                                    <span class="form-check form-check-inline mr-5 lead text-primary font-weight-bold">
+                                        <input class="form-check-input radioFour" type="radio" name="standard-answer"
+                                            (change)="onStandardAnswerChanged(true)">正确
+                                        / 是 / True
+                                    </span>
+                                    <span class="form-check form-check-inline lead font-weight-bold text-primary">
+                                        <input class="form-check-input radioFour" type="radio" name="standard-answer"
+                                            (change)="onStandardAnswerChanged(false)">错误
+                                        / 否 / False
+                                    </span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>本题详解（选填）</label>
-                                <textarea name="explaination" class="form-control"></textarea>
+                                <textarea name="explaination" class="form-control"
+                                    formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <span class="mr-3 lead" *ngIf="isSubmitingJudge">
+                                    <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
+                                </span>
                                 <button class="btn btn-secondary" type="reset">重置</button>
-                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                                <button class="btn btn-primary ml-3" type="submit" [disabled]="!judgeForm.valid">完成 并
+                                    提交</button>
                             </div>
                         </form>
                     </div>

@@ -34,6 +34,15 @@ export class QuestionBankComponent implements OnInit {
   })
   isSubmitingFill = false
 
+  // 判断题
+  judgeForm = this.fb.group({
+    course_id: ['', Validators.required],
+    question: ['', Validators.required],
+    standard_answer: ['', Validators.required],
+    explanation: ['']
+  })
+  isSubmitingJudge = false
+
 
   sources: any
 
@@ -132,18 +141,8 @@ export class QuestionBankComponent implements OnInit {
   }
 
   onFillSubmit() {
-    /**
-     * {
-  "question":"题干",
-  "standard_answer":["a1","a2"],
-  "explanation":""  
-}
-     */
-
     let self = this
-
     this.isSubmitingFill = true
-
     let content = {
       question: this.fillForm.get('question').value,
       standard_answer: this.fillForm.get('standard_answer').value,
@@ -168,8 +167,44 @@ export class QuestionBankComponent implements OnInit {
         alert('提交失败，请重试')
       }
     })
+  }
 
+  /**
+   * =======================
+   * Judge 判断题
+   * =======================
+   */
 
+  onStandardAnswerChanged(value) {
+    this.judgeForm.patchValue({
+      standard_answer: value
+    })
+  }
+
+  onJudgeSubmit() {
+    let self = this
+    this.isSubmitingJudge = true
+    let content = {
+      question: this.judgeForm.get('question').value,
+      standard_answer: this.judgeForm.get('standard_answer').value,
+      explanation: this.judgeForm.get('explanation').value
+    }
+
+    let body = {
+      id: this.utilityService.getIdByTimestamp(),
+      course_id: this.judgeForm.get('course_id').value,
+      content: JSON.stringify(content)
+    }
+
+    this.backendService.addNewByTableName('judges', body).subscribe(data => {
+      self.isSubmitingJudge = false
+      if (data['effect_rows'] == 1 && data['message'] == 'complete') {
+        self.judgeForm.reset()
+        alert('提交成功')
+      } else {
+        alert('提交失败，请重试')
+      }
+    })
   }
 
 }
