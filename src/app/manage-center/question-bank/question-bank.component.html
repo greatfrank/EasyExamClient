@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <p class="lead font-weight-bold">选择题（单选）</p>
+                <p class="question-title">选 择 题（单选）</p>
                 <div class="row">
                     <div class="col">
                         <form [formGroup]="choiceForm" class="question-bank-form" (ngSubmit)="onChoiceSubmit()">
@@ -26,7 +26,7 @@
                                     <input type="text" class="form-control" placeholder="在这里直接填写选项的内容。不需要带有 A、B、C、D"
                                         formControlName="currentOption">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-success" type="button"
+                                        <button class="btn btn-success" type="button"
                                             (click)="addOptionForChoice()"
                                             [disabled]="!choiceForm.get('currentOption').value">添加选项</button>
                                     </div>
@@ -63,7 +63,7 @@
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <p class="lead font-weight-bold">填空题（一个或多个空）</p>
+                <p class="question-title">填 空 题（一个或多个空）</p>
                 <div class="row">
                     <div class="col">
                         <form class="question-bank-form" [formGroup]="fillForm" (ngSubmit)="onFillSubmit()">
@@ -90,7 +90,7 @@
                                     <input type="text" class="form-control" placeholder="在这里直接按照题目中空位的顺序，填写标准答案。"
                                         formControlName="currentAnswer">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-success" type="button"
+                                        <button class="btn btn-success" type="button"
                                             [disabled]="!fillForm.get('currentAnswer').value"
                                             (click)="addAnswerForFill()">添加答案</button>
                                     </div>
@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <p class="lead font-weight-bold">判断题</p>
+                <p class="question-title">判 断 题</p>
                 <div class="row">
                     <div class="col">
                         <form class="question-bank-form" [formGroup]="judgeForm" (ngSubmit)="onJudgeSubmit()">
@@ -178,7 +178,7 @@
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <p class="lead font-weight-bold">简答题</p>
+                <p class="question-title">简 答 题</p>
                 <div class="row">
                     <div class="col">
                         <form class="question-bank-form" [formGroup]="shortAnswerForm"
