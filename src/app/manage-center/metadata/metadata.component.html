@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h1 class="py-2 mb-4 bg-primary text-white text-center">班 级 | Class</h1>
+                <p class="question-title">班 级 | Class</p>
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="classForm" (ngSubmit)="onSubmit('classes')">
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <h1 class="py-2 mb-4 text-white text-center bg-success">课 程 | Course</h1>
+                <p class="question-title">课 程 | Course</p>
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="courseForm" (ngSubmit)="onSubmit('courses')">

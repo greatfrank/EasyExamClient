@@ -6,6 +6,8 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
 import { StatisticComponent } from './manage-center/statistic/statistic.component';
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
+import { ExamComponent } from './manage-center/exam/exam.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -29,6 +31,10 @@ const routes: Routes = [
       {
         path: 'metadata',
         component: MetadataComponent
+      },
+      {
+        path: 'exam',
+        component: ExamComponent
       }
     ]
   }

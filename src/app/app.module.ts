@@ -16,6 +16,7 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { StatisticComponent } from './manage-center/statistic/statistic.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
+import { ExamComponent } from './manage-center/exam/exam.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { QuestionBankComponent } from './manage-center/question-bank/question-ba
     MetadataComponent,
     StatisticComponent,
     QuestionBankComponent,
+    ExamComponent,
   ],
   imports: [
     BrowserModule,

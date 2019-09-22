@@ -30,6 +30,11 @@ export class ManageCenterComponent implements OnInit {
       icon: 'fa-list',
       url: 'question-bank'
     },
+    {
+      title: '考试设计',
+      icon: 'fa-flag-checkered',
+      url: 'exam'
+    },
   ]
 
   sources = {

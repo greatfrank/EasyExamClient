@@ -23,6 +23,9 @@ export class QuestionBankComponent implements OnInit {
     explanation: ['']
   })
   isSubmitingChoice = false
+  isFetchingChoices = false
+  totalChoices = 0
+  savedChoices = []
 
   // 填空题
   fillForm = this.fb.group({
@@ -33,6 +36,8 @@ export class QuestionBankComponent implements OnInit {
     explanation: ['']
   })
   isSubmitingFill = false
+  isFetchingFills = false
+  savedFills = []
 
   // 判断题
   judgeForm = this.fb.group({
@@ -42,6 +47,8 @@ export class QuestionBankComponent implements OnInit {
     explanation: ['']
   })
   isSubmitingJudge = false
+  isFetchingJudges = false
+  savedJudges = []
 
   // 简答题
   shortAnswerForm = this.fb.group({
@@ -51,6 +58,8 @@ export class QuestionBankComponent implements OnInit {
     explanation: ['']
   })
   isSubmitingShortAnswer = false
+  isFetchingShortAnswers = false
+  savedShortAnswers = []
 
 
   sources: any
@@ -63,6 +72,10 @@ export class QuestionBankComponent implements OnInit {
 
   ngOnInit() {
     this.sources = GlobalData.globalSources
+
+    this.fetchAllChoices()
+
+
   }
 
   /**
@@ -242,6 +255,81 @@ export class QuestionBankComponent implements OnInit {
       } else {
         alert('提交失败，请重试')
       }
+    })
+  }
+
+  transferCourseName(id: string) {
+    let self = this
+    let courseName = ''
+    let courses = GlobalData.globalSources['courses']
+    // console.log(courses);
+    courses.forEach(course => {
+      if (id == course['id']) {
+        courseName = course['name']
+      }
+    });
+    return courseName
+  }
+
+  groupCourseByName(courseArr: any[]) {
+    let resultArr = []
+
+    // Sort original array
+    var compareFun = function (emp1: any, emp2: any) {
+      if (emp1['course_id'] > emp2['course_id']) {
+        return -1
+      }
+      if (emp1['course_id'] < emp2['course_id']) {
+        return 1
+      }
+      return 0
+    }
+    let sortedCourseArr = courseArr.sort(compareFun)
+    console.log(sortedCourseArr);
+
+    // Set group array
+    let nameSet = new Set()
+    courseArr.forEach(element => {
+      nameSet.add(element['course_name'])
+    });
+    for (const name of nameSet) {
+      let subArr = []
+      sortedCourseArr.forEach(course => {
+        if (course['course_name'] == name) {
+          subArr.push(course)
+        }
+      });
+      resultArr.push({
+        course_name: name,
+        list: subArr
+      })
+    }
+
+    console.log(resultArr);
+    return resultArr
+
+  }
+
+  /**
+   * Fetch data from remote server
+   */
+  fetchAllChoices() {
+    let self = this
+
+    self.backendService.fetchAllByTableName('choices').subscribe(data => {
+      let arr = data['response']
+      // Setup json data struct for original array
+      let tempArr = []
+      arr.forEach(element => {
+        let json = JSON.parse(element['content'])
+        json['course_id'] = element['course_id']
+        json['course_name'] = self.transferCourseName(element['course_id'])
+        json['id'] = element['id']
+        tempArr.push(json)
+      });
+      self.totalChoices = tempArr.length
+      this.savedChoices = this.groupCourseByName(tempArr)
+      console.log(this.savedChoices);
     })
   }
 
