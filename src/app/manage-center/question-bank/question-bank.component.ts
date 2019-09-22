@@ -43,6 +43,15 @@ export class QuestionBankComponent implements OnInit {
   })
   isSubmitingJudge = false
 
+  // 简答题
+  shortAnswerForm = this.fb.group({
+    course_id: ['', Validators.required],
+    question: ['', Validators.required],
+    standard_answer: ['', Validators.required],
+    explanation: ['']
+  })
+  isSubmitingShortAnswer = false
+
 
   sources: any
 
@@ -200,6 +209,35 @@ export class QuestionBankComponent implements OnInit {
       self.isSubmitingJudge = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         self.judgeForm.reset()
+        alert('提交成功')
+      } else {
+        alert('提交失败，请重试')
+      }
+    })
+  }
+
+  /**
+   * =======================
+   * Short Answer 简答题
+   * =======================
+   */
+  onShortAnswerSubmit() {
+    let self = this
+    this.isSubmitingShortAnswer = true
+    let content = {
+      question: this.shortAnswerForm.get('question').value,
+      standard_answer: this.shortAnswerForm.get('standard_answer').value,
+      explanation: this.shortAnswerForm.get('explanation').value
+    }
+    let body = {
+      id: this.utilityService.getIdByTimestamp(),
+      course_id: this.shortAnswerForm.get('course_id').value,
+      content: JSON.stringify(content)
+    }
+    this.backendService.addNewByTableName('short_answers', body).subscribe(data => {
+      self.isSubmitingShortAnswer = false
+      if (data['effect_rows'] == 1 && data['message'] == 'complete') {
+        self.shortAnswerForm.reset()
         alert('提交成功')
       } else {
         alert('提交失败，请重试')

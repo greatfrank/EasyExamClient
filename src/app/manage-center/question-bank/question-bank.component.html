@@ -1,4 +1,4 @@
-<div id="question-bank" class="question-bank">
+<div id="question-bank" class="question-bank pb-5">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -181,10 +181,11 @@
                 <p class="lead font-weight-bold">简答题</p>
                 <div class="row">
                     <div class="col">
-                        <form class="question-bank-form">
+                        <form class="question-bank-form" [formGroup]="shortAnswerForm"
+                            (ngSubmit)="onShortAnswerSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
-                                <select name="course_id" class="form-control">
+                                <select name="course_id" class="form-control" formControlName="course_id">
                                     <option value="" disabled selected></option>
                                     <option [value]="item.id" *ngFor="let item of sources['courses']">{{item.name}}
                                     </option>
@@ -192,19 +193,26 @@
                             </div>
                             <div class="form-group">
                                 <label>题目</label>
-                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"></textarea>
+                                <textarea placeholder="XXXXXXXXXX ?" class="form-control"
+                                    formControlName="question"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>参考答案</label>
-                                <textarea name="standard_answer" class="form-control"></textarea>
+                                <textarea name="standard_answer" class="form-control"
+                                    formControlName="standard_answer"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>本题详解（选填）</label>
-                                <textarea name="explaination" class="form-control"></textarea>
+                                <textarea name="explaination" class="form-control"
+                                    formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <span class="mr-3 lead" *ngIf="isSubmitingShortAnswer">
+                                    <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
+                                </span>
                                 <button class="btn btn-secondary" type="reset">重置</button>
-                                <button class="btn btn-primary ml-3" type="button">完成 并 提交</button>
+                                <button class="btn btn-primary ml-3" type="submit"
+                                    [disabled]="!shortAnswerForm.valid">完成 并 提交</button>
                             </div>
                         </form>
                     </div>
