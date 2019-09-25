@@ -1,10 +1,13 @@
 <div id="question-bank" class="question-bank pb-5">
-    <div class="container">
+    <button class="btn btn-danger" id="top-btn" (click)="goToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <p class="question-title">选 择 题（单选）</p>
+                <p class="question-title">选 择 题（单选）<small class="ml-3 text-secondary">共 {{totalChoices}} 道题</small></p>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                         <form [formGroup]="choiceForm" class="question-bank-form" (ngSubmit)="onChoiceSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
@@ -46,6 +49,9 @@
                                     formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <div class="alert text-warning font-weight-bolder" role="alert">
+                                    题目的数据涉及到考试设计，一旦提交无法修改或删除。请注意在提交前检查题目的内容。
+                                </div>
                                 <span class="mr-3 lead" *ngIf="isSubmitingChoice">
                                     <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
                                 </span>
@@ -82,14 +88,15 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="text-right mt-3">共 {{totalChoices}} 道题</h3>
                     </div>
                 </div>
             </div>
+            <!-- =========================== -->
             <div class="col-12 mt-5">
-                <p class="question-title">填 空 题（一个或多个空）</p>
+                <p class="question-title">填 空 题（一个或多个空）<small class="ml-3 text-secondary">共 {{totalFills}} 道题</small>
+                </p>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                         <form class="question-bank-form" [formGroup]="fillForm" (ngSubmit)="onFillSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
@@ -134,6 +141,9 @@
                                     formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <div class="alert text-warning font-weight-bolder" role="alert">
+                                    题目的数据涉及到考试设计，一旦提交无法修改或删除。请注意在提交前检查题目的内容。
+                                </div>
                                 <span class="mr-3 lead" *ngIf="isSubmitingFill">
                                     <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
                                 </span>
@@ -170,14 +180,14 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="text-right mt-3">共 {{totalFills}} 道题</h3>
                     </div>
                 </div>
             </div>
+            <!-- ========================================= -->
             <div class="col-12 mt-5">
-                <p class="question-title">判 断 题</p>
+                <p class="question-title">判 断 题<small class="ml-3 text-secondary">共 {{totalJudges}} 道题</small></p>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                         <form class="question-bank-form" [formGroup]="judgeForm" (ngSubmit)="onJudgeSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
@@ -213,6 +223,9 @@
                                     formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <div class="alert text-warning font-weight-bolder" role="alert">
+                                    题目的数据涉及到考试设计，一旦提交无法修改或删除。请注意在提交前检查题目的内容。
+                                </div>
                                 <span class="mr-3 lead" *ngIf="isSubmitingJudge">
                                     <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
                                 </span>
@@ -245,14 +258,14 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="text-right mt-3">共 {{totalJudges}} 道题</h3>
                     </div>
                 </div>
             </div>
+            <!-- ========================================= -->
             <div class="col-12 mt-5">
-                <p class="question-title">简 答 题</p>
+                <p class="question-title">简 答 题<small class="ml-3 text-secondary">共 {{totalShortAnswers}} 道题</small></p>
                 <div class="row">
-                    <div class="col">
+                    <div class="col-5">
                         <form class="question-bank-form" [formGroup]="shortAnswerForm"
                             (ngSubmit)="onShortAnswerSubmit()">
                             <div class="form-group">
@@ -279,6 +292,9 @@
                                     formControlName="explanation"></textarea>
                             </div>
                             <div class="form-group text-right mt-4">
+                                <div class="alert text-warning font-weight-bolder" role="alert">
+                                    题目的数据涉及到考试设计，一旦提交无法修改或删除。请注意在提交前检查题目的内容。
+                                </div>
                                 <span class="mr-3 lead" *ngIf="isSubmitingShortAnswer">
                                     <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
                                 </span>
@@ -311,7 +327,6 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="text-right mt-3">共 {{totalShortAnswers}} 道题</h3>
                     </div>
                 </div>
             </div>

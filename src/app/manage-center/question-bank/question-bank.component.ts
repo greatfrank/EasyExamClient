@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { NgModel, MaxLengthValidator } from "@angular/forms";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { GlobalData } from 'src/app/global/global-data';
 import { FormBuilder, Validators } from "@angular/forms";
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
-import { ThrowStmt } from '@angular/compiler';
+
+declare var $: any
 
 @Component({
   selector: 'app-question-bank',
   templateUrl: './question-bank.component.html',
-  styleUrls: ['./question-bank.component.scss']
+  styleUrls: ['./question-bank.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class QuestionBankComponent implements OnInit {
 
@@ -71,13 +72,16 @@ export class QuestionBankComponent implements OnInit {
 
   ngOnInit() {
     this.sources = GlobalData.globalSources
-
     this.fetchAllChoices()
     this.fetchAllFills()
     this.fetchAllJudges()
     this.fetchAllShortAnswers()
+  }
 
-
+  goToTop() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 500)
   }
 
   /**
@@ -109,24 +113,39 @@ export class QuestionBankComponent implements OnInit {
     })
   }
 
+  fetchAllChoices() {
+    let self = this
+    this.savedChoices = []
+    self.backendService.fetchAllByTableName('choices').subscribe(data => {
+      let arr = data['response']
+      // Setup json data struct for original array
+      let tempArr = []
+      arr.forEach(element => {
+        let json = JSON.parse(element['content'])
+        json['course_id'] = element['course_id']
+        json['course_name'] = self.transferCourseName(element['course_id'])
+        json['id'] = element['id']
+        tempArr.push(json)
+      });
+      self.totalChoices = tempArr.length
+      this.savedChoices = this.groupCourseByName(tempArr)
+    })
+  }
+
   onChoiceSubmit() {
     let self = this
-
     this.isSubmitingChoice = true
-
     let content = {
       question: this.choiceForm.get('question').value,
       options: this.choiceForm.get('options').value,
       standard_answer: this.choiceForm.get('standard_answer').value,
       explanation: this.choiceForm.get('explanation').value
     }
-
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       course_id: this.choiceForm.get('course_id').value,
       content: JSON.stringify(content)
     }
-
     this.backendService.addNewByTableName('choices', body).subscribe(data => {
       self.isSubmitingChoice = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
@@ -135,6 +154,7 @@ export class QuestionBankComponent implements OnInit {
           options: []
         })
         alert('提交成功')
+        self.fetchAllChoices()
       } else {
         alert('提交失败，请重试')
       }
@@ -161,7 +181,25 @@ export class QuestionBankComponent implements OnInit {
     this.fillForm.patchValue({
       standard_answer: arr
     })
+  }
 
+  fetchAllFills() {
+    let self = this
+    this.savedFills = []
+    self.backendService.fetchAllByTableName('fills').subscribe(data => {
+      let arr = data['response']
+      // Setup json data struct for original array
+      let tempArr = []
+      arr.forEach(element => {
+        let json = JSON.parse(element['content'])
+        json['course_id'] = element['course_id']
+        json['course_name'] = self.transferCourseName(element['course_id'])
+        json['id'] = element['id']
+        tempArr.push(json)
+      });
+      self.totalFills = tempArr.length
+      this.savedFills = this.groupCourseByName(tempArr)
+    })
   }
 
   onFillSubmit() {
@@ -172,13 +210,11 @@ export class QuestionBankComponent implements OnInit {
       standard_answer: this.fillForm.get('standard_answer').value,
       explanation: this.fillForm.get('explanation').value
     }
-
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       course_id: this.fillForm.get('course_id').value,
       content: JSON.stringify(content)
     }
-
     this.backendService.addNewByTableName('fills', body).subscribe(data => {
       self.isSubmitingFill = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
@@ -186,6 +222,7 @@ export class QuestionBankComponent implements OnInit {
         self.fillForm.patchValue({
           standard_answer: []
         })
+        self.fetchAllFills()
         alert('提交成功')
       } else {
         alert('提交失败，请重试')
@@ -205,6 +242,25 @@ export class QuestionBankComponent implements OnInit {
     })
   }
 
+  fetchAllJudges() {
+    let self = this
+    this.savedJudges = []
+    self.backendService.fetchAllByTableName('judges').subscribe(data => {
+      let arr = data['response']
+      // Setup json data struct for original array
+      let tempArr = []
+      arr.forEach(element => {
+        let json = JSON.parse(element['content'])
+        json['course_id'] = element['course_id']
+        json['course_name'] = self.transferCourseName(element['course_id'])
+        json['id'] = element['id']
+        tempArr.push(json)
+      });
+      self.totalJudges = tempArr.length
+      this.savedJudges = this.groupCourseByName(tempArr)
+    })
+  }
+
   onJudgeSubmit() {
     let self = this
     this.isSubmitingJudge = true
@@ -213,17 +269,16 @@ export class QuestionBankComponent implements OnInit {
       standard_answer: this.judgeForm.get('standard_answer').value,
       explanation: this.judgeForm.get('explanation').value
     }
-
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       course_id: this.judgeForm.get('course_id').value,
       content: JSON.stringify(content)
     }
-
     this.backendService.addNewByTableName('judges', body).subscribe(data => {
       self.isSubmitingJudge = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         self.judgeForm.reset()
+        self.fetchAllJudges()
         alert('提交成功')
       } else {
         alert('提交失败，请重试')
@@ -236,6 +291,25 @@ export class QuestionBankComponent implements OnInit {
    * Short Answer 简答题
    * =======================
    */
+  fetchAllShortAnswers() {
+    let self = this
+    this.savedShortAnswers = []
+    self.backendService.fetchAllByTableName('short_answers').subscribe(data => {
+      let arr = data['response']
+      // Setup json data struct for original array
+      let tempArr = []
+      arr.forEach(element => {
+        let json = JSON.parse(element['content'])
+        json['course_id'] = element['course_id']
+        json['course_name'] = self.transferCourseName(element['course_id'])
+        json['id'] = element['id']
+        tempArr.push(json)
+      });
+      self.totalShortAnswers = tempArr.length
+      this.savedShortAnswers = this.groupCourseByName(tempArr)
+    })
+  }
+
   onShortAnswerSubmit() {
     let self = this
     this.isSubmitingShortAnswer = true
@@ -253,6 +327,7 @@ export class QuestionBankComponent implements OnInit {
       self.isSubmitingShortAnswer = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         self.shortAnswerForm.reset()
+        self.fetchAllShortAnswers()
         alert('提交成功')
       } else {
         alert('提交失败，请重试')
@@ -308,84 +383,5 @@ export class QuestionBankComponent implements OnInit {
     return resultArr
   }
 
-  /**
-   * Fetch data from remote server
-   */
-  // Fetch all choices
-  fetchAllChoices() {
-    let self = this
-    self.backendService.fetchAllByTableName('choices').subscribe(data => {
-      let arr = data['response']
-      // Setup json data struct for original array
-      let tempArr = []
-      arr.forEach(element => {
-        let json = JSON.parse(element['content'])
-        json['course_id'] = element['course_id']
-        json['course_name'] = self.transferCourseName(element['course_id'])
-        json['id'] = element['id']
-        tempArr.push(json)
-      });
-      self.totalChoices = tempArr.length
-      this.savedChoices = this.groupCourseByName(tempArr)
-    })
-  }
-
-  // Fetch all fills
-  fetchAllFills() {
-    let self = this
-    self.backendService.fetchAllByTableName('fills').subscribe(data => {
-      let arr = data['response']
-      // Setup json data struct for original array
-      let tempArr = []
-      arr.forEach(element => {
-        let json = JSON.parse(element['content'])
-        json['course_id'] = element['course_id']
-        json['course_name'] = self.transferCourseName(element['course_id'])
-        json['id'] = element['id']
-        tempArr.push(json)
-      });
-      self.totalFills = tempArr.length
-      this.savedFills = this.groupCourseByName(tempArr)
-    })
-  }
-
-  // Fetch all fills
-  fetchAllJudges() {
-    let self = this
-    self.backendService.fetchAllByTableName('judges').subscribe(data => {
-      let arr = data['response']
-      // Setup json data struct for original array
-      let tempArr = []
-      arr.forEach(element => {
-        let json = JSON.parse(element['content'])
-        json['course_id'] = element['course_id']
-        json['course_name'] = self.transferCourseName(element['course_id'])
-        json['id'] = element['id']
-        tempArr.push(json)
-      });
-      self.totalJudges = tempArr.length
-      this.savedJudges = this.groupCourseByName(tempArr)
-    })
-  }
-
-  fetchAllShortAnswers() {
-    let self = this
-    self.backendService.fetchAllByTableName('short_answers').subscribe(data => {
-      let arr = data['response']
-      console.log(arr);
-      
-      // Setup json data struct for original array
-      let tempArr = []
-      arr.forEach(element => {
-        let json = JSON.parse(element['content'])
-        json['course_id'] = element['course_id']
-        json['course_name'] = self.transferCourseName(element['course_id'])
-        json['id'] = element['id']
-        tempArr.push(json)
-      });
-      self.totalShortAnswers = tempArr.length
-      this.savedShortAnswers = this.groupCourseByName(tempArr)
-    })
-  }
 
 }

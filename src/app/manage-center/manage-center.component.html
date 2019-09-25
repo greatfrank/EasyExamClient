@@ -1,4 +1,30 @@
 <div id="manage-center" class="manage-center">
+    <!-- Modal:start -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">提示 | Notices</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        【题库资源】是最基础的资源，所以在添加或者修改【考试设计】中的参数时，请先保证已经添加了足够的题目。
+                    </p>
+                    <p>
+                        先有课程，才会有这门课的考试。所以在操作【考试设计】时，请先确认相关的课程信息已经被添加。
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal:end -->
     <!-- Navbar: start -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">EasyExam</a>
@@ -9,26 +35,17 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Dropdown
+                <li class="nav-item ml-4" [ngClass]="{'active': i==currentMenuIndex}"
+                    *ngFor="let menu of menuList; let i=index">
+                    <a class="nav-link" (click)="selectMenu(i)" [routerLink]="menu.url">
+                        <i class="fas mr-2" [ngClass]="menu.icon"></i>
+                        {{menu.title}}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <li class="nav-item ml-5">
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                        <i class="fas fa-bell"></i>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -36,17 +53,11 @@
     <!-- Navbar: end -->
     <div class="container-fluid">
         <div class="row px-2 py-4">
-            <div class="col-2">
+            <div class="col">
+                <router-outlet></router-outlet>
+            </div>
+            <!-- <div class="col-2">
                 <div class="row">
-                    <div class="list-group w-100">
-                        <a (click)="selectMenu(i)" [routerLink]="menu.url"
-                            class="list-group-item list-group-item-action" [ngClass]="{'active': i==currentMenuIndex}"
-                            *ngFor="let menu of menuList; let i=index">
-                            <i class="fas mr-4" [ngClass]="menu.icon"></i>{{menu.title}}
-                        </a>
-                    </div>
-                </div>
-                <div class="row mt-4">
                     <div class="alert bg-warning text-dark font-weight-bold w-100 py-0" role="alert">
                         <ul class="list-group p-0">
                             <li class="list-group-item py-2 px-0 bg-warning">
@@ -63,7 +74,7 @@
             </div>
             <div class="col">
                 <router-outlet></router-outlet>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

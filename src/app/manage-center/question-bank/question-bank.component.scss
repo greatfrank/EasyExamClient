@@ -12,8 +12,15 @@
         border: solid 1px gray;
     }
     .data-area{
-        max-height: 30rem;
+        max-height: 34rem;
         overflow-y: auto;
         box-shadow: 4px 4px 10px gray;
+    }
+    #top-btn{
+        position: fixed;
+        bottom: 2rem;
+        right: 3rem;
+        z-index: 1000;
+        box-shadow: 4px 4px 10px black;
     }
 }
