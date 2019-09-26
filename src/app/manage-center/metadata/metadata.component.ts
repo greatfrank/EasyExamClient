@@ -75,9 +75,14 @@ export class MetadataComponent implements OnInit {
 
   fetchMetadatas() {
     let self = this
+    this.sources = {
+      classes: [],
+      courses: []
+    }
     Object.keys(this.sources).forEach(key => {
       self.backendService.fetchAllByTableName(key).subscribe(data => {
         self.sources[key] = data['response']
+        GlobalData.globalSources[key] = self.sources[key]
       })
     })
   }
@@ -96,6 +101,7 @@ export class MetadataComponent implements OnInit {
             alert('添加成功')
             self.classForm.reset()
             self.isSubmitingClass = false
+            self.fetchMetadatas()
           }
         })
         break
@@ -109,6 +115,7 @@ export class MetadataComponent implements OnInit {
             alert('添加成功')
             self.courseForm.reset()
             self.isSubmitingCourse = false
+            self.fetchMetadatas()
           }
         })
         break
