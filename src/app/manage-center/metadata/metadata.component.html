@@ -1,8 +1,8 @@
-<div class="metadata" class="metadata">
+<div class="metadata" class="metadata pt-3 pb-5">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <p class="question-title">班 级 | Class</p>
+                <p class="question-title">班 级 | Class <small class="ml-4 text-muted">共计 : {{sources['classes'].length}}</small></p>
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="classForm" (ngSubmit)="onSubmit('classes')">
@@ -47,13 +47,11 @@
                             <div class="col font-weight-bold">{{obj['type']}} {{obj['major']}}
                                 {{obj['regist_year']}}-{{obj['num']}} <span class="text-primary">班</span></div>
                         </div>
-                        <hr>
-                        <p class="text-right lead">共计：{{sources['classes'].length}}</p>
                     </div>
                 </div>
             </div>
             <div class="col-12 mt-5">
-                <p class="question-title">课 程 | Course</p>
+                <p class="question-title">课 程 | Course <small class="ml-4 text-muted">共计 : {{sources['courses'].length}}</small></p>
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="courseForm" (ngSubmit)="onSubmit('courses')">
@@ -80,39 +78,9 @@
                             <div class="col-3">ID：{{obj['id']}}</div>
                             <div class="col font-weight-bold">{{obj['name']}} <span class="text-success">学分: {{obj['credit']}}</span></div>
                         </div>
-                        <hr>
-                        <p class="text-right lead">共计：{{sources['courses'].length}}</p>
                     </div>
                 </div>
-
             </div>
-            <!-- <div class="col-12">
-                <p class="lead font-weight-bold">考试 | Examination</p>
-                <div class="row">
-                    <div class="col">
-                        <form>
-                            <div class="form-group">
-                                <label>本次考试针对的课程</label>
-                                <select name="course_id" class="form-control">
-                                    <option value="">course 1</option>
-                                    <option value="">course 2</option>
-                                    <option value="">course 3</option>
-                                </select>
-                            </div>
-                            <div class="form-group text-right mt-4">
-                                <span class="mr-4 lead" *ngIf="isSubmitingExam"><i
-                                        class="fas fa-cog fa-spin mr-2"></i>处理中，请稍后 ...</span>
-                                <button class="btn btn-danger">
-                                    <i class="fas fa-plus mr-2"></i>添加
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        Course List
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>

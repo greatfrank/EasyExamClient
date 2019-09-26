@@ -64,7 +64,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   totalShortAnswers = 0
   savedShortAnswers = []
 
-  sources: any
+  courses: any
 
   currentQuestionTitle: any
   subscription: Subscription
@@ -82,7 +82,11 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sources = GlobalData.globalSources
+    let self = this
+    this.backendService.fetchAllByTableName('courses').subscribe(data => {
+      self.courses = data['response']
+    })
+
     this.fetchAllChoices()
     this.fetchAllFills()
     this.fetchAllJudges()
@@ -364,9 +368,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   transferCourseName(id: string) {
     let self = this
     let courseName = ''
-    let courses = GlobalData.globalSources['courses']
-    // console.log(courses);
-    courses.forEach(course => {
+    this.courses.forEach(course => {
       if (id == course['id']) {
         courseName = course['name']
       }

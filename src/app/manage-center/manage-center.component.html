@@ -44,11 +44,14 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.dropdown">
                         <a class="dropdown-item" [routerLink]="['/manage-center/question-bank', q.url]"
-                            *ngFor="let q of menu.dropdown" (click)="handleQuestionTitleChanged(q.url)">{{q.title}}</a>
+                            *ngFor="let q of menu.dropdown" (click)="handleQuestionTitleChanged(q.url)">
+                            <i class="fas mr-2" [ngClass]="q.icon"></i>
+                            {{q.title}}
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item ml-5">
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+                    <button class="btn text-warning btn-link" data-toggle="modal" data-target="#exampleModal">
                         <i class="fas fa-bell"></i>
                     </button>
                 </li>

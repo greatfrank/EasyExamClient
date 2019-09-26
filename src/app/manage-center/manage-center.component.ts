@@ -31,27 +31,27 @@ export class ManageCenterComponent implements OnInit {
       dropdown: [
         {
           title: '选择 题',
-          icon: '',
+          icon: 'fa-check-circle',
           url: 'choices'
         },
         {
           title: '填空 题',
-          icon: '',
+          icon: 'fa-edit',
           url: 'fills'
         },
         {
           title: '判断 题',
-          icon: '',
+          icon: 'fa-calendar-check',
           url: 'judges'
         },
         {
           title: '简答 题',
-          icon: '',
+          icon: 'fa-comment-dots',
           url: 'short_answers'
         },
         {
           title: '编程 题',
-          icon: '',
+          icon: 'fa-code',
           url: 'codings'
         },
       ]

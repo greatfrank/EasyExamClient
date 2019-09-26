@@ -82,7 +82,6 @@ export class MetadataComponent implements OnInit {
     Object.keys(this.sources).forEach(key => {
       self.backendService.fetchAllByTableName(key).subscribe(data => {
         self.sources[key] = data['response']
-        GlobalData.globalSources[key] = self.sources[key]
       })
     })
   }
