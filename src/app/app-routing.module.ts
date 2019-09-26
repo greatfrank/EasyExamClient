@@ -25,7 +25,7 @@ const routes: Routes = [
         component: StatisticComponent
       },
       {
-        path: 'question-bank',
+        path: 'question-bank/:question',
         component: QuestionBankComponent
       },
       {

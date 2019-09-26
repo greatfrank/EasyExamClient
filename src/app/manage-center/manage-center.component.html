@@ -26,7 +26,7 @@
     </div>
     <!-- Modal:end -->
     <!-- Navbar: start -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
         <a class="navbar-brand" href="#">EasyExam</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,12 +35,17 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item ml-4" [ngClass]="{'active': i==currentMenuIndex}"
-                    *ngFor="let menu of menuList; let i=index">
-                    <a class="nav-link" (click)="selectMenu(i)" [routerLink]="menu.url">
+                <li class="nav-item ml-4 dropdown" *ngFor="let menu of menuList; let i=index">
+                    <a class="nav-link" [ngClass]="{'dropdown-toggle': menu.dropdown}" (click)="selectMenu(i)"
+                        [routerLink]="menu.url" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
                         <i class="fas mr-2" [ngClass]="menu.icon"></i>
                         {{menu.title}}
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.dropdown">
+                        <a class="dropdown-item" [routerLink]="['/manage-center/question-bank', q.url]"
+                            *ngFor="let q of menu.dropdown" (click)="handleQuestionTitleChanged(q.url)">{{q.title}}</a>
+                    </div>
                 </li>
                 <li class="nav-item ml-5">
                     <button class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
@@ -51,30 +56,11 @@
         </div>
     </nav>
     <!-- Navbar: end -->
-    <div class="container-fluid">
+    <div class="container-fluid mt-5">
         <div class="row px-2 py-4">
             <div class="col">
                 <router-outlet></router-outlet>
             </div>
-            <!-- <div class="col-2">
-                <div class="row">
-                    <div class="alert bg-warning text-dark font-weight-bold w-100 py-0" role="alert">
-                        <ul class="list-group p-0">
-                            <li class="list-group-item py-2 px-0 bg-warning">
-                                <i class="fas fa-bell mr-1"></i>
-                                【题库资源】是最基础的资源，所以在添加或者修改【基础信息】--【考试】中的参数时，请先保证添加足够的题目。
-                            </li>
-                            <li class="list-group-item py-2 px-0 bg-warning">
-                                <i class="fas fa-bell mr-1"></i>
-                                先有课程，才会有这门课的考试。所以在添加【基础信息】--【考试】时，请先确认相关的课程信息已经被添加。
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <router-outlet></router-outlet>
-            </div> -->
         </div>
     </div>
 </div>

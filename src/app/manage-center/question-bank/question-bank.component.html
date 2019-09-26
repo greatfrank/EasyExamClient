@@ -4,7 +4,7 @@
     </button>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12" id="choices">
                 <p class="question-title">选 择 题（单选）<small class="ml-3 text-secondary">共 {{totalChoices}} 道题</small></p>
                 <div class="row">
                     <div class="col-5">
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <!-- =========================== -->
-            <div class="col-12 mt-5">
+            <div class="col-12 mt-5" id="fills">
                 <p class="question-title">填 空 题（一个或多个空）<small class="ml-3 text-secondary">共 {{totalFills}} 道题</small>
                 </p>
                 <div class="row">
@@ -184,7 +184,7 @@
                 </div>
             </div>
             <!-- ========================================= -->
-            <div class="col-12 mt-5">
+            <div class="col-12 mt-5" id="judges">
                 <p class="question-title">判 断 题<small class="ml-3 text-secondary">共 {{totalJudges}} 道题</small></p>
                 <div class="row">
                     <div class="col-5">
@@ -262,7 +262,7 @@
                 </div>
             </div>
             <!-- ========================================= -->
-            <div class="col-12 mt-5">
+            <div class="col-12 mt-5" id="short_answers">
                 <p class="question-title">简 答 题<small class="ml-3 text-secondary">共 {{totalShortAnswers}} 道题</small></p>
                 <div class="row">
                     <div class="col-5">
@@ -329,6 +329,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-12" id="codings">
+                Codings
             </div>
         </div>
     </div>

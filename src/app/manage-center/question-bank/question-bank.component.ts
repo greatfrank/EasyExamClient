@@ -1,8 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { GlobalData } from 'src/app/global/global-data';
 import { FormBuilder, Validators } from "@angular/forms";
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
+import { MessageService } from 'src/app/message.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 declare var $: any
 
@@ -12,7 +15,7 @@ declare var $: any
   styleUrls: ['./question-bank.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class QuestionBankComponent implements OnInit {
+export class QuestionBankComponent implements OnInit, OnDestroy {
 
   // 单选题
   choiceForm = this.fb.group({
@@ -61,14 +64,22 @@ export class QuestionBankComponent implements OnInit {
   totalShortAnswers = 0
   savedShortAnswers = []
 
-
   sources: any
+
+  currentQuestionTitle: any
+  subscription: Subscription
 
   constructor(
     private fb: FormBuilder,
     private backendService: BackendService,
-    private utilityService: UtilityService
-  ) { }
+    private utilityService: UtilityService,
+    private messageService: MessageService,
+    private router: Router
+  ) {
+    this.subscription = this.messageService.getQuestionTitleMessage().subscribe(message => {
+      this.locateById(message['title'])
+    })
+  }
 
   ngOnInit() {
     this.sources = GlobalData.globalSources
@@ -76,12 +87,27 @@ export class QuestionBankComponent implements OnInit {
     this.fetchAllFills()
     this.fetchAllJudges()
     this.fetchAllShortAnswers()
+
+    let l = this.router.url.split('/').length
+    this.locateById(this.router.url.split('/')[l - 1])
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe()
   }
 
   goToTop() {
     $('html, body').animate({
       scrollTop: 0
     }, 500)
+  }
+
+  locateById(id: string) {
+    let fromOffset = $('#' + id).offset()
+    $('html, body').animate({
+      scrollTop: fromOffset.top - 80
+    })
   }
 
   /**

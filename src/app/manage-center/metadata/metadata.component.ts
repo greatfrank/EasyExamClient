@@ -45,7 +45,10 @@ export class MetadataComponent implements OnInit {
   isSubmitingCourse = false
 
   // sources for list
-  sources:any
+  sources = {
+    classes: [],
+    courses: []
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -66,7 +69,17 @@ export class MetadataComponent implements OnInit {
       }
       this.classNums.push(num)
     }
-    this.sources = GlobalData.globalSources
+    // this.sources = GlobalData.globalSources
+    this.fetchMetadatas()
+  }
+
+  fetchMetadatas() {
+    let self = this
+    Object.keys(this.sources).forEach(key => {
+      self.backendService.fetchAllByTableName(key).subscribe(data => {
+        self.sources[key] = data['response']
+      })
+    })
   }
 
 

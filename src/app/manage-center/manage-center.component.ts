@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { StatisticComponent } from "./statistic/statistic.component";
-import { MetadataComponent } from "./metadata/metadata.component";
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BackendService } from "../backend.service";
-import { GlobalData } from "../global/global-data";
+import { MessageService } from '../message.service';
+declare var $: any
 
 @Component({
   selector: 'app-manage-center',
   templateUrl: './manage-center.component.html',
   styleUrls: ['./manage-center.component.scss'],
-  providers: [BackendService]
+  providers: [BackendService, MessageService],
+  encapsulation: ViewEncapsulation.None
 })
 export class ManageCenterComponent implements OnInit {
 
@@ -28,7 +28,33 @@ export class ManageCenterComponent implements OnInit {
     {
       title: '题库资源',
       icon: 'fa-list',
-      url: 'question-bank'
+      dropdown: [
+        {
+          title: '选择 题',
+          icon: '',
+          url: 'choices'
+        },
+        {
+          title: '填空 题',
+          icon: '',
+          url: 'fills'
+        },
+        {
+          title: '判断 题',
+          icon: '',
+          url: 'judges'
+        },
+        {
+          title: '简答 题',
+          icon: '',
+          url: 'short_answers'
+        },
+        {
+          title: '编程 题',
+          icon: '',
+          url: 'codings'
+        },
+      ]
     },
     {
       title: '考试设计',
@@ -37,25 +63,20 @@ export class ManageCenterComponent implements OnInit {
     },
   ]
 
-  sources = {
-    classes: [],
-    courses: []
-  }
-
-  constructor(private backendService: BackendService) { }
+  constructor(
+    private backendService: BackendService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
-    let self = this
-    Object.keys(this.sources).forEach(key => {
-      self.backendService.fetchAllByTableName(key).subscribe(data => {
-        self.sources[key] = data['response']
-        GlobalData.globalSources[key] = data['response']
-      })
-    })
   }
 
   selectMenu(index) {
     this.currentMenuIndex = index
+  }
+
+  handleQuestionTitleChanged(questionTitle: string) {
+    this.messageService.sendQuestionTitleMessage(questionTitle)
   }
 
 }
