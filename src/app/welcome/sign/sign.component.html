@@ -13,11 +13,11 @@
     <div class="form-group mt-4">
       <span class="mr-5">
         <label></label>
-        <input type="radio" name="login-role" class="mr-2" value="teacher" #role required [(ngModel)]="login.role">教 师
+        <input type="radio" name="login-role" class="mr-2 radioFour" value="teacher" #role required [(ngModel)]="login.role">教 师
       </span>
       <span class="lead">
         <label></label>
-        <input type="radio" name="login-role" class="mr-2" value="student" #role required [(ngModel)]="login.role">学 生
+        <input type="radio" name="login-role" class="mr-2 radioFour" value="student" #role required [(ngModel)]="login.role">学 生
       </span>
     </div>
     <div class="form-group mt-4" *ngIf="loginError">
