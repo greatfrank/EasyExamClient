@@ -1,13 +1,15 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { BackendService } from "../backend.service";
 import { MessageService } from '../message.service';
+import { UtilityService } from "../utility.service";
+import { Router } from "@angular/router";
 declare var $: any
 
 @Component({
   selector: 'app-manage-center',
   templateUrl: './manage-center.component.html',
   styleUrls: ['./manage-center.component.scss'],
-  providers: [BackendService, MessageService],
+  providers: [BackendService, MessageService, UtilityService],
   encapsulation: ViewEncapsulation.None
 })
 export class ManageCenterComponent implements OnInit {
@@ -63,12 +65,19 @@ export class ManageCenterComponent implements OnInit {
     },
   ]
 
+  teacherInfo: any
+
   constructor(
-    private backendService: BackendService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private utilityService: UtilityService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.utilityService.checkTeacherLogin()
+    this.teacherInfo = JSON.parse(sessionStorage.getItem('teacher'))
+    console.log(this.teacherInfo);
+
   }
 
   selectMenu(index) {
@@ -77,6 +86,11 @@ export class ManageCenterComponent implements OnInit {
 
   handleQuestionTitleChanged(questionTitle: string) {
     this.messageService.sendQuestionTitleMessage(questionTitle)
+  }
+
+  logout() {
+    sessionStorage.removeItem('teacher')
+    this.router.navigateByUrl('/')
   }
 
 }

@@ -9,24 +9,10 @@ import { BackendService } from "./backend.service";
 })
 export class AppComponent implements OnInit {
 
-  constructor(private backendService: BackendService) { }
+  constructor(
+    private backendService: BackendService,
+  ) { }
 
   ngOnInit() {
-    // let self = this
-    // let teacher = new Teacher()
-    // this.backendService.fetchAllByTableName('teachers').subscribe(data => {
-    //   var jsonObj = data['response'][0]
-    //   if (data['response'].length != 0) {
-    //     Object.keys(jsonObj).forEach(key => {
-    //       teacher[key] = jsonObj[key]
-    //     })
-    //     GlobalData.currentTeacher = teacher
-    //     sessionStorage.setItem('teacherId', teacher.id)
-    //   } else {
-    //     sessionStorage.removeItem('teacherId')
-    //   }
-    //   console.log('run app component controller');
-    //   console.log(GlobalData.currentTeacher);
-    // })
   }
 }

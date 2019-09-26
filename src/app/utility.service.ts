@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   getIdByTimestamp(): any {
     let timestamp = new Date().getTime()
@@ -13,5 +14,10 @@ export class UtilityService {
     return Math.trunc(timestamp / 1000)
   }
 
+  checkTeacherLogin() {
+    if (!sessionStorage.getItem('teacher')) {
+      this.router.navigateByUrl('/')
+    }
+  }
 
 }

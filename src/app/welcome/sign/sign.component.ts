@@ -32,7 +32,6 @@ export class SignComponent implements OnInit {
       params.append('id', this.login.id)
       let body = params.toString()
       this.backService.fetchAllByTableName('teachers').subscribe(data => {
-        console.log(data);
         if (data['response'].length == 0) {
           alert('请先注册教师信息')
         } else {
@@ -42,7 +41,7 @@ export class SignComponent implements OnInit {
             Object.keys(jsonObj).forEach(key => {
               teacher[key] = jsonObj[key]
             })
-            GlobalData.currentTeacher = teacher
+            sessionStorage.setItem('teacher', JSON.stringify(teacher))
             this.router.navigateByUrl('manage-center/statistic')
           } else {
             alert('登录信息有误，请重试')
