@@ -36,15 +36,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-4 dropdown" *ngFor="let menu of menuList; let i=index">
-                    <a class="nav-link" [ngClass]="{'dropdown-toggle': menu.dropdown}" (click)="selectMenu(i)"
+                    <a class="nav-link" [ngClass]="{'dropdown-toggle': menu.questions}" (click)="selectMenu(i)"
                         [routerLink]="menu.url" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <i class="fas mr-2" [ngClass]="menu.icon"></i>
                         {{menu.title}}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.dropdown">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.questions">
                         <a class="dropdown-item" [routerLink]="['/manage-center/question-bank', q.url]"
-                            *ngFor="let q of menu.dropdown" (click)="handleQuestionTitleChanged(q.url)">
+                            *ngFor="let q of menu.questions" (click)="handleQuestionTitleChanged(q.url)">
                             <i class="fas mr-2" [ngClass]="q.icon"></i>
                             {{q.title}}
                         </a>

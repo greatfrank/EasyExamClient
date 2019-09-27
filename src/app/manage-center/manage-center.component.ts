@@ -3,6 +3,7 @@ import { BackendService } from "../backend.service";
 import { MessageService } from '../message.service';
 import { UtilityService } from "../utility.service";
 import { Router } from "@angular/router";
+import { GlobalData } from '../global/global-data';
 declare var $: any
 
 @Component({
@@ -30,39 +31,13 @@ export class ManageCenterComponent implements OnInit {
     {
       title: '题库资源',
       icon: 'fa-list',
-      dropdown: [
-        {
-          title: '选择 题',
-          icon: 'fa-check-circle',
-          url: 'choices'
-        },
-        {
-          title: '填空 题',
-          icon: 'fa-edit',
-          url: 'fills'
-        },
-        {
-          title: '判断 题',
-          icon: 'fa-calendar-check',
-          url: 'judges'
-        },
-        {
-          title: '简答 题',
-          icon: 'fa-comment-dots',
-          url: 'short_answers'
-        },
-        {
-          title: '编程 题',
-          icon: 'fa-code',
-          url: 'codings'
-        },
-      ]
+      questions: GlobalData.questions
     },
     {
       title: '考试设计',
       icon: 'fa-flag-checkered',
       url: 'exam'
-    },
+    }
   ]
 
   teacherInfo: any
@@ -76,8 +51,6 @@ export class ManageCenterComponent implements OnInit {
   ngOnInit() {
     this.utilityService.checkTeacherLogin()
     this.teacherInfo = JSON.parse(sessionStorage.getItem('teacher'))
-    console.log(this.teacherInfo);
-
   }
 
   selectMenu(index) {

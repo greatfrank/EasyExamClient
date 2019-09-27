@@ -96,6 +96,9 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let self = this
+
+    this.utilityService.goToTop()
+
     this.backendService.fetchAllByTableName('courses').subscribe(data => {
       self.courses = data['response']
     })
@@ -113,12 +116,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe()
-  }
-
-  goToTop() {
-    $('html, body').animate({
-      scrollTop: 0
-    }, 500)
   }
 
   locateById(id: string) {

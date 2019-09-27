@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from "@angular/router";
-
+declare var $: any
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +18,12 @@ export class UtilityService {
     if (!sessionStorage.getItem('teacher')) {
       this.router.navigateByUrl('/')
     }
+  }
+
+  goToTop() {
+    $('html, body').animate({
+      scrollTop: 0
+    }, 500)
   }
 
 }

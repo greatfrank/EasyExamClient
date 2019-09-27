@@ -1,8 +1,92 @@
-<div id="exam" class="exam">
-    <div class="container">
+<div id="exam" class="exam pt-4 pb-5">
+    <div class="container-fluid">
         <div class="row">
+            <div class="col-4">
+                <form [formGroup]="examForm" class="bg-info text-white p-3" (ngSubmit)="onExamFormSubmit()">
+                    <div class="form-group">
+                        <label class="lead">
+                            <i class="fas fa-book mr-1"></i>
+                            课程
+                        </label>
+                        <select name="course_id" class="form-control form-control-lg" formControlName="course_id">
+                            <option value="" disabled selected></option>
+                            <option [value]="item.id" *ngFor="let item of courses">{{item.name}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="lead">
+                            <i class="fas fa-clock mr-1"></i>
+                            考试时长&nbsp;&nbsp;&nbsp;&nbsp;( 分钟 )
+                        </label>
+                        <input type="number" class="form-control form-control-lg" formControlName="duration">
+                    </div>
+                    <div class="form-group">
+                        <label class="lead">
+                            <i class="fas fa-flag mr-1"></i>
+                            总分
+                        </label>
+                        <input type="number" class="form-control form-control-lg" formControlName="total">
+                    </div>
+                    <div class="form-group">
+                        <label class="lead">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            试题分布
+                        </label>
+                        <form [formGroup]="questionForm" (ngSubmit)="onAddQuestionSubmit()">
+                            <div class="row">
+                                <div class="col">
+                                    <label>题型</label>
+                                    <select class="form-control form-control-lg" formControlName="question">
+                                        <option value="" disabled selected></option>
+                                        <option [value]="q.url+'@'+q.title" *ngFor="let q of questions">{{q.title}}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label>数量</label>
+                                    <input type="number" class="form-control form-control-lg" formControlName="count">
+                                </div>
+                                <div class="col">
+                                    <label>每题的分值</label>
+                                    <input type="number" class="form-control form-control-lg" formControlName="point">
+                                </div>
+                                <div class="col">
+                                    <label>添加新题型</label>
+                                    <div>
+                                        <button class="btn btn-block btn-lg btn-danger" type="submit"
+                                            [disabled]="!questionForm.valid">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <ul class="list-group mt-4">
+                            <li class="list-group-item bg-warning text-dark py-1 text-center font-weight-bold lead">
+                                添加题型的顺序将会与最终生成试卷的题型顺序一致</li>
+                            <li class="list-group-item bg-primary lead"
+                                *ngFor="let item of examForm.get('paper').value">题型:
+                                {{item.title}}&nbsp;&nbsp;&nbsp;数量: {{item.count}}&nbsp;&nbsp;&nbsp;每题的分值:
+                                {{item.point}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共 {{item.count * item.point}} 分
+                                <button type="button" class="btn btn-sm btn-danger float-right"
+                                    (click)="onRemoveQuestion(item)">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </li>
+                        </ul>
+                        <h4 class="text-right mt-2">当前总分 : {{currentTotalQuestionsPoints}}</h4>
+                    </div>
+                    <div class="form-group mt-4">
+                        <button class="btn btn-lg btn-warning" type="submit"
+                            [disabled]="!examForm.valid || examForm.get('total').value!=currentTotalQuestionsPoints">提交
+                            &
+                            保存</button>
+                    </div>
+                </form>
+            </div>
             <div class="col">
-                
+                exam list
             </div>
         </div>
     </div>
