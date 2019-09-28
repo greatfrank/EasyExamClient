@@ -8,7 +8,8 @@
                             <i class="fas fa-book mr-1"></i>
                             课程
                         </label>
-                        <select name="course_id" class="form-control form-control-lg" formControlName="course_id">
+                        <select name="course_id" class="form-control form-control-lg" formControlName="course_id"
+                            (change)="onCourseSelectChanged()">
                             <option value="" disabled selected></option>
                             <option [value]="item.id" *ngFor="let item of courses">{{item.name}}
                             </option>
@@ -66,7 +67,7 @@
                             <li class="list-group-item bg-warning text-dark py-1 text-center font-weight-bold lead">
                                 添加题型的顺序将会与最终生成试卷的题型顺序一致</li>
                             <li class="list-group-item bg-primary lead"
-                                *ngFor="let item of examForm.get('paper').value">题型:
+                                *ngFor="let item of examForm.get('questions').value">题型:
                                 {{item.title}}&nbsp;&nbsp;&nbsp;数量: {{item.count}}&nbsp;&nbsp;&nbsp;每题的分值:
                                 {{item.point}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;共 {{item.count * item.point}} 分
                                 <button type="button" class="btn btn-sm btn-danger float-right"
@@ -76,17 +77,52 @@
                             </li>
                         </ul>
                         <h4 class="text-right mt-2">当前总分 : {{currentTotalQuestionsPoints}}</h4>
+                        <h5 class="text-right mt-2 text-warning">与预设总分相差 :
+                            {{examForm.get('total').value - currentTotalQuestionsPoints}}</h5>
                     </div>
                     <div class="form-group mt-4">
                         <button class="btn btn-lg btn-warning" type="submit"
-                            [disabled]="!examForm.valid || examForm.get('total').value!=currentTotalQuestionsPoints">提交
+                            [disabled]="!examForm.valid || examForm.get('total').value!=currentTotalQuestionsPoints || isSubmitingExam">提交
                             &
                             保存</button>
                     </div>
                 </form>
             </div>
             <div class="col">
-                exam list
+                <div class="card border-danger mb-3" *ngFor="let exam of savedExams">
+                    <div class="card-header bg-danger text-white lead">
+                        <span class="mr-5">ID: {{exam.id}}</span>
+                        《 {{exam.course_name}} 》考试
+                        <span class="float-right">
+                            <i class="fas fa-flag mr-1"></i>
+                            总分: {{exam.total}}
+                        </span>
+                        <span class="float-right mr-4">
+                            <i class="fas fa-clock mr-1"></i>
+                            时长: {{exam.duration}} 分钟
+                        </span>
+                    </div>
+                    <div class="card-body text-secondary">
+                        <table class="table table-hover">
+                            <thead class="text-center">
+                                <th>题型</th>
+                                <th>标签</th>
+                                <th>数量</th>
+                                <th>每题分值</th>
+                                <th>合计分值</th>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" *ngFor="let question of exam['questions']">
+                                    <td>{{question.title}}</td>
+                                    <td>{{question.question}}</td>
+                                    <td>{{question.count}}</td>
+                                    <td>{{question.point}}</td>
+                                    <td>{{question.count * question.point}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

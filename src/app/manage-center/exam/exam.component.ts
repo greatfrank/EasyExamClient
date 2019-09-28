@@ -17,11 +17,15 @@ export class ExamComponent implements OnInit {
   questions = GlobalData.questions
 
   examForm = this.fb.group({
+    id: [''],
     course_id: ['', Validators.required],
+    course_name: [''],
     duration: ['90', Validators.required],
     total: ['100', Validators.required],
-    paper: [[], Validators.required]
+    questions: [[], Validators.required]
   })
+  isSubmitingExam = false
+  savedExams = []
 
   questionForm = this.fb.group({
     question: ['', Validators.required],
@@ -44,6 +48,32 @@ export class ExamComponent implements OnInit {
 
   ngOnInit() {
     this.utilityService.goToTop()
+    this.fetchAllSavedExams()
+  }
+
+  fetchAllSavedExams() {
+    let self = this
+    this.savedExams = []
+    this.backendService.fetchAllByTableName('exams').subscribe(result => {
+      self.savedExams = result['response']
+      console.log(self.savedExams);
+      self.savedExams.forEach(exam => {
+        exam['questions'] = JSON.parse(exam['questions'])
+      });
+      console.log(self.savedExams);
+    })
+  }
+
+  onCourseSelectChanged() {
+    let self = this
+    let course_id = this.examForm.get('course_id').value
+    this.courses.forEach(course => {
+      if (course_id == course['id']) {
+        self.examForm.patchValue({
+          course_name: course['name']
+        })
+      }
+    })
   }
 
   onAddQuestionSubmit() {
@@ -55,10 +85,10 @@ export class ExamComponent implements OnInit {
       title: qq.split('@')[1]
     })
 
-    let tempQuestions = this.examForm.get('paper').value
+    let tempQuestions = this.examForm.get('questions').value
     tempQuestions.push(this.questionForm.value)
     this.examForm.patchValue({
-      paper: tempQuestions
+      questions: tempQuestions
     })
     // comput all question points
     this.computCurrentTotalPoints()
@@ -67,12 +97,12 @@ export class ExamComponent implements OnInit {
 
   onRemoveQuestion(questionObj: any) {
     let self = this
-    console.log(self.examForm.get('paper').value)
-    this.examForm.get('paper').value.forEach((element, index) => {
+    console.log(self.examForm.get('questions').value)
+    this.examForm.get('questions').value.forEach((element, index) => {
       if (element['question'] == questionObj['question']) {
-        self.examForm.get('paper').value.splice(index, 1)
+        self.examForm.get('questions').value.splice(index, 1)
         self.computCurrentTotalPoints()
-        console.log(self.examForm.get('paper').value)
+        console.log(self.examForm.get('questions').value)
       }
     });
   }
@@ -80,15 +110,48 @@ export class ExamComponent implements OnInit {
   computCurrentTotalPoints() {
     let self = this
     this.currentTotalQuestionsPoints = 0
-    this.examForm.get('paper').value.forEach(element => {
+    this.examForm.get('questions').value.forEach(element => {
       self.currentTotalQuestionsPoints += element['count'] * element['point']
     });
   }
 
+  resetExamFormGroup() {
+    this.examForm = this.fb.group({
+      id: [''],
+      course_id: ['', Validators.required],
+      course_name: [''],
+      duration: ['90', Validators.required],
+      total: ['100', Validators.required],
+      questions: [[], Validators.required]
+    })
+  }
+
   onExamFormSubmit() {
-    console.log('===============');
+    let self = this
+    this.isSubmitingExam = true
+
+    let questions = this.examForm.get('questions').value
+    this.examForm.patchValue({
+      id: this.utilityService.getIdByTimestamp()
+    })
     console.log(this.examForm.value);
-    console.log('===============');
+
+    let body = Object.assign({}, this.examForm.value)
+    console.log(body);
+    body['questions'] = JSON.stringify(this.examForm.get('questions').value)
+    console.log(body);
+
+    this.backendService.addNewByTableName('exams', body).subscribe(data => {
+      console.log(data);
+      if (data['effect_rows'] == 1 && data['message'] == 'complete') {
+        alert('添加成功 ！')
+        self.isSubmitingExam = false
+        self.currentTotalQuestionsPoints = 0
+        self.resetExamFormGroup()
+        self.fetchAllSavedExams()
+      }
+    })
+
 
   }
 
