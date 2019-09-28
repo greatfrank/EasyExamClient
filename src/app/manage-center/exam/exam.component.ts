@@ -20,9 +20,11 @@ export class ExamComponent implements OnInit {
     id: [''],
     course_id: ['', Validators.required],
     course_name: [''],
+    classes: [[]],
     duration: ['90', Validators.required],
     total: ['100', Validators.required],
-    questions: [[], Validators.required]
+    questions: [[], Validators.required],
+    created_datetime: ['']
   })
   isSubmitingExam = false
   savedExams = []
@@ -34,6 +36,12 @@ export class ExamComponent implements OnInit {
     point: ['', Validators.required]
   })
   currentTotalQuestionsPoints = 0
+
+  selectedClassForm = this.fb.group({
+    class_id: ['', Validators.required]
+  })
+  savedClasses = []
+  selectedClasses = []
 
   constructor(
     private fb: FormBuilder,
@@ -49,6 +57,42 @@ export class ExamComponent implements OnInit {
   ngOnInit() {
     this.utilityService.goToTop()
     this.fetchAllSavedExams()
+    this.fetchAllSavedClasses()
+  }
+
+  fetchAllSavedClasses() {
+    let self = this
+    this.savedExams = []
+    this.backendService.fetchAllByTableName('classes').subscribe(result => {
+      self.savedClasses = result['response']
+      console.log(self.savedClasses);
+
+    })
+  }
+
+  addClassForExam(examId) {
+    let self = this
+    let class_id = this.selectedClassForm.get('class_id').value
+    this.savedClasses.forEach(element => {
+      if (element['id'] == class_id) {
+        self.selectedClasses.push(element)
+      }
+    })
+    let set = new Set(self.selectedClasses)
+    let arr = Array.from(set)
+
+    /**
+     * Todo: opeate remote database
+     */
+
+    this.savedExams.forEach(element => {
+      if (element['id'] == examId) {
+        element['classes'] = arr
+      }
+    });
+
+    this.selectedClassForm.reset()
+
   }
 
   fetchAllSavedExams() {
@@ -56,11 +100,12 @@ export class ExamComponent implements OnInit {
     this.savedExams = []
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
       self.savedExams = result['response']
-      console.log(self.savedExams);
       self.savedExams.forEach(exam => {
         exam['questions'] = JSON.parse(exam['questions'])
+        exam['classes'] = JSON.parse(exam['classes'])
       });
       console.log(self.savedExams);
+
     })
   }
 
@@ -132,13 +177,15 @@ export class ExamComponent implements OnInit {
 
     let questions = this.examForm.get('questions').value
     this.examForm.patchValue({
-      id: this.utilityService.getIdByTimestamp()
+      id: this.utilityService.getIdByTimestamp(),
+      created_datetime: this.utilityService.getDatetime()
     })
     console.log(this.examForm.value);
 
     let body = Object.assign({}, this.examForm.value)
     console.log(body);
     body['questions'] = JSON.stringify(this.examForm.get('questions').value)
+    body['classes'] = JSON.stringify([])
     console.log(body);
 
     this.backendService.addNewByTableName('exams', body).subscribe(data => {
