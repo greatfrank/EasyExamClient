@@ -88,9 +88,12 @@
                     </div>
                 </form>
             </div>
+            <!-- ======== Exam List =========== -->
             <div class="col">
-                <div class="card border-danger mb-3" *ngFor="let exam of savedExams">
-                    <div class="card-header bg-danger text-white lead">
+                <h2>共有 {{savedExams.length}} 项考试</h2>
+                <hr>
+                <div class="card border-danger mb-4" *ngFor="let exam of savedExams">
+                    <div class="card-header bg-danger text-white lead font-weight-bolder">
                         <span class="mr-5">ID: {{exam.id}}</span>
                         《 {{exam.course_name}} 》考试
                         <span class="float-right ml-5">创建时间: {{exam.created_datetime}}</span>
@@ -104,7 +107,7 @@
                         </span>
                     </div>
                     <div class="card-body text-secondary">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered table-striped">
                             <thead class="text-center">
                                 <th>题型</th>
                                 <th>标签</th>
@@ -122,21 +125,25 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="font-weight-bold">
+                        <div class="font-weight-bold mt-4">
                             <div class="row">
-                                <div class="col-2 pt-2 text-primary">
-                                    参加考试的班级 :
-                                    <button class="btn btn-warning mt-3">
+                                <div class="col-2 pt-2 text-dark">
+                                    参加考试的班级
+                                    <button class="btn btn-warning mt-2" (click)="saveClassesForExam(exam)" [disabled]="isUpdatingClassesForExam">
                                         <i class="fas fa-save mr-2"></i>
                                         保存修改
                                     </button>
+                                    <p class="mt-2" *ngIf="isUpdatingClassesForExam">
+                                        <i class="fas fa-cog fa-spin mr-2"></i>
+                                        修改中 ...
+                                    </p>
                                 </div>
                                 <div class="col border-left border-dark">
                                     <div class="row">
                                         <div class="mr-4 col-5 mb-2 text-dark" *ngFor="let class of exam.classes">
                                             {{class.type}} {{class.major}}
                                             {{class.regist_year}} {{class.num}} 班
-                                            <button class="btn btn-lg btn-link ml-3">
+                                            <button class="btn btn-lg btn-link ml-3" (click)="removeClass(class,exam)">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </div>
@@ -150,16 +157,20 @@
                                                         {{class.type}}
                                                         {{class.major}} {{class.regist_year}}-{{class.num}} 班</option>
                                                 </select>
+                                                <div class="text-danger" *ngIf="exam['classes'].length==0">此项考试还没有添加班级，所以暂时不能用于实际的考试中。</div>
                                             </div>
                                             <div class="col">
                                                 <button class="btn btn-primary"
-                                                    (click)="addClassForExam(exam.id)">添加班级</button>
+                                                    (click)="addClassToExam(exam)" [disabled]="!selectedClassForm.valid">添加班级</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer text-center font-weight-bolder bg-warning py-2">
+                        请不要忘记，在修改了上方的班级信息后，点击【左侧】【黄色】的【保存修改按钮】。否则修改不生效 ！
                     </div>
                 </div>
             </div>

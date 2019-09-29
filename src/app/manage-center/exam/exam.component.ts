@@ -41,7 +41,9 @@ export class ExamComponent implements OnInit {
     class_id: ['', Validators.required]
   })
   savedClasses = []
-  selectedClasses = []
+  // selectedClasses = []
+
+  isUpdatingClassesForExam = false
 
   constructor(
     private fb: FormBuilder,
@@ -70,29 +72,56 @@ export class ExamComponent implements OnInit {
     })
   }
 
-  addClassForExam(examId) {
+  addClassToExam(exam) {
     let self = this
     let class_id = this.selectedClassForm.get('class_id').value
+
+    let selectedClasses = exam['classes']
+
     this.savedClasses.forEach(element => {
       if (element['id'] == class_id) {
-        self.selectedClasses.push(element)
+        selectedClasses.push(element)
       }
     })
-    let set = new Set(self.selectedClasses)
+    let set = new Set(selectedClasses)
     let arr = Array.from(set)
 
-    /**
-     * Todo: opeate remote database
-     */
-
     this.savedExams.forEach(element => {
-      if (element['id'] == examId) {
+      if (element['id'] == exam['id']) {
         element['classes'] = arr
       }
     });
 
     this.selectedClassForm.reset()
+  }
 
+  removeClass(currentClass: any, exam) {
+    console.log(currentClass);
+    console.log(exam);
+    exam['classes'].forEach((element, index) => {
+      if (element['id'] == currentClass['id']) {
+        exam['classes'].splice(index, 1)
+      }
+    });
+  }
+
+  saveClassesForExam(exam) {
+    let self = this
+    this.isUpdatingClassesForExam = true
+    let body = {
+      id: exam['id'],
+      classes: JSON.stringify(exam['classes'])
+    }
+    this.backendService.updateByTableName('exams', body).subscribe(result => {
+      self.isUpdatingClassesForExam = false
+      console.log(result);
+      if (result['message'] == 'complete') {
+        self.fetchAllSavedExams()
+        alert('修改成功 ！')
+      } else {
+        alert('修改失败，请重试')
+      }
+    })
   }
 
   fetchAllSavedExams() {
