@@ -8,6 +8,7 @@ import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
 import { ExamComponent } from './manage-center/exam/exam.component';
 import { TeacherProfileComponent } from "./manage-center/teacher-profile/teacher-profile.component";
+import { StudyCenterComponent } from "./study-center/study-center.component";
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
   {
     path: 'regist',
     component: RegistComponent
-  }, {
+  },
+  {
     path: 'manage-center',
     component: ManageCenterComponent,
     children: [
@@ -42,6 +44,10 @@ const routes: Routes = [
         component: TeacherProfileComponent
       }
     ]
+  },
+  {
+    path: "study-center",
+    component: StudyCenterComponent
   }
 ];
 

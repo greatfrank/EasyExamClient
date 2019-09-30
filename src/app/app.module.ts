@@ -18,6 +18,7 @@ import { StatisticComponent } from './manage-center/statistic/statistic.componen
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
 import { ExamComponent } from './manage-center/exam/exam.component';
 import { TeacherProfileComponent } from './manage-center/teacher-profile/teacher-profile.component';
+import { StudyCenterComponent } from './study-center/study-center.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TeacherProfileComponent } from './manage-center/teacher-profile/teacher
     QuestionBankComponent,
     ExamComponent,
     TeacherProfileComponent,
+    StudyCenterComponent,
   ],
   imports: [
     BrowserModule,

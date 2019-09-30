@@ -107,10 +107,9 @@
                         </span>
                     </div>
                     <div class="card-body text-secondary">
-                        <table class="table table-bordered table-striped">
-                            <thead class="text-center">
+                        <table class="table table-bordered mb-5">
+                            <thead class="text-center thead-light">
                                 <th>题型</th>
-                                <th>标签</th>
                                 <th>数量</th>
                                 <th>每题分值</th>
                                 <th>合计分值</th>
@@ -118,7 +117,6 @@
                             <tbody>
                                 <tr class="text-center" *ngFor="let question of exam['questions']">
                                     <td>{{question.title}}</td>
-                                    <td>{{question.question}}</td>
                                     <td>{{question.count}}</td>
                                     <td>{{question.point}}</td>
                                     <td>{{question.count * question.point}}</td>
@@ -138,9 +136,9 @@
                                         修改中 ...
                                     </p>
                                 </div>
-                                <div class="col border-left border-dark">
+                                <div class="col border-left border-primary">
                                     <div class="row">
-                                        <div class="mr-4 col-5 mb-2 text-dark" *ngFor="let class of exam.classes">
+                                        <div class="mr-4 col-5 mb-2 text-dark border-bottom border-1 border-primary text-center" *ngFor="let class of exam.classes">
                                             {{class.type}} {{class.major}}
                                             {{class.regist_year}} {{class.num}} 班
                                             <button class="btn btn-lg btn-link ml-3" (click)="removeClass(class,exam)">

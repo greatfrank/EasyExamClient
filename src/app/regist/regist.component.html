@@ -83,7 +83,7 @@
                         <label>班级</label>
                         <select name="stu-class" class="form-control" formControlName="class_id"
                             [ngClass]="{'input-error': studentForm.controls['class_id'].invalid && (studentForm.controls['class_id'].dirty || studentForm.controls['class_id'].touched)}">
-                            <option [value]="item.class_id" *ngFor="let item of classes">{{item.title}}</option>
+                            <option [value]="item.id" *ngFor="let item of classes">{{item.type}}{{item.major}}{{item.regist_year}} {{item.num}} 班</option>
                         </select>
                     </div>
                     <div class="form-group">

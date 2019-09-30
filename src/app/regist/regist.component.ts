@@ -1,15 +1,23 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, Route } from "@angular/router";
 import { Teacher } from "../model/teacher";
 import { Student } from "../model/student";
 import { FormBuilder, Validators } from '@angular/forms';
 import { BackendService } from "../backend.service";
+import { UtilityService } from "../utility.service";
 import { GlobalData } from "../global/global-data";
+
+/**
+ * ================================
+ * 注意 ID 必须是小于等于 11 位的整数，否则无法插入到数据库中 ！！！ 
+ * ================================
+ */
 
 @Component({
   selector: 'app-regist',
   templateUrl: './regist.component.html',
   styleUrls: ['./regist.component.scss'],
-  providers: [BackendService]
+  providers: [BackendService, UtilityService]
 })
 export class RegistComponent implements OnInit {
 
@@ -23,20 +31,7 @@ export class RegistComponent implements OnInit {
 
   teacher = new Teacher()
   student = new Student()
-  classes = [
-    {
-      title: '高职计算机应用技术1901',
-      class_id: '2324325'
-    },
-    {
-      title: '高职计算机应用技术1902',
-      class_id: '1321'
-    },
-    {
-      title: '高职计算机应用技术1903',
-      class_id: '76879'
-    }
-  ]
+  classes = []
 
   teacherForm = this.formBuilder.group({
     id: ['', [Validators.required, Validators.pattern(this.idPattern)]],
@@ -57,12 +52,15 @@ export class RegistComponent implements OnInit {
   })
 
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
-    private backendService: BackendService
+    private backendService: BackendService,
+    private utilityService: UtilityService
   ) { }
 
   ngOnInit() {
     let self = this
+    this.utilityService.goToTop()
     this.teacher.department = '电子信息学院'
     this.backendService.fetchAllByTableName('teachers').subscribe(data => {
       if (data['response'].length != 0) {
@@ -70,6 +68,9 @@ export class RegistComponent implements OnInit {
       } else {
         self.isTeacherRegisted = false
       }
+    })
+    this.backendService.fetchAllByTableName('classes').subscribe(result => {
+      self.classes = result['response']
     })
   }
 
@@ -96,10 +97,14 @@ export class RegistComponent implements OnInit {
       self.isRunStudentRegisting = false
       if (data['effect_rows'] == 1) {
         alert('学生注册成功 ！')
+        sessionStorage.setItem('student', JSON.stringify(self.studentForm.value))
+        self.studentForm.reset()
+        self.router.navigateByUrl('study-center')
         // 直接跳转到学习页面或者考试页面，注意值的传递
       } else {
         alert('注册失败，请重试')
       }
+
     })
   }
 
