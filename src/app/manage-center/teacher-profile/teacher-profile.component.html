@@ -1,0 +1,76 @@
+<div id="teacher-profile" class="teacher-profile py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mt-3 mb-5">
+                <h1>
+                    <i class="fas fa-chalkboard-teacher mr-3"></i>
+                    教师个人中心
+                </h1>
+            </div>
+        </div>
+        <div class="row" *ngIf="teacher">
+            <div class="col">
+                <div class="col-12 lead font-weight-bold mb-4">
+                    <span class="mr-4 text-secondary">工号</span>
+                    <span>{{teacher['id']}}</span>
+                </div>
+                <div class="col-12 lead font-weight-bold mb-4">
+                    <span class="mr-4 text-secondary">姓名</span>
+                    <span>{{teacher['username']}}</span>
+                    <button class="btn btn-sm btn-outline-danger ml-3"
+                        (click)="modifyProfileInfo('username','姓名')">修改</button>
+                </div>
+                <div class="col-12 lead font-weight-bold mb-4">
+                    <span class="mr-4 text-secondary">登录密码</span>
+                    <span><i class="fas fa-key"></i></span>
+                    <button class="btn btn-sm btn-outline-danger ml-3"
+                        (click)="modifyProfileInfo('password','登录密码')">修改</button>
+                </div>
+                <div class="col-12 lead font-weight-bold mb-4">
+                    <span class="mr-4 text-secondary">邮箱</span>
+                    <span>{{teacher['email']}}</span>
+                    <button class="btn btn-sm btn-outline-danger ml-3"
+                        (click)="modifyProfileInfo('email','邮箱')">修改</button>
+                </div>
+                <div class="col-12 lead font-weight-bold mb-4">
+                    <span class="mr-4 text-secondary">二级学院</span>
+                    <span>{{teacher['department']}}</span>
+                </div>
+            </div>
+            <div class="col">
+                <form class="bg-primary p-3 text-white" (ngSubmit)="saveModify()" [formGroup]="modifyForm"
+                    *ngIf="inputLabel">
+                    <div class="form-group">
+                        <label>{{inputLabel}} ( 新 )</label>
+                        <input type="text" class="form-control" formControlName="newValue">
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col lead">
+                            <span *ngIf="isSavingModify">
+                                <i class="fas fa-cog fa-1x mr-2 fa-spin"></i>
+                                正在保存修改 ...
+                            </span>
+                        </div>
+                        <div class="col text-right">
+                            <button type="button" class="btn btn-warning mt-3" (click)="saveModify()"
+                                [disabled]="!modifyForm.valid">保存修改</button>
+                            <button type="button" class="btn btn-secondary mt-3 ml-4"
+                                (click)="cancelModify()">取消修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-6">
+
+            </div>
+        </div>
+    </div>
+</div>

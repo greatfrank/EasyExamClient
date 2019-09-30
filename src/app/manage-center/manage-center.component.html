@@ -43,20 +43,25 @@
                         {{menu.title}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.questions">
-                        <a class="dropdown-item" [routerLink]="['/manage-center/question-bank', q.url]"
+                        <a class="dropdown-item" [routerLink]="['./question-bank', q.url]"
                             *ngFor="let q of menu.questions" (click)="handleQuestionTitleChanged(q.url)">
                             <i class="fas mr-2" [ngClass]="q.icon"></i>
                             {{q.title}}
                         </a>
                     </div>
                 </li>
-                <li class="nav-item dropdown mx-5">
-                    <a class="nav-link dropdown-toggle" href="#" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="nav-item dropdown mx-5 border-left border-1 border-light pl-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user mr-2"></i>
-                        {{teacherInfo['username']}}
+                        教师信息
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" [routerLink]="[ './teacher-profile']">
+                            <i class="fas fa-id-badge mr-2"></i>
+                            个人中心
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" (click)="logout()" href="javascript:;">
                             <i class="fas fa-sign-out-alt mr-2"></i>
                             退出

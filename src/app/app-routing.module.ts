@@ -7,6 +7,7 @@ import { StatisticComponent } from './manage-center/statistic/statistic.componen
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
 import { ExamComponent } from './manage-center/exam/exam.component';
+import { TeacherProfileComponent } from "./manage-center/teacher-profile/teacher-profile.component";
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
       {
         path: 'exam',
         component: ExamComponent
+      },
+      {
+        path: 'teacher-profile',
+        component: TeacherProfileComponent
       }
     ]
   }
