@@ -1,1 +1,28 @@
-<p>study-center works!</p>
+<div id="study-center" class="study-center">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+        <a class="navbar-brand" href="#">EasyExam</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item ml-3" [ngClass]="{'active': currentMenuIndex==i}"
+                    *ngFor="let item of menuList; let i=index">
+                    <a [routerLink]="[ item.url ]" class="nav-link">
+                        <i class="fas mr-2" [ngClass]="item.icon"></i>
+                        {{item.title}}
+                    </a>
+                </li>
+                <li class="nav-item ml-3">
+                    <a href="javascript:;" class="nav-link" (click)="studentLogout()">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        退出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <router-outlet></router-outlet>
+</div>

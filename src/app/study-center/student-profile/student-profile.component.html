@@ -1,0 +1,65 @@
+<div id="student-profile" class="student-profile py-5">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-6">
+                <ul class="list-group list-group-flush border-0">
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">学号</span>
+                        {{student['id']}}
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">姓名</span>
+                        {{student['username']}}
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">密码</span>
+                        <i class="fas fa-key"></i>
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0" *ngIf="student['class']">
+                        <span class="mr-3 text-secondary">班级</span>
+                        {{student['class']['type']}} {{student['class']['major']}}
+                        {{student['class']['regist_year']}}-{{student['class']['num']}} 班 <span class="text-danger">( ID
+                            : {{student['class']['id']}} )</span>
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">性别</span>
+                        {{student['gender']}}
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">邮箱</span>
+                        {{student['email']}}
+                    </li>
+                    <li class="list-group-item font-weight-bold lead border-0">
+                        <span class="mr-3 text-secondary">电话</span>
+                        {{student['phone']}}
+                    </li>
+                </ul>
+            </div>
+            <div class="col-5">
+                <div class="card border-danger mb-3" *ngFor="let exam of exams">
+                    <div class="card-header text-danger font-weight-bold lead">
+                        <span class="mr-4">ID : {{exam['course_id']}}</span>
+                        <span>《 {{exam['course_name']}} 》</span>
+                    </div>
+                    <div class="card-body text-danger pb-0">
+                        <table class="table text-center">
+                            <thead>
+                                <th>考试时长</th>
+                                <th>试卷总分</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{exam['duration']}} ( 分钟 )</td>
+                                    <td>{{exam['total']}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-right">
+                        <button class="btn btn-danger btn-sm">开始考试</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

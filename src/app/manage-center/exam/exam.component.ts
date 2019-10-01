@@ -215,6 +215,7 @@ export class ExamComponent implements OnInit {
     console.log(body);
     body['questions'] = JSON.stringify(this.examForm.get('questions').value)
     body['classes'] = JSON.stringify([])
+    body['state'] = 'preinstall'
     console.log(body);
 
     this.backendService.addNewByTableName('exams', body).subscribe(data => {

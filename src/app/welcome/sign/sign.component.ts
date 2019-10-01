@@ -27,6 +27,11 @@ export class SignComponent implements OnInit {
 
   execLogin() {
     var self = this
+    /**
+     * =====================
+     * Teacher Login
+     * =====================
+     */
     if (this.login.role == 'teacher') {
       let params = new URLSearchParams()
       params.append('id', this.login.id)
@@ -48,6 +53,11 @@ export class SignComponent implements OnInit {
           }
         }
       })
+      /**
+     * =====================
+     * Student Login
+     * =====================
+     */
     } else {
       let params = new URLSearchParams()
       params.append('id', this.login.id)
@@ -63,7 +73,8 @@ export class SignComponent implements OnInit {
             Object.keys(jsonObj).forEach(key => {
               student[key] = jsonObj[key]
             })
-            GlobalData.currentStudent = student
+            sessionStorage.setItem('student',JSON.stringify(student))
+            this.router.navigateByUrl('study-center/student-profile')
             alert('登录成功，页面需要跳转到学生首页')
           } else {
             alert('登录信息有误，请重试')

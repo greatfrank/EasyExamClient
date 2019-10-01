@@ -9,6 +9,7 @@ import { QuestionBankComponent } from './manage-center/question-bank/question-ba
 import { ExamComponent } from './manage-center/exam/exam.component';
 import { TeacherProfileComponent } from "./manage-center/teacher-profile/teacher-profile.component";
 import { StudyCenterComponent } from "./study-center/study-center.component";
+import { StudentProfileComponent } from "./study-center/student-profile/student-profile.component";
 
 const routes: Routes = [
   {
@@ -47,7 +48,13 @@ const routes: Routes = [
   },
   {
     path: "study-center",
-    component: StudyCenterComponent
+    component: StudyCenterComponent,
+    children: [
+      {
+        path: 'student-profile',
+        component: StudentProfileComponent
+      }
+    ]
   }
 ];
 
