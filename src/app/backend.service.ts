@@ -29,6 +29,15 @@ export class BackendService {
     return this.httpClient.post<Teacher>('/new/' + tableName, body, httpOptions)
   }
 
+  removeByTableName(tableName: string, jsonObj: any): Observable<any> {
+    let params = new URLSearchParams()
+    Object.keys(jsonObj).forEach(key => {
+      params.append(key, jsonObj[key])
+    })
+    let body = params.toString()
+    return this.httpClient.post('/remove/' + tableName, body, httpOptions)
+  }
+
   updateByTableName(tableName: string, jsonObj: any): Observable<any> {
     let params = new URLSearchParams()
     Object.keys(jsonObj).forEach(key => {

@@ -40,7 +40,7 @@ export class StudentProfileComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
       self.exams = result['response'].filter(element => {
-        return element['state'] == 'unfinished'
+        return element['state'] == 'active'
       })
       self.exams = self.exams.filter(element => {
         let flag = false

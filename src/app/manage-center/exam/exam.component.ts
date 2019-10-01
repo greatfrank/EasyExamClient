@@ -41,9 +41,11 @@ export class ExamComponent implements OnInit {
     class_id: ['', Validators.required]
   })
   savedClasses = []
-  // selectedClasses = []
 
   isUpdatingClassesForExam = false
+
+  activeLength = 0
+  inactiveLength = 0
 
   constructor(
     private fb: FormBuilder,
@@ -96,8 +98,6 @@ export class ExamComponent implements OnInit {
   }
 
   removeClass(currentClass: any, exam) {
-    console.log(currentClass);
-    console.log(exam);
     exam['classes'].forEach((element, index) => {
       if (element['id'] == currentClass['id']) {
         exam['classes'].splice(index, 1)
@@ -105,6 +105,14 @@ export class ExamComponent implements OnInit {
     });
   }
 
+  /**
+   * ===================================
+   * exam 对象中的state属性有三个状态值
+   * ===================================
+   * preinstall : 预设，表示定义了考试的信息，但是没有添加班级
+   * published : 已发布，即已经添加了班级，但是还没有让学生完成的考试。在学生端，也是根据这个属性值来过滤考试信息，然后匹配学生的班级。
+   * 
+   */
   saveClassesForExam(exam) {
     let self = this
     this.isUpdatingClassesForExam = true
@@ -112,6 +120,7 @@ export class ExamComponent implements OnInit {
       id: exam['id'],
       classes: JSON.stringify(exam['classes'])
     }
+    body['state'] = exam['classes'].length == 0 ? 'inactive' : 'active'
     this.backendService.updateByTableName('exams', body).subscribe(result => {
       self.isUpdatingClassesForExam = false
       console.log(result);
@@ -127,11 +136,19 @@ export class ExamComponent implements OnInit {
   fetchAllSavedExams() {
     let self = this
     this.savedExams = []
+    this.activeLength = 0
+    this.inactiveLength = 0
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
       self.savedExams = result['response']
       self.savedExams.forEach(exam => {
         exam['questions'] = JSON.parse(exam['questions'])
         exam['classes'] = JSON.parse(exam['classes'])
+        if (exam['state'] == 'active') {
+          self.activeLength += 1
+        }
+        if (exam['state'] == 'inactive') {
+          self.inactiveLength += 1
+        }
       });
       console.log(self.savedExams);
 
@@ -215,7 +232,7 @@ export class ExamComponent implements OnInit {
     console.log(body);
     body['questions'] = JSON.stringify(this.examForm.get('questions').value)
     body['classes'] = JSON.stringify([])
-    body['state'] = 'preinstall'
+    body['state'] = 'inactive'
     console.log(body);
 
     this.backendService.addNewByTableName('exams', body).subscribe(data => {
@@ -228,8 +245,30 @@ export class ExamComponent implements OnInit {
         self.fetchAllSavedExams()
       }
     })
+  }
 
+  removeExam(examId) {
+
+    if (!confirm('确定要删除这项考试吗 ？')) {
+      return
+    }
+
+    let self = this
+    let json = {
+      id: examId
+    }
+    this.backendService.removeByTableName('exams', json).subscribe(result => {
+      console.log(result);
+      if (result['effect_rows'] == 1 && result['message'] == 'complete') {
+        alert('删除成功 ！')
+        self.fetchAllSavedExams()
+      } else {
+        alert('删除失败，请重试')
+      }
+    })
 
   }
+
+
 
 }
