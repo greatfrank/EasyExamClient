@@ -18,8 +18,7 @@
                     <li class="list-group-item font-weight-bold lead border-0" *ngIf="student['class']">
                         <span class="mr-3 text-secondary">班级</span>
                         {{student['class']['type']}} {{student['class']['major']}}
-                        {{student['class']['regist_year']}}-{{student['class']['num']}} 班 <span class="text-danger">( ID
-                            : {{student['class']['id']}} )</span>
+                        {{student['class']['regist_year']}}-{{student['class']['num']}} <span class="text-info">班</span>
                     </li>
                     <li class="list-group-item font-weight-bold lead border-0">
                         <span class="mr-3 text-secondary">性别</span>
@@ -36,7 +35,11 @@
                 </ul>
             </div>
             <div class="col-5">
-                <div class="card border-danger mb-3" *ngFor="let exam of exams">
+                <div class="lead font-weight-bold lead" *ngIf="exams.length==0">
+                    <i class="fas fa-cog fa-spin fa-1x mr-3"></i>
+                    正在读取考试信息 ...
+                </div>
+                <div class="card border-danger mb-4" *ngFor="let exam of exams">
                     <div class="card-header text-danger font-weight-bold lead">
                         <span class="mr-4">ID : {{exam['course_id']}}</span>
                         <span>《 {{exam['course_name']}} 》</span>
