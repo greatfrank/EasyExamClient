@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
+declare var $: any
 
 @Component({
   selector: 'app-student-profile',
@@ -13,6 +14,14 @@ export class StudentProfileComponent implements OnInit {
   student: any
   classes = []
   exams = []
+
+  examNotice = [
+    '系统将会按照此项考试的设置，为学生自动、随机抽取考题，并生成试卷',
+    '为防止作弊，考生的试卷一旦生成，则无法更换。即使取消后再次开始考试，试卷仍然为上一次得到的试卷。',
+    '考试正式开始后，系统会立刻开始倒计时。倒计时结束，学生将无法再继续答题，而且考卷会自动提交',
+    '考试过程中，考生已经做过的题目答案将会被系统缓存。所以如果离开或关闭考试的页面，下次再次开始答题，题目的答案将会从缓存中读取出来。但是考试的时间将会从离开考试页面的时间开始倒计时。',
+    '考生的试卷提交后，等待片刻，系统会自动计算考生的成绩。',
+  ]
 
   constructor(
     private backendService: BackendService,
@@ -54,7 +63,7 @@ export class StudentProfileComponent implements OnInit {
         return flag
       })
       console.log(self.exams);
-      
+
     })
   }
 
@@ -71,6 +80,10 @@ export class StudentProfileComponent implements OnInit {
         self.student['class'] = element
       }
     });
+  }
+
+  showNoticeModal() {
+    $('#exampleModal').modal('show')
   }
 
 }

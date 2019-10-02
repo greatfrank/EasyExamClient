@@ -15,7 +15,7 @@ export class StudyCenterComponent implements OnInit {
 
   menuList = [
     {
-      title: '个人主页',
+      title: '个人中心',
       url: 'student-profile',
       icon: 'fa-home'
     },

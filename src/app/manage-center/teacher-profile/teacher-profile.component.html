@@ -10,29 +10,29 @@
         </div>
         <div class="row" *ngIf="teacher">
             <div class="col">
-                <div class="col-12 lead font-weight-bold mb-4">
+                <div class="col-12 lead font-weight-bold mb-4 pl-0">
                     <span class="mr-4 text-secondary">工号</span>
                     <span>{{teacher['id']}}</span>
                 </div>
-                <div class="col-12 lead font-weight-bold mb-4">
+                <div class="col-12 lead font-weight-bold mb-4 pl-0">
                     <span class="mr-4 text-secondary">姓名</span>
                     <span>{{teacher['username']}}</span>
                     <button class="btn btn-sm btn-outline-danger ml-3"
                         (click)="modifyProfileInfo('username','姓名')">修改</button>
                 </div>
-                <div class="col-12 lead font-weight-bold mb-4">
+                <div class="col-12 lead font-weight-bold mb-4 pl-0">
                     <span class="mr-4 text-secondary">登录密码</span>
                     <span><i class="fas fa-key"></i></span>
                     <button class="btn btn-sm btn-outline-danger ml-3"
                         (click)="modifyProfileInfo('password','登录密码')">修改</button>
                 </div>
-                <div class="col-12 lead font-weight-bold mb-4">
+                <div class="col-12 lead font-weight-bold mb-4 pl-0">
                     <span class="mr-4 text-secondary">邮箱</span>
                     <span>{{teacher['email']}}</span>
                     <button class="btn btn-sm btn-outline-danger ml-3"
                         (click)="modifyProfileInfo('email','邮箱')">修改</button>
                 </div>
-                <div class="col-12 lead font-weight-bold mb-4">
+                <div class="col-12 lead font-weight-bold mb-4 pl-0">
                     <span class="mr-4 text-secondary">二级学院</span>
                     <span>{{teacher['department']}}</span>
                 </div>

@@ -1,34 +1,81 @@
 <div id="student-profile" class="student-profile py-5">
+    <!-- ============= Notice Modal: start ============ -->
+    <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-info" id="exampleModalLabel">考前提醒</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-unstyled lead font-weight-normal">
+                        <li *ngFor="let item of examNotice; let i=index" class="py-1">
+                            <span class="lead mr-2 font-weight-bolder">{{i+1}}.</span>
+                            {{item}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="text-danger">
+                                    <i class="fas fa-thumbs-up mr-2"></i>
+                                    祝同学们考试顺利 ！
+                                </h3>
+                            </div>
+                            <div class="col-4 text-right">
+                                <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">取消</button>
+                                <button type="button" class="btn btn-primary">进入考试</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ============= Notice Modal: end ============= -->
     <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="mb-4">
+                    <i class="fas fa-user-graduate mr-2"></i>
+                    学生个人中心
+                </h1>
+            </div>
+        </div>
         <div class="row justify-content-between">
             <div class="col-6">
                 <ul class="list-group list-group-flush border-0">
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">学号</span>
                         {{student['id']}}
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">姓名</span>
                         {{student['username']}}
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">密码</span>
                         <i class="fas fa-key"></i>
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0" *ngIf="student['class']">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0" *ngIf="student['class']">
                         <span class="mr-3 text-secondary">班级</span>
                         {{student['class']['type']}} {{student['class']['major']}}
                         {{student['class']['regist_year']}}-{{student['class']['num']}} <span class="text-info">班</span>
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">性别</span>
                         {{student['gender']}}
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">邮箱</span>
                         {{student['email']}}
                     </li>
-                    <li class="list-group-item font-weight-bold lead border-0">
+                    <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">电话</span>
                         {{student['phone']}}
                     </li>
@@ -39,27 +86,27 @@
                     <i class="fas fa-cog fa-spin fa-1x mr-3"></i>
                     正在读取考试信息 ...
                 </div>
-                <div class="card border-danger mb-4" *ngFor="let exam of exams">
-                    <div class="card-header text-danger font-weight-bold lead">
+                <div class="card border-info mb-4" *ngFor="let exam of exams">
+                    <div class="card-header text-info font-weight-bold lead">
                         <span class="mr-4">ID : {{exam['course_id']}}</span>
                         <span>《 {{exam['course_name']}} 》</span>
                     </div>
                     <div class="card-body text-danger pb-0">
-                        <table class="table text-center">
+                        <table class="table text-center table-bordered text-info">
                             <thead>
-                                <th>考试时长</th>
+                                <th>考试时长 ( 分钟 )</th>
                                 <th>试卷总分</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>{{exam['duration']}} ( 分钟 )</td>
+                                <tr class="text-dark lead font-weight-bold">
+                                    <td>{{exam['duration']}}</td>
                                     <td>{{exam['total']}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="card-footer text-right">
-                        <button class="btn btn-danger btn-sm">开始考试</button>
+                    <div class="card-footer text-right border-0 bg-white">
+                        <button class="btn btn-info btn-sm" (click)="showNoticeModal()">开始考试</button>
                     </div>
                 </div>
             </div>
