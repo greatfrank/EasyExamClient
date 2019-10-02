@@ -76,11 +76,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   totalCodings = 0
   savedCodings = []
   // -------------------------------------------
-
   courses: any
-
   currentQuestionTitle: any
   subscription: Subscription
+  // ------------------------------------------
 
   constructor(
     private fb: FormBuilder,
@@ -123,6 +122,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     $('html, body').animate({
       scrollTop: fromOffset.top - 80
     })
+  }
+
+  goToTop() {
+    this.utilityService.goToTop()
   }
 
   /**
@@ -386,7 +389,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     this.savedCodings = []
     self.backendService.fetchAllByTableName('codings').subscribe(data => {
       let arr = data['response']
-      console.log(arr);
       // Setup json data struct for original array
       let tempArr = []
       arr.forEach(element => {

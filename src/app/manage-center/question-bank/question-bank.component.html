@@ -1,4 +1,6 @@
 <div id="question-bank" class="question-bank pb-5">
+    <!-- ====== Modals ========= -->
+    <!-- ====== Modals ========= -->
     <button class="btn btn-danger" id="top-btn" (click)="goToTop()">
         <i class="fas fa-chevron-up"></i>
     </button>
@@ -66,18 +68,18 @@
                         <div class="text-center display-4" *ngIf="savedChoices.length==0">
                             <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
                         </div>
-                        <div *ngIf="savedChoices.length!=0" class="data-area bg-light border border-dark p-2">
+                        <div *ngIf="savedChoices.length!=0" class="data-area bg-dark border border-secondary p-2">
                             <div *ngFor="let group of savedChoices" class="mb-3">
-                                <p class="lead font-weight-bold mb-1">
+                                <p class="lead font-weight-bold mb-1 text-warning">
                                     <i class="fas fa-coffee mr-2"></i>
                                     {{group['course_name']}}
-                                    <span class="ml-1 text-secondary">({{group['list'].length}})</span>
+                                    <span class="ml-1">({{group['list'].length}})</span>
                                 </p>
-                                <div class="card bg-dark text-white mb-1" *ngFor="let item of group['list']">
-                                    <div class="card-header py-1 bg-primary">
-                                        ID: {{item['id']}}
+                                <div class="card mb-2" *ngFor="let item of group['list']">
+                                    <div class="card-header py-1 bg-secondary text-white">
+                                        {{item.id}}
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body bg-dark text-white py-2">
                                         <p class="card-title">{{item['question']}}</p>
                                         <p class="card-text">
                                             <span *ngFor="let option of item['options']; let i=index" class="mr-4"
@@ -157,15 +159,15 @@
                         <div class="text-center display-4" *ngIf="savedFills.length==0">
                             <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
                         </div>
-                        <div *ngIf="savedFills.length!=0" class="data-area bg-light border border-dark p-2">
+                        <div *ngIf="savedFills.length!=0" class="data-area bg-dark text-white p-2">
                             <div *ngFor="let group of savedFills" class="mb-3">
-                                <p class="lead font-weight-bold mb-1">
+                                <p class="lead font-weight-bold mb-2 text-warning">
                                     <i class="fas fa-coffee mr-2"></i>
                                     {{group['course_name']}}
-                                    <span class="ml-1 text-secondary">({{group['list'].length}})</span>
+                                    <span class="ml-1">({{group['list'].length}})</span>
                                 </p>
-                                <div class="card bg-dark text-white mb-1" *ngFor="let item of group['list']">
-                                    <div class="card-header py-1 bg-primary">
+                                <div class="card bg-dark border-white mb-2" *ngFor="let item of group['list']">
+                                    <div class="card-header py-1 bg-secondary">
                                         ID: {{item['id']}}
                                     </div>
                                     <div class="card-body">
@@ -239,15 +241,15 @@
                         <div class="text-center display-4" *ngIf="savedJudges.length==0">
                             <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
                         </div>
-                        <div *ngIf="savedJudges.length!=0" class="data-area bg-light border border-dark p-2">
+                        <div *ngIf="savedJudges.length!=0" class="data-area bg-dark border border-white p-2">
                             <div *ngFor="let group of savedJudges" class="mb-3">
-                                <p class="lead font-weight-bold mb-1">
+                                <p class="lead font-weight-bold mb-1 text-warning">
                                     <i class="fas fa-coffee mr-2"></i>
                                     {{group['course_name']}}
-                                    <span class="ml-1 text-secondary">({{group['list'].length}})</span>
+                                    <span class="ml-1">({{group['list'].length}})</span>
                                 </p>
-                                <div class="card bg-dark text-white mb-1" *ngFor="let item of group['list']">
-                                    <div class="card-header py-1 bg-primary">
+                                <div class="card bg-dark text-white border-white mb-2" *ngFor="let item of group['list']">
+                                    <div class="card-header py-1 bg-secondary">
                                         ID: {{item['id']}}
                                     </div>
                                     <div class="card-body">
@@ -308,15 +310,15 @@
                         <div class="text-center display-4" *ngIf="savedShortAnswers.length==0">
                             <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
                         </div>
-                        <div *ngIf="savedShortAnswers.length!=0" class="data-area bg-light border border-dark p-2">
+                        <div *ngIf="savedShortAnswers.length!=0" class="data-area bg-dark text-white border border-dark p-2">
                             <div *ngFor="let group of savedShortAnswers" class="mb-3">
-                                <p class="lead font-weight-bold mb-1">
+                                <p class="lead font-weight-bold text-warning mb-2">
                                     <i class="fas fa-coffee mr-2"></i>
                                     {{group['course_name']}}
-                                    <span class="ml-1 text-secondary">({{group['list'].length}})</span>
+                                    <span class="ml-1">({{group['list'].length}})</span>
                                 </p>
-                                <div class="card bg-dark text-white mb-1" *ngFor="let item of group['list']">
-                                    <div class="card-header py-1 bg-primary">
+                                <div class="card bg-dark border-white text-white mb-2" *ngFor="let item of group['list']">
+                                    <div class="card-header py-1 bg-secondary">
                                         ID: {{item['id']}}
                                     </div>
                                     <div class="card-body">
@@ -335,8 +337,7 @@
                 <p class="question-title">编 程 题<small class="ml-3 text-secondary">共 {{totalCodings}} 道题</small></p>
                 <div class="row">
                     <div class="col-5">
-                        <form class="question-bank-form" [formGroup]="codingForm"
-                            (ngSubmit)="onCodingSubmit()">
+                        <form class="question-bank-form" [formGroup]="codingForm" (ngSubmit)="onCodingSubmit()">
                             <div class="form-group">
                                 <label>课程</label>
                                 <select name="course_id" class="form-control" formControlName="course_id">
@@ -357,8 +358,7 @@
                             </div>
                             <div class="form-group">
                                 <label>运行结果</label>
-                                <textarea name="result" class="form-control"
-                                    formControlName="result"></textarea>
+                                <textarea name="result" class="form-control" formControlName="result"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>本题详解（选填）</label>
@@ -373,8 +373,8 @@
                                     <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
                                 </span>
                                 <button class="btn btn-secondary" type="reset">重置</button>
-                                <button class="btn btn-primary ml-3" type="submit"
-                                    [disabled]="!codingForm.valid">完成 并 提交</button>
+                                <button class="btn btn-primary ml-3" type="submit" [disabled]="!codingForm.valid">完成 并
+                                    提交</button>
                             </div>
                         </form>
                     </div>
@@ -382,15 +382,15 @@
                         <div class="text-center display-4" *ngIf="savedCodings.length==0">
                             <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
                         </div>
-                        <div *ngIf="savedCodings.length!=0" class="data-area bg-light border border-dark p-2">
+                        <div *ngIf="savedCodings.length!=0" class="data-area bg-dark p-2">
                             <div *ngFor="let group of savedCodings" class="mb-3">
-                                <p class="lead font-weight-bold mb-1">
+                                <p class="lead text-warning font-weight-bold mb-2">
                                     <i class="fas fa-coffee mr-2"></i>
                                     {{group['course_name']}}
-                                    <span class="ml-1 text-secondary">({{group['list'].length}})</span>
+                                    <span class="ml-1">({{group['list'].length}})</span>
                                 </p>
-                                <div class="card bg-dark text-white mb-1" *ngFor="let item of group['list']">
-                                    <div class="card-header py-1 bg-primary">
+                                <div class="card bg-dark border-white text-white mb-1" *ngFor="let item of group['list']">
+                                    <div class="card-header py-1 bg-secondary">
                                         ID: {{item['id']}}
                                     </div>
                                     <div class="card-body">
