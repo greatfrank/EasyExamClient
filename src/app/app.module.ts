@@ -20,6 +20,7 @@ import { ExamComponent } from './manage-center/exam/exam.component';
 import { TeacherProfileComponent } from './manage-center/teacher-profile/teacher-profile.component';
 import { StudyCenterComponent } from './study-center/study-center.component';
 import { StudentProfileComponent } from './study-center/student-profile/student-profile.component';
+import { StudentExamComponent } from './study-center/student-exam/student-exam.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { StudentProfileComponent } from './study-center/student-profile/student-
     TeacherProfileComponent,
     StudyCenterComponent,
     StudentProfileComponent,
+    StudentExamComponent,
   ],
   imports: [
     BrowserModule,

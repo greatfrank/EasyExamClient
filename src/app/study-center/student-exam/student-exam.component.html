@@ -1,0 +1,23 @@
+<div id="student-exam" class="student-exam">
+    <div class="container-fluid px-5 py-4">
+        <div class="row">
+            <div class="col">
+                <h3 class="text-info">
+                    <span class="font-weight-bold">{{myexam['course_name']}}</span><small
+                        class="text-secondary ml-3">考试</small>
+                </h3>
+                <ul class="list-unstyled mt-4">
+                    <li class="mb-4" *ngFor="let question of myexam['questions']; let i=index">
+                        <h5 class="font-weight-bold">
+                            <i class="fas fa-chevron-right mr-2 text-info"></i>
+                            {{question['title']}}
+                        </h5>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -75,7 +75,6 @@ export class SignComponent implements OnInit {
             })
             sessionStorage.setItem('student',JSON.stringify(student))
             this.router.navigateByUrl('study-center/student-profile')
-            alert('登录成功，页面需要跳转到学生首页')
           } else {
             alert('登录信息有误，请重试')
           }

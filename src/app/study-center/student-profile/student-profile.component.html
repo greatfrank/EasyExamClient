@@ -1,54 +1,11 @@
 <div id="student-profile" class="student-profile py-5">
-    <!-- ============= Notice Modal: start ============ -->
-    <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-info" id="exampleModalLabel">考前提醒</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <ul class="list-unstyled lead font-weight-normal">
-                        <li *ngFor="let item of examNotice; let i=index" class="py-1">
-                            <span class="lead mr-2 font-weight-bolder">{{i+1}}.</span>
-                            {{item}}
-                        </li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="text-danger">
-                                    <i class="fas fa-thumbs-up mr-2"></i>
-                                    祝同学们考试顺利 ！
-                                </h3>
-                            </div>
-                            <div class="col-4 text-right">
-                                <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">取消</button>
-                                <button type="button" class="btn btn-primary">进入考试</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ============= Notice Modal: end ============= -->
-    <div class="container">
-        <div class="row">
+    <div class="container-fluid px-5">
+        <div class="row justify-content-between">
             <div class="col">
                 <h1 class="mb-4">
                     <i class="fas fa-user-graduate mr-2"></i>
-                    学生个人中心
+                    学生信息
                 </h1>
-            </div>
-        </div>
-        <div class="row justify-content-between">
-            <div class="col-6">
                 <ul class="list-group list-group-flush border-0">
                     <li class="list-group-item font-weight-bold lead border-0 px-0">
                         <span class="mr-3 text-secondary">学号</span>
@@ -64,6 +21,7 @@
                     </li>
                     <li class="list-group-item font-weight-bold lead border-0 px-0" *ngIf="student['class']">
                         <span class="mr-3 text-secondary">班级</span>
+                        {{student['class']['id']}}
                         {{student['class']['type']}} {{student['class']['major']}}
                         {{student['class']['regist_year']}}-{{student['class']['num']}} <span class="text-info">班</span>
                     </li>
@@ -81,10 +39,17 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-5">
-                <div class="lead font-weight-bold lead" *ngIf="exams.length==0">
+            <div class="col">
+                <h1 class="mb-4 text-info">
+                    <i class="fas fa-star mr-2"></i>
+                    考试信息
+                </h1>
+                <div class="lead font-weight-bold lead" *ngIf="isFetchingExams">
                     <i class="fas fa-cog fa-spin fa-1x mr-3"></i>
                     正在读取考试信息 ...
+                </div>
+                <div class="lead font-weight-bold lead" *ngIf="exams.length==0 && !isFetchingExams">
+                    暂无考试信息
                 </div>
                 <div class="card border-info mb-4" *ngFor="let exam of exams">
                     <div class="card-header text-info font-weight-bold lead">
@@ -106,9 +71,21 @@
                         </table>
                     </div>
                     <div class="card-footer text-right border-0 bg-white">
-                        <button class="btn btn-info btn-sm" (click)="showNoticeModal()">开始考试</button>
+                        <button class="btn btn-info btn-sm" (click)="startExam(exam)">开始考试</button>
                     </div>
                 </div>
+            </div>
+            <div class="col px-5">
+                <h1 class="mb-4 text-danger">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    注意事项
+                </h1>
+                <ul class="list-unstyled font-weight-normal">
+                    <li *ngFor="let item of examNotice; let i=index" class="py-1">
+                        <span class="lead mr-2 font-weight-bolder">{{i+1}}.</span>
+                        {{item}}
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
+import { GlobalData } from 'src/app/global/global-data';
 declare var $: any
 
 @Component({
@@ -14,6 +16,7 @@ export class StudentProfileComponent implements OnInit {
   student: any
   classes = []
   exams = []
+  isFetchingExams = false
 
   examNotice = [
     '系统将会按照此项考试的设置，为学生自动、随机抽取考题，并生成试卷',
@@ -24,6 +27,7 @@ export class StudentProfileComponent implements OnInit {
   ]
 
   constructor(
+    private router: Router,
     private backendService: BackendService,
     private utilityService: UtilityService
   ) { }
@@ -47,7 +51,14 @@ export class StudentProfileComponent implements OnInit {
 
   setupExamForStudent() {
     let self = this
+    this.isFetchingExams = true
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
+      self.isFetchingExams = false
+      self.exams = result['response'].length
+      if (self.exams.length == 0) {
+        return
+      }
+
       self.exams = result['response'].filter(element => {
         return element['state'] == 'active'
       })
@@ -62,6 +73,10 @@ export class StudentProfileComponent implements OnInit {
         }
         return flag
       })
+      self.exams.forEach(element => {
+        delete element['classes']
+        element['class'] = self.student['class']
+      });
       console.log(self.exams);
 
     })
@@ -82,8 +97,10 @@ export class StudentProfileComponent implements OnInit {
     });
   }
 
-  showNoticeModal() {
-    $('#exampleModal').modal('show')
+  startExam(exam) {
+    GlobalData.studentSelectedExam = exam
+    let baseUrl = this.router.url.split('/')[1]
+    this.router.navigateByUrl(baseUrl + '/student-exam')
   }
 
 }
