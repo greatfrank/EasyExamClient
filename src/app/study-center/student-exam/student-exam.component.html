@@ -1,22 +1,126 @@
 <div id="student-exam" class="student-exam">
-    <div class="container-fluid px-5 py-4">
+    <div class="container-fluid p-5 my-0 bg-dark text-white">
         <div class="row">
             <div class="col">
-                <h3 class="text-info">
-                    <span class="font-weight-bold">{{myexam['course_name']}}</span><small
+                <h3 class="">
+                    <span class="font-weight-bold">《 {{myexam['course_name']}} 》</span><small
                         class="text-secondary ml-3">考试</small>
                 </h3>
                 <ul class="list-unstyled mt-4">
                     <li class="mb-4" *ngFor="let question of myexam['questions']; let i=index">
-                        <h5 class="font-weight-bold">
-                            <i class="fas fa-chevron-right mr-2 text-info"></i>
-                            {{question['title']}}
-                        </h5>
+                        <h4 class="font-weight-bold">
+                            <i class="fas fa-chevron-right mr-2 text-warning"></i>
+                            <span class="mr-3">{{i+1}}.</span>
+                            <span>{{question['title']}}</span>
+                            <small class="ml-2">( 共 {{question['count']}} 题，每题 {{question['point']}} 分 )</small>
+                        </h4>
+                        <!-- ----- choices buttons ---------- -->
+                        <div class="mt-3" *ngIf="question['question']=='choices'">
+                            <button class="btn btn-sm font-weight-bolder m-2 ml-0 px-3 py-1"
+                                [ngClass]="{'btn-outline-warning': !element['stu_answer'],'btn-warning':element['stu_answer']}"
+                                *ngFor="let element of question['contents']; let j=index"
+                                (click)="toggleQuestion(question['question'],i,j)">{{j+1}}</button>
+                        </div>
+                        <!-- ------- fills buttons --------- -->
+                        <div class="mt-3" *ngIf="question['question']=='fills'">
+                            <button class="btn btn-sm font-weight-bolder m-2 ml-0 px-3 py-1"
+                                [ngClass]="{'btn-outline-warning': !element['is_full'],'btn-warning': element['is_full']}"
+                                *ngFor="let element of question['contents']; let j=index"
+                                (click)="toggleQuestion(question['question'],i,j)">{{j+1}}</button>
+                        </div>
+                        <!-- ------- judges buttons --------- -->
+                        <div class="mt-3" *ngIf="question['question']=='judges'">
+                            <button class="btn btn-sm font-weight-bolder m-2 ml-0 px-3 py-1"
+                                [ngClass]="{'btn-outline-warning': element['stu_answer']==null,'btn-warning': element['stu_answer']!=null}"
+                                *ngFor="let element of question['contents']; let j=index"
+                                (click)="toggleQuestion(question['question'],i,j)">{{j+1}}</button>
+                        </div>
                     </li>
                 </ul>
             </div>
-            <div class="col">
-
+            <div class="col questions-area">
+                <!-- === Choices content box === -->
+                <div class="choices-content-box"
+                    *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='choices'">
+                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <hr>
+                    <div class="py-3">
+                        <p class="font-weight-bolder lead">
+                            <span class="mr-2 text-warning">
+                                {{questionIndex+1}}.{{contentIndex+1}}
+                            </span>
+                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <hr>
+                        <form>
+                            <div class="form-group lead font-weight-bold"
+                                *ngFor="let option of myexam['questions'][questionIndex]['contents'][contentIndex]['options']; let i=index">
+                                <input type="radio" name="stu_answer" class="option" [value]="option"
+                                    (change)="onChoiceGetAnswer(questionIndex,contentIndex,option)"
+                                    [checked]="myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']==option">
+                                <span class="ml-2">{{option}}</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- === Fills content box === -->
+                <div class="fills-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
+                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <hr>
+                    <div class="py-3">
+                        <p class="font-weight-bolder lead">
+                            <span class="mr-2 text-warning">
+                                {{questionIndex+1}}.{{contentIndex+1}}
+                            </span>
+                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <hr>
+                        <form>
+                            <label>在以下的输入框填写答案，输入框的顺序与题目中的空白处的顺序一致</label>
+                            <div class="form-group font-weight-bold"
+                                *ngFor="let item of myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']; let i=index">
+                                <input placeholder="第 {{i+1}} 个空" type="text" name="'answer-'+i" [(ngModel)]="item"
+                                    class="form-control lead"
+                                    (change)="onFillsGetAnswer(questionIndex,contentIndex,i,item)">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- ======== Judges content box ======== -->
+                <div class="judges-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
+                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <hr>
+                    <div class="py-3">
+                        <p class="font-weight-bolder lead">
+                            <span class="mr-2 text-warning">
+                                {{questionIndex+1}}.{{contentIndex+1}}
+                            </span>
+                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <hr>
+                        <form>
+                            <div class="form-check form-check-inline mr-5">
+                                <input class="form-check-input option" type="radio" name="judge-option"
+                                    id="inlineRadio1"
+                                    [value]="myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']"
+                                    [checked]="myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']==true"
+                                    (change)="onJudgesGetAnswer(questionIndex,contentIndex,true)">
+                                <label class="form-check-label lead font-weight-bold ml-2">
+                                    <i class="fas fa-check text-success"></i>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input option" type="radio" name="judge-option"
+                                    id="inlineRadio2"
+                                    [value]="myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']"
+                                    [checked]="myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']==false"
+                                    (change)="onJudgesGetAnswer(questionIndex,contentIndex,false)">
+                                <label class="form-check-label lead font-weight-bold ml-2">
+                                    <i class="fas fa-times text-danger"></i>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="short_answers-content-box"></div>
+                <div class="codings-content-box"></div>
             </div>
         </div>
     </div>

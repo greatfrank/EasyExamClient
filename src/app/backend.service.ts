@@ -47,4 +47,19 @@ export class BackendService {
     return this.httpClient.post('/update/' + tableName, body, httpOptions)
   }
 
+  /**
+   * 
+   * @param tableName 
+   * @param limit 
+   * POST: { course_id: 123456}
+   */
+  queryQuestionsByTableNameAndLimit(tableName: string, limit: number, jsonObj: any): Observable<any> {
+    let params = new URLSearchParams()
+    Object.keys(jsonObj).forEach(key => {
+      params.append(key, jsonObj[key])
+    })
+    let body = params.toString()
+    return this.httpClient.post('/query/' + tableName + '/' + limit, body, httpOptions)
+  }
+
 }
