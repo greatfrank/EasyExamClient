@@ -35,6 +35,7 @@ export class StudentExamComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // this.checkStudentSelectedExam()
     this.setupMyexam()
   }
 
@@ -63,12 +64,19 @@ export class StudentExamComponent implements OnInit {
         self.myexam['questions'][i]['contents'] = result['response']
 
         for (let j = 0; j < questionObj['contents'].length; j++) {
-          // Reformat content json data struct
+          /**
+           * Reformat content json data struct
+           */
           let tempJson = JSON.parse(questionObj['contents'][j]['content']
           )
           Object.keys(tempJson).forEach(key => {
             questionObj['contents'][j][key] = tempJson[key]
           });
+          /**
+           * 给每一道题预设一个得分。默认为 -1 分，表示还没有判分。
+           * 有些题型，比如单选、判断、填空，可以由程序自动判分，在方法 onChoicesGetAnswer, onFillsGetAnswer, onJudgesGetAnswer 里就可以完成判分。有些题型，比如 short_answer 和 codings，后期由可能需要借助 AI来完成，或者通过教师人工判分。
+           */
+          questionObj['contents'][j]['score'] = -1
           delete questionObj['contents'][j]['content']
           // Add a feature "stu_answer" to every content object
           switch (questionObj['question']) {
@@ -103,25 +111,30 @@ export class StudentExamComponent implements OnInit {
     this.contentIndex = contentIndex
   }
 
-
   onChoiceGetAnswer(questionIndex, contentIndex, value) {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value
+    this.giveScoreToQuestion(questionIndex, contentIndex, value)
   }
 
   onFillsGetAnswer(questionIndex, contentIndex, answerIndex, value) {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'][answerIndex] = value.trim()
 
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['is_full'] = this.checkArrFull(this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'])
+
+    let stu_answer = this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']
+    this.giveScoreToQuestion(questionIndex, contentIndex, stu_answer)
   }
 
   onJudgesGetAnswer(questionIndex, contentIndex, value) {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value
+    this.giveScoreToQuestion(questionIndex, contentIndex, value)
   }
 
   onShortAnswersGetAnswer(questionIndex, contentIndex, value) {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value.trim()
   }
 
+  // 判决数组中是否每个元素是否为空
   checkArrFull(arr: [any]) {
     let isFull = true
     for (let i = 0; i < arr.length; i++) {
@@ -131,6 +144,19 @@ export class StudentExamComponent implements OnInit {
       }
     }
     return isFull
+  }
+
+  // 根据考生的答案、标准答案，给这道题得分
+  giveScoreToQuestion(questionIndex, contentIndex, stu_answer): void {
+    // 得到该题的分值
+    let point = this.myexam['questions'][questionIndex]['point']
+    // 得到该题目的标准答案
+    let standard_answer = this.myexam['questions'][questionIndex]['contents'][contentIndex]['standard_answer']
+    // 根据学生的答案和标准答案，给这道题判分
+    this.myexam['questions'][questionIndex]['contents'][contentIndex]['score'] = (stu_answer.toString() == standard_answer.toString()) ? point : 0
+
+    console.log(this.myexam);
+
   }
 
 

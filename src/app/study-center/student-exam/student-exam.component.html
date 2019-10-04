@@ -81,7 +81,7 @@
                             {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
                         <hr>
                         <form>
-                            <label>在以下的输入框填写答案，输入框的顺序与题目中的空白处的顺序一致</label>
+                            <label>在以下的输入框填写答案。输入框的顺序与题目中空白的顺序一致</label>
                             <div class="form-group font-weight-bold"
                                 *ngFor="let item of myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']; let i=index">
                                 <input placeholder="第 {{i+1}} 个空" type="text" name="'answer-'+i" [(ngModel)]="item"
