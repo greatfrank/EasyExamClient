@@ -73,7 +73,7 @@ export class StudentExamComponent implements OnInit {
           // Add a feature "stu_answer" to every content object
           switch (questionObj['question']) {
             case 'choices':
-              questionObj['contents'][j]['stu_answer'] = ''
+              questionObj['contents'][j]['stu_answer'] = null
               break
             case 'fills':
               const len = questionObj['contents'][j]['standard_answer'].length
@@ -85,6 +85,9 @@ export class StudentExamComponent implements OnInit {
               questionObj['contents'][j]['is_full'] = false
               break
             case 'judges':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+            case 'short_answers':
               questionObj['contents'][j]['stu_answer'] = null
               break
           }
@@ -101,18 +104,22 @@ export class StudentExamComponent implements OnInit {
   }
 
 
-  onChoiceGetAnswer(questionIndex: any, contentIndex: any, answer: any) {
-    this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = answer
+  onChoiceGetAnswer(questionIndex, contentIndex, value) {
+    this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value
   }
 
   onFillsGetAnswer(questionIndex, contentIndex, answerIndex, value) {
-    this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'][answerIndex] = value
+    this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'][answerIndex] = value.trim()
 
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['is_full'] = this.checkArrFull(this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'])
   }
 
   onJudgesGetAnswer(questionIndex, contentIndex, value) {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value
+  }
+
+  onShortAnswersGetAnswer(questionIndex, contentIndex, value) {
+    this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'] = value.trim()
   }
 
   checkArrFull(arr: [any]) {
