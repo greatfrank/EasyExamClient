@@ -52,8 +52,9 @@
                     暂无考试信息
                 </div>
                 <div class="card border-info mb-4" *ngFor="let exam of exams">
+                    <span class="submit-box" *ngIf="exam['submit']">已交卷</span>
                     <div class="card-header text-info font-weight-bold lead">
-                        <span class="mr-4">ID : {{exam['course_id']}}</span>
+                        <span class="mr-4">ID : {{exam['id']}}</span>
                         <span>《 {{exam['course_name']}} 》</span>
                     </div>
                     <div class="card-body text-danger pb-0">
@@ -71,7 +72,10 @@
                         </table>
                     </div>
                     <div class="card-footer text-right border-0 bg-white">
-                        <button class="btn btn-info btn-sm" (click)="startExam(exam)">开始考试</button>
+                        <button class="btn btn-info" (click)="startExam(exam)" [disabled]="exam['submit']">
+                            <i class="fas fa-caret-right mr-1"></i>
+                            开始考试
+                        </button>
                     </div>
                 </div>
             </div>

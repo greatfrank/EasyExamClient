@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router, NavigationStart } from "@angular/router";
 import { GlobalData } from "../../global/global-data";
 import { BackendService } from "../../backend.service";
+import { UtilityService } from "../../utility.service";
+import { QuestionToggleButtonsComponent } from "../question-toggle-buttons/question-toggle-buttons.component";
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-student-exam',
@@ -10,44 +13,76 @@ import { BackendService } from "../../backend.service";
 })
 export class StudentExamComponent implements OnInit {
 
-  myexam = {
-    class: { id: "16448", major: "计算机信息管理", num: "01", regist_year: "2017", type: "高职" },
-    course_id: "1234",
-    course_name: "Python程序设计",
-    created_datetime: "2019-10-03 00:23:43",
-    duration: "90",
-    id: "1570033423",
-    questions: '[{"count": 10, "point": 2, "title": "选择题", "question": "choices"}, {"count": 10, "point": 2, "title": "填空题", "question": "fills"}, {"count": 10, "point": 2, "title": "判断题", "question": "judges"}, {"count": 5, "point": 8, "title": "简答题", "question": "short_answers"}]',
-    state: "active",
-    total: "100"
-  }
+  myexam: any
 
   questionType = ''
   questionIndex = -1
   contentIndex = -1
 
+  isFetchingAllQuestions = false
+
   // ----------------
+  totalDuration = 0
+  displayTotalDuration = ''
   // ----------------
 
   constructor(
     private router: Router,
     private backendService: BackendService,
-  ) { }
-
-  ngOnInit() {
-    // this.checkStudentSelectedExam()
-    this.setupMyexam()
+    private utilityService: UtilityService
+  ) {
+    this.myexam = {
+      class: { id: "16448", major: "计算机信息管理", num: "01", regist_year: "2017", type: "高职" },
+      course_id: "1234",
+      course_name: "Python程序设计",
+      created_datetime: "2019-10-03 00:23:43",
+      duration: "90",
+      id: "1570033423",
+      questions: '[{"count": 10, "point": 2, "title": "选择题", "question": "choices"}, {"count": 10, "point": 2, "title": "填空题", "question": "fills"}, {"count": 10, "point": 2, "title": "判断题", "question": "judges"}, {"count": 5, "point": 8, "title": "简答题", "question": "short_answers"}]',
+      state: "active",
+      total: "100"
+    }
   }
 
+  ngOnInit() {
+    this.utilityService.goToTop()
+    this.utilityService.checkStudentLogin()
+    this.checkStudentSelectedExam()
+    this.setupMyexam()
+    this.setupTime()
+  }
+
+  // 从上一个页面（选择考试）传递过来的考试数据
   checkStudentSelectedExam() {
     if (!GlobalData.studentSelectedExam) {
+      console.log('student unlogin');
       sessionStorage.removeItem('student')
       this.router.navigateByUrl('/')
     } else {
-      console.log(GlobalData.studentSelectedExam);
+      console.log('Not default, but student selected exam');
       this.myexam = GlobalData.studentSelectedExam
-      console.log(this.myexam);
     }
+  }
+
+  // 设置时间，开始倒计时
+  setupTime() {
+    let self = this
+    this.totalDuration = parseInt(this.myexam.duration)
+    let allSeconds = this.totalDuration * 60
+    this.displayTotalDuration = this.totalDuration + ' 分钟'
+    // 每分钟计算剩余的时间
+    let durationInterval = setInterval(() => {
+      if (allSeconds == 0) {
+        clearInterval(durationInterval)
+        self.finishExam()
+        // MISSION: submit paper
+      }
+
+      --allSeconds
+      let minute = parseInt(String(allSeconds / 60))
+      let second = allSeconds % 60
+      self.displayTotalDuration = minute + ' 分 ' + second + ' 秒'
+    }, 1000)
   }
 
   setupMyexam() {
@@ -57,10 +92,12 @@ export class StudentExamComponent implements OnInit {
     let body = {
       course_id: this.myexam['course_id']
     }
-
+    // 根据考试设计里的题型，从题库里随机抽题
     for (let i = 0; i < this.myexam['questions'].length; i++) {
+      this.isFetchingAllQuestions = true
       let questionObj = this.myexam['questions'][i]
       self.backendService.queryQuestionsByTableNameAndLimit(questionObj['question'], questionObj['count'], body).subscribe(result => {
+        self.isFetchingAllQuestions = false
         self.myexam['questions'][i]['contents'] = result['response']
 
         for (let j = 0; j < questionObj['contents'].length; j++) {
@@ -102,7 +139,11 @@ export class StudentExamComponent implements OnInit {
         }
       })
     }
+    this.myexam['total_score'] = 0
+
     console.log(this.myexam);
+
+
   }
 
   toggleQuestion(questionType, questionIndex, contentIndex) {
@@ -156,6 +197,55 @@ export class StudentExamComponent implements OnInit {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['score'] = (stu_answer.toString() == standard_answer.toString()) ? point : 0
 
     console.log(this.myexam);
+
+  }
+
+  submitExamPaper() {
+    if (confirm("确定要交卷吗？ 【交卷后将无法再次考试】")) {
+      console.log('交卷中 ...');
+      this.finishExam()
+    } else {
+      console.log('继续考试');
+    }
+  }
+
+  // 交卷 并 结束考试
+  finishExam() {
+    let self = this
+    this.myexam['total_score'] = 0
+    for (let i = 0; i < this.myexam['questions'].length; i++) {
+      let question = this.myexam['questions'][i]
+      for (let j = 0; j < question['contents'].length; j++) {
+        const content = question['contents'][j];
+        if (content['score'] == -1) {
+          content['score'] = 0
+        }
+        this.myexam['total_score'] += content['score']
+      }
+    }
+
+    let body = {
+      id: this.utilityService.getIdByTimestamp(),
+      student_id: JSON.parse(sessionStorage.getItem('student'))['id'],
+      course_id: this.myexam['course_id'],
+      exam_id: this.myexam['id'],
+      paper: JSON.stringify(this.myexam['questions']),
+      score: this.myexam['total_score'],
+      submit_datetime: moment().format('YYYY-MM-DD hh:mm:ss')
+    }
+
+    this.backendService.addNewByTableName('student_exam', body).subscribe(result => {
+      if (result['effect_rows'] == 1 && result['message'] == 'complete') {
+        let json = {
+          course_id: self.myexam['course_id'],
+          course_name: self.myexam['course_name'],
+          student_name: JSON.parse(sessionStorage.getItem('student'))['username']
+        }
+        self.router.navigate(['/study-center/submit-exam-success', json])
+      } else {
+        alert('交卷失败，请重试。')
+      }
+    })
 
   }
 

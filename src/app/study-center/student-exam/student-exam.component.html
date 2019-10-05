@@ -6,6 +6,24 @@
                     <span class="font-weight-bold">《 {{myexam['course_name']}} 》</span><small
                         class="text-secondary ml-3">考试</small>
                 </h3>
+                <div class="row mt-4 mb-5">
+                    <div class="col">
+                        <h4 class="text-danger">
+                            <i class="fas fa-clock mr-2" [ngClass]="{'fa-spin': totalDuration!=0}"></i>
+                            剩余：<span>{{displayTotalDuration}}</span>
+                        </h4>
+                    </div>
+                    <div class="col px-0">
+                        <button class="btn btn-warning" (click)="submitExamPaper()">
+                            <i class="fas fa-paper-plane mr-1"></i>
+                            现在交卷
+                        </button>
+                    </div>
+                </div>
+                <h1 class="my-4" *ngIf="isFetchingQuestions">
+                    <i class="fas fa-cog fa-spin mr-2"></i>
+                    正在抽题，请稍后 ...
+                </h1>
                 <ul class="list-unstyled mt-4">
                     <li class="mb-4" *ngFor="let question of myexam['questions']; let i=index">
                         <h4 class="font-weight-bold">

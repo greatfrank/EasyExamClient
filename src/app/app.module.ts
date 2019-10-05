@@ -22,6 +22,10 @@ import { StudyCenterComponent } from './study-center/study-center.component';
 import { StudentProfileComponent } from './study-center/student-profile/student-profile.component';
 import { StudentExamComponent } from './study-center/student-exam/student-exam.component';
 
+import { ConfirmDeactivateGuardService } from "./confirm-deactivate-guard.service";
+import { QuestionToggleButtonsComponent } from './study-center/question-toggle-buttons/question-toggle-buttons.component';
+import { SubmitExamSuccessComponent } from './study-center/submit-exam-success/submit-exam-success.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +44,8 @@ import { StudentExamComponent } from './study-center/student-exam/student-exam.c
     StudyCenterComponent,
     StudentProfileComponent,
     StudentExamComponent,
+    QuestionToggleButtonsComponent,
+    SubmitExamSuccessComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +54,10 @@ import { StudentExamComponent } from './study-center/student-exam/student-exam.c
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    ConfirmDeactivateGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

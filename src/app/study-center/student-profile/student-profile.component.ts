@@ -45,7 +45,7 @@ export class StudentProfileComponent implements OnInit {
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.classes = result['response']
       self.transferClass(self.classes, classId)
-      console.log(self.student);
+      // console.log(self.student);
     })
   }
 
@@ -77,6 +77,9 @@ export class StudentProfileComponent implements OnInit {
         delete element['classes']
         element['class'] = self.student['class']
       });
+
+      self.checkExamSubmited()
+
       console.log(self.exams);
 
     })
@@ -101,6 +104,24 @@ export class StudentProfileComponent implements OnInit {
     GlobalData.studentSelectedExam = exam
     let baseUrl = this.router.url.split('/')[1]
     this.router.navigateByUrl(baseUrl + '/student-exam')
+  }
+
+  checkExamSubmited() {
+    let self = this
+    this.backendService.fetchAllByTableName('student_exam', null).subscribe(result => {
+      let arr = result['response']
+      arr.forEach(element => {
+        delete element['paper']
+      });
+      console.log(arr);
+      for (let i = 0; i < arr.length; i++) {
+        let item = arr[i]
+        for (let j = 0; j < self.exams.length; j++) {
+          const exam = self.exams[j];
+          exam['submit'] = item['exam_id'] == exam['id'] ? true : false
+        }
+      }
+    })
   }
 
 }

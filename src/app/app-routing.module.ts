@@ -11,6 +11,9 @@ import { TeacherProfileComponent } from "./manage-center/teacher-profile/teacher
 import { StudyCenterComponent } from "./study-center/study-center.component";
 import { StudentProfileComponent } from "./study-center/student-profile/student-profile.component";
 import { StudentExamComponent } from "./study-center/student-exam/student-exam.component";
+import { SubmitExamSuccessComponent } from "./study-center/submit-exam-success/submit-exam-success.component";
+
+import { ConfirmDeactivateGuardService } from "./confirm-deactivate-guard.service";
 
 const routes: Routes = [
   {
@@ -57,7 +60,14 @@ const routes: Routes = [
       },
       {
         path: 'student-exam',
-        component: StudentExamComponent
+        component: StudentExamComponent,
+        // canDeactivate: [
+        //   ConfirmDeactivateGuardService
+        // ]
+      },
+      {
+        path: 'submit-exam-success',
+        component: SubmitExamSuccessComponent
       }
     ]
   }

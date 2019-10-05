@@ -1,0 +1,24 @@
+<div id="submit-exam-success" class="submit-exam-success py-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col text-center">
+                <i class="fas fa-check-circle fa-10x text-success mb-5 icon"></i>
+                <div>
+                    <h1 class="mb-5">{{info['student_name']}} <small class="text-secondary">同学</small></h1>
+                    <h3 class="mt-5 mb-4">你的<span
+                            class="font-weight-bold text-success">《{{info['course_name']}}》</span>试卷已经成功提交</h3>
+                    <h3>请等待教师的阅卷结果，谢谢</h3>
+                </div>
+                <div class="mt-5">
+                    <a class="btn-primary btn btn-lg" [routerLink]="[ '/study-center/student-profile' ]">
+                        <i class="fas fa-undo-alt mr-2"></i>
+                        返回
+                    </a>
+                </div>
+                <p class="text-secondary lead font-weight-normal mt-5 pt-5">
+                    Technology supported by &copy; EasyExam
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -62,4 +62,5 @@ export class BackendService {
     return this.httpClient.post('/query/' + tableName + '/' + limit, body, httpOptions)
   }
 
+
 }
