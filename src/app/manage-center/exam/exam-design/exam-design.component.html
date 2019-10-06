@@ -1,7 +1,4 @@
 <div id="exam-design" class="exam-design pt-4 pb-5">
-    <!--  -->
-    <h1 class="text-danger">如果考试已经发布，即设定了考试的班级，则不允许删除，只能添加。 如果考试未发布，即没有设置任何考试的班级，则可以删除。</h1>
-    <!--  -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-4">
@@ -99,13 +96,25 @@
                     <small class="mx-2 text-danger">未发布 {{inactiveLength}} 项</small>
                 </h2>
                 <hr>
+                <div class="mb-2 text-muted">
+                    <p>
+                        以下考试模板列表中，如果头部的背景色是灰色，表示仅仅定义了考试模板，但是没有班级应用这个模板进行考试，所以可以删除。
+                    </p>
+                    <p>
+                        如果头部的背景色是青色，则表示已经为这个模板添加了班级。即某些班级将会应用这个模板进行考试，
+                    </p>
+                    <p>
+                        如果在头部的右侧 或者 下方的参加考试的班级的右侧，出现红色的删除按钮，则表示这些班级还没有提交试卷，所以还是可以删除的。一旦学生提交了试卷，与这个考试模板以及参加考试的班级右侧红色的删除按钮将不会显示，即不能删除已经被使用过的模板，以免出现信息的混乱。
+                    </p>
+                </div>
                 <div class="card border-dark mb-4" *ngFor="let exam of savedExams">
                     <div class="card-header text-white lead font-weight-bolder"
                         [ngClass]="{'bg-secondary': exam['state']=='inactive','bg-info':exam['state']=='active'}">
                         <span class="mr-5">ID: {{exam.id}}</span>
                         《 {{exam.course_name}} 》考试
                         <span class="float-right ml-5">
-                            <button class="btn btn-danger ml-3" (click)="removeExam(exam['id'])">
+                            <button class="btn btn-danger ml-3" (click)="removeExam(exam['id'])"
+                                *ngIf="detectCanRemovable(null,exam)">
                                 <i class="fas fa-times mr-2"></i>
                                 删除
                             </button>
@@ -152,11 +161,12 @@
                                 </div>
                                 <div class="col border-left border-primary">
                                     <div class="row">
-                                        <div class="mr-4 col-5 mb-2 text-dark border-bottom border-1 border-primary text-center"
+                                        <div class="mr-4 col-5 py-3 mb-2 text-dark border-bottom border-1 border-primary text-center"
                                             *ngFor="let class of exam.classes">
                                             {{class.type}} {{class.major}}
                                             {{class.regist_year}} {{class.num}} 班
-                                            <button class="btn btn-lg btn-link ml-3" (click)="removeClass(class,exam)">
+                                            <button class="btn btn-danger btn-sm ml-3" (click)="removeClass(class,exam)"
+                                                *ngIf="detectCanRemovable(class,null)">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </div>

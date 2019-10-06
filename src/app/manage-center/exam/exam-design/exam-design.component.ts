@@ -41,6 +41,7 @@ export class ExamDesignComponent implements OnInit {
     class_id: ['', Validators.required]
   })
   savedClasses = []
+  student_exam = []
 
   isUpdatingClassesForExam = false
 
@@ -60,9 +61,11 @@ export class ExamDesignComponent implements OnInit {
 
   ngOnInit() {
     this.utilityService.goToTop()
-    this.fetchAllSavedExams()
     this.fetchAllSavedClasses()
+    this.fetchAllSavedExams()
+    this.fetchAllStudentExam()
   }
+
 
   fetchAllSavedClasses() {
     let self = this
@@ -70,6 +73,65 @@ export class ExamDesignComponent implements OnInit {
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.savedClasses = result['response']
     })
+  }
+
+  fetchAllSavedExams() {
+    let self = this
+    this.savedExams = []
+    this.activeLength = 0
+    this.inactiveLength = 0
+    this.backendService.fetchAllByTableName('exams').subscribe(result => {
+      self.savedExams = result['response']
+      self.savedExams.forEach(exam => {
+        exam['questions'] = JSON.parse(exam['questions'])
+        exam['classes'] = JSON.parse(exam['classes'])
+        if (exam['state'] == 'active') {
+          self.activeLength += 1
+        }
+        if (exam['state'] == 'inactive') {
+          self.inactiveLength += 1
+        }
+      });
+    })
+  }
+
+  fetchAllStudentExam() {
+    let self = this
+    this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
+      self.student_exam = result['response']
+    })
+  }
+
+  detectCanRemovable(classObj: any, exam: any) {
+    let canRemovable = true
+
+    if (classObj) {
+      for (let i = 0; i < this.student_exam.length; i++) {
+        const element = this.student_exam[i];
+        if (element['class_id'] == classObj['id']) {
+          canRemovable = false
+          break
+        } else {
+          canRemovable = true
+          continue
+        }
+      }
+    }
+
+    if (exam) {
+      for (let i = 0; i < this.student_exam.length; i++) {
+        const element = this.student_exam[i];
+        if (element['exam_id'] == exam['id']) {
+          canRemovable = false
+          break
+        } else {
+          canRemovable = true
+          continue
+        }
+      }
+    }
+
+    return canRemovable
   }
 
   addClassToExam(exam) {
@@ -80,11 +142,11 @@ export class ExamDesignComponent implements OnInit {
     let willAddedClass: any
     let canAddNewClass = true
 
-
     // 根据选择到的 class_id, 从全部的班级信息里找到选择的班级的完整信息
     this.savedClasses.forEach(element => {
       if (element['id'] == class_id) {
         willAddedClass = element
+        willAddedClass['can_remove'] = true
       }
     })
 
@@ -106,8 +168,6 @@ export class ExamDesignComponent implements OnInit {
     }
 
     this.selectedClassForm.reset()
-    console.log(this.savedExams);
-
   }
 
   removeClass(currentClass: any, exam) {
@@ -142,27 +202,6 @@ export class ExamDesignComponent implements OnInit {
       } else {
         alert('修改失败，请重试')
       }
-    })
-  }
-
-  fetchAllSavedExams() {
-    let self = this
-    this.savedExams = []
-    this.activeLength = 0
-    this.inactiveLength = 0
-    this.backendService.fetchAllByTableName('exams').subscribe(result => {
-      self.savedExams = result['response']
-      self.savedExams.forEach(exam => {
-        exam['questions'] = JSON.parse(exam['questions'])
-        exam['classes'] = JSON.parse(exam['classes'])
-        if (exam['state'] == 'active') {
-          self.activeLength += 1
-        }
-        if (exam['state'] == 'inactive') {
-          self.inactiveLength += 1
-        }
-      });
-      console.log(self.savedExams);
     })
   }
 
