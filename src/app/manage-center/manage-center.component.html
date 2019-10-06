@@ -36,15 +36,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-4 dropdown" *ngFor="let menu of menuList; let i=index">
-                    <a class="nav-link" [ngClass]="{'dropdown-toggle': menu.questions}" (click)="selectMenu(i)"
-                        [routerLink]="menu.url" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    <!-- 如果 没有 下拉菜单选项 -->
+                    <a *ngIf="!menu.dropdown" class="nav-link"
+                        (click)="selectMenu(i)" [routerLink]="menu.base_url" role="button">
+                        <i class="fas mr-2" [ngClass]="menu.icon"></i>
+                        {{menu.title}}
+                    </a>
+                    <!-- 如果 有 下拉菜单选项 -->
+                    <a *ngIf="menu.dropdown" href="#" class="nav-link" [ngClass]="{'dropdown-toggle': menu.dropdown}"
+                        (click)="selectMenu(i)" role="button" data-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <i class="fas mr-2" [ngClass]="menu.icon"></i>
                         {{menu.title}}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.questions">
-                        <a class="dropdown-item" [routerLink]="['./question-bank', q.url]"
-                            *ngFor="let q of menu.questions" (click)="handleQuestionTitleChanged(q.url)">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" *ngIf="menu.dropdown">
+                        <a class="dropdown-item" [routerLink]="[menu.base_url, q.url]" *ngFor="let q of menu.dropdown"
+                            (click)="handleQuestionTitleChanged(q.url)">
                             <i class="fas mr-2" [ngClass]="q.icon"></i>
                             {{q.title}}
                         </a>

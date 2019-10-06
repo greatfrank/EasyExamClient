@@ -18,11 +18,6 @@ export class StudyCenterComponent implements OnInit {
       title: '个人中心',
       url: 'student-profile',
       icon: 'fa-home'
-    },
-    {
-      title: '考试回顾',
-      url: 'review-exam',
-      icon: 'fa-map'
     }
   ]
 

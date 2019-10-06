@@ -8,21 +8,22 @@
         }
     }
     .submit-box{
+        border-radius: 50%;
         border: dashed 2px red;
-        width: 50%;
+        width: 10rem;
+        height: 10rem;
+        line-height: 9rem;
         text-align: center;
-        font-size: 1.5rem;
+        vertical-align: middle;
+        display: table-cell;
+        font-size: 2rem;
         color: red;
         font-weight: bold;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
         transform: rotate(20deg);
         -ms-transform: rotate(20deg);
         -webkit-transform: rotate(20deg);
         position: absolute;
-        bottom: 30%;
-        left: 10%;
-        opacity: 0.6;
-
+        bottom: 10%;
+        right: 5%;
     }
 }

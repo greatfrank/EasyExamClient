@@ -1,2 +1,21 @@
 .submit-exam-success{
+    .check-circle-icon{
+       color: green;
+       animation: rotate-animate 1.1s;
+    }
+
+    @keyframes rotate-animate {
+        0%{
+            color: green;
+            transform: rotateY(0deg)
+        }
+        50%{
+            color: yellowgreen;
+            transform: rotateY(180deg)
+        }
+        100%{
+            color: green;
+            transform: rotateY(360deg)
+        }
+    }
 }

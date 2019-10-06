@@ -6,7 +6,7 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
 import { StatisticComponent } from './manage-center/statistic/statistic.component';
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
-import { ExamComponent } from './manage-center/exam/exam.component';
+import { ExamDesignComponent } from "./manage-center/exam/exam-design/exam-design.component";
 import { TeacherProfileComponent } from "./manage-center/teacher-profile/teacher-profile.component";
 import { StudyCenterComponent } from "./study-center/study-center.component";
 import { StudentProfileComponent } from "./study-center/student-profile/student-profile.component";
@@ -42,7 +42,18 @@ const routes: Routes = [
       },
       {
         path: 'exam',
-        component: ExamComponent
+        children: [
+          {
+            // 考试设计
+            path: 'exam-design',
+            component: ExamDesignComponent
+          },
+          {
+            // 考试阅卷
+            path: 'exam-mark',
+            component: ExamDesignComponent
+          }
+        ]
       },
       {
         path: 'teacher-profile',

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { BackendService } from "../../backend.service";
+import { BackendService } from "../../../backend.service";
 import { FormBuilder, Validators } from "@angular/forms";
-import { GlobalData } from "../../global/global-data";
-import { UtilityService } from "../../utility.service";
+import { GlobalData } from "../../../global/global-data";
+import { UtilityService } from "../../../utility.service";
+
 
 @Component({
-  selector: 'app-exam',
-  templateUrl: './exam.component.html',
-  styleUrls: ['./exam.component.scss'],
-  providers: [UtilityService]
+  selector: 'app-exam-design',
+  templateUrl: './exam-design.component.html',
+  styleUrls: ['./exam-design.component.scss']
 })
-export class ExamComponent implements OnInit {
+export class ExamDesignComponent implements OnInit {
 
   courses: any
 
@@ -69,8 +69,6 @@ export class ExamComponent implements OnInit {
     this.savedExams = []
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.savedClasses = result['response']
-      console.log(self.savedClasses);
-
     })
   }
 
@@ -79,22 +77,37 @@ export class ExamComponent implements OnInit {
     let class_id = this.selectedClassForm.get('class_id').value
 
     let selectedClasses = exam['classes']
+    let willAddedClass: any
+    let canAddNewClass = true
 
+
+    // 根据选择到的 class_id, 从全部的班级信息里找到选择的班级的完整信息
     this.savedClasses.forEach(element => {
       if (element['id'] == class_id) {
-        selectedClasses.push(element)
+        willAddedClass = element
       }
     })
-    let set = new Set(selectedClasses)
-    let arr = Array.from(set)
 
-    this.savedExams.forEach(element => {
-      if (element['id'] == exam['id']) {
-        element['classes'] = arr
+    // 检索现在已经添加到考试中的班级数组，如果重复添加，则不允许
+    for (let i = 0; i < selectedClasses.length; i++) {
+      const element = selectedClasses[i];
+      if (element['id'] == willAddedClass['id']) {
+        canAddNewClass = false
+        break
+      } else {
+        canAddNewClass = true
+        continue
       }
-    });
+    }
+
+    // 如果没有重复，则允许添加
+    if (canAddNewClass) {
+      selectedClasses.push(willAddedClass)
+    }
 
     this.selectedClassForm.reset()
+    console.log(this.savedExams);
+
   }
 
   removeClass(currentClass: any, exam) {
@@ -123,7 +136,6 @@ export class ExamComponent implements OnInit {
     body['state'] = exam['classes'].length == 0 ? 'inactive' : 'active'
     this.backendService.updateByTableName('exams', body).subscribe(result => {
       self.isUpdatingClassesForExam = false
-      console.log(result);
       if (result['message'] == 'complete') {
         self.fetchAllSavedExams()
         alert('修改成功 ！')
@@ -151,7 +163,6 @@ export class ExamComponent implements OnInit {
         }
       });
       console.log(self.savedExams);
-
     })
   }
 
@@ -188,12 +199,10 @@ export class ExamComponent implements OnInit {
 
   onRemoveQuestion(questionObj: any) {
     let self = this
-    console.log(self.examForm.get('questions').value)
     this.examForm.get('questions').value.forEach((element, index) => {
       if (element['question'] == questionObj['question']) {
         self.examForm.get('questions').value.splice(index, 1)
         self.computCurrentTotalPoints()
-        console.log(self.examForm.get('questions').value)
       }
     });
   }
@@ -226,17 +235,13 @@ export class ExamComponent implements OnInit {
       id: this.utilityService.getIdByTimestamp(),
       created_datetime: this.utilityService.getDatetime()
     })
-    console.log(this.examForm.value);
 
     let body = Object.assign({}, this.examForm.value)
-    console.log(body);
     body['questions'] = JSON.stringify(this.examForm.get('questions').value)
     body['classes'] = JSON.stringify([])
     body['state'] = 'inactive'
-    console.log(body);
 
     this.backendService.addNewByTableName('exams', body).subscribe(data => {
-      console.log(data);
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
         alert('添加成功 ！')
         self.isSubmitingExam = false
@@ -258,7 +263,6 @@ export class ExamComponent implements OnInit {
       id: examId
     }
     this.backendService.removeByTableName('exams', json).subscribe(result => {
-      console.log(result);
       if (result['effect_rows'] == 1 && result['message'] == 'complete') {
         alert('删除成功 ！')
         self.fetchAllSavedExams()
@@ -268,7 +272,5 @@ export class ExamComponent implements OnInit {
     })
 
   }
-
-
 
 }

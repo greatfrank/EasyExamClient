@@ -16,7 +16,6 @@ import { ManageCenterComponent } from './manage-center/manage-center.component';
 import { MetadataComponent } from './manage-center/metadata/metadata.component';
 import { StatisticComponent } from './manage-center/statistic/statistic.component';
 import { QuestionBankComponent } from './manage-center/question-bank/question-bank.component';
-import { ExamComponent } from './manage-center/exam/exam.component';
 import { TeacherProfileComponent } from './manage-center/teacher-profile/teacher-profile.component';
 import { StudyCenterComponent } from './study-center/study-center.component';
 import { StudentProfileComponent } from './study-center/student-profile/student-profile.component';
@@ -25,6 +24,7 @@ import { StudentExamComponent } from './study-center/student-exam/student-exam.c
 import { ConfirmDeactivateGuardService } from "./confirm-deactivate-guard.service";
 import { QuestionToggleButtonsComponent } from './study-center/question-toggle-buttons/question-toggle-buttons.component';
 import { SubmitExamSuccessComponent } from './study-center/submit-exam-success/submit-exam-success.component';
+import { ExamDesignComponent } from './manage-center/exam/exam-design/exam-design.component';
 
 @NgModule({
   declarations: [
@@ -39,13 +39,14 @@ import { SubmitExamSuccessComponent } from './study-center/submit-exam-success/s
     MetadataComponent,
     StatisticComponent,
     QuestionBankComponent,
-    ExamComponent,
+    ExamDesignComponent,
     TeacherProfileComponent,
     StudyCenterComponent,
     StudentProfileComponent,
     StudentExamComponent,
     QuestionToggleButtonsComponent,
     SubmitExamSuccessComponent,
+    ExamDesignComponent,
   ],
   imports: [
     BrowserModule,

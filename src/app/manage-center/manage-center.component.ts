@@ -17,29 +17,10 @@ export class ManageCenterComponent implements OnInit {
 
   currentMenuIndex = 0
 
-  menuList = [
-    {
-      title: '统计信息',
-      icon: 'fa-chart-bar',
-      url: 'statistic'
-    },
-    {
-      title: '基础数据',
-      icon: 'fa-coins',
-      url: 'metadata'
-    },
-    {
-      title: '题库资源',
-      icon: 'fa-list',
-      questions: GlobalData.questions
-    },
-    {
-      title: '考试设计',
-      icon: 'fa-flag-checkered',
-      url: 'exam'
-    }
-  ]
+  // Top navigator menu list
+  menuList = GlobalData.menuList
 
+  // Teacher info json
   teacherInfo: any
 
   constructor(
@@ -58,6 +39,9 @@ export class ManageCenterComponent implements OnInit {
   }
 
   handleQuestionTitleChanged(questionTitle: string) {
+    if (questionTitle.indexOf('exam')!=-1) {
+      return
+    }
     this.messageService.sendQuestionTitleMessage(questionTitle)
   }
 

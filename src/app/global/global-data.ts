@@ -4,7 +4,7 @@ import { Student } from '../model/student'
 export class GlobalData {
   static currentTeacher: Teacher
   static currentStudent: Student
-  static questions: any[] = [
+  static questions = [
     {
       title: '选择题',
       icon: 'fa-check-circle',
@@ -29,6 +29,41 @@ export class GlobalData {
       title: '编程题',
       icon: 'fa-code',
       url: 'codings'
+    }
+  ]
+  static menuList: any[] = [
+    {
+      title: '统计信息',
+      icon: 'fa-chart-bar',
+      base_url: 'statistic'
+    },
+    {
+      title: '基础数据',
+      icon: 'fa-coins',
+      base_url: 'metadata'
+    },
+    {
+      title: '题库资源',
+      icon: 'fa-list',
+      base_url: 'question-bank',
+      dropdown: GlobalData.questions
+    },
+    {
+      title: '考试相关',
+      icon: 'fa-flag-checkered',
+      base_url: 'exam',
+      dropdown: [
+        {
+          title: '考试设计',
+          icon: '',
+          url: 'exam-design'
+        },
+        {
+          title: '考试阅卷',
+          icon: '',
+          url: 'exam-mark'
+        }
+      ]
     }
   ]
   static globalSources: Object = {

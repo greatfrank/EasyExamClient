@@ -227,6 +227,7 @@ export class StudentExamComponent implements OnInit {
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       student_id: JSON.parse(sessionStorage.getItem('student'))['id'],
+      class_id: this.myexam['class']['id'],
       course_id: this.myexam['course_id'],
       exam_id: this.myexam['id'],
       paper: JSON.stringify(this.myexam['questions']),
