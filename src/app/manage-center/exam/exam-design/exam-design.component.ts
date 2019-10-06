@@ -48,6 +48,12 @@ export class ExamDesignComponent implements OnInit {
   activeLength = 0
   inactiveLength = 0
 
+  notices = [
+    '以下考试模板列表中，如果头部的背景色是灰色，表示仅仅定义了考试模板，但是没有班级应用这个模板进行考试，处于【未发布】状态，所以可以删除。',
+    '如果头部的背景色是青色，则表示已经为这个模板添加了班级。即某些班级将会应用这个模板进行考试，处于【已发布】状态',
+    '如果在头部的右侧 或者 下方的参加考试的班级的右侧，出现红色的删除按钮，则表示这些班级还没有提交试卷，所以还是可以删除的。一旦学生提交了试卷，与这个考试模板以及参加考试的班级右侧红色的删除按钮将不会显示，即不能删除已经被使用过的模板，以免出现信息的混乱。'
+  ]
+
   constructor(
     private fb: FormBuilder,
     private utilityService: UtilityService,
@@ -92,7 +98,9 @@ export class ExamDesignComponent implements OnInit {
           self.inactiveLength += 1
         }
       });
+      console.log(self.savedExams);
     })
+
   }
 
   fetchAllStudentExam() {
@@ -108,7 +116,7 @@ export class ExamDesignComponent implements OnInit {
     if (classObj) {
       for (let i = 0; i < this.student_exam.length; i++) {
         const element = this.student_exam[i];
-        if (element['class_id'] == classObj['id']) {
+        if (element['class_id'] == classObj['id'] && element['course_id'] == exam['course_id']) {
           canRemovable = false
           break
         } else {
@@ -116,12 +124,10 @@ export class ExamDesignComponent implements OnInit {
           continue
         }
       }
-    }
-
-    if (exam) {
+    } else {
       for (let i = 0; i < this.student_exam.length; i++) {
         const element = this.student_exam[i];
-        if (element['exam_id'] == exam['id']) {
+        if (element['exam_id'] == exam['id'] && element['course_id'] == exam['course_id']) {
           canRemovable = false
           break
         } else {
@@ -130,7 +136,6 @@ export class ExamDesignComponent implements OnInit {
         }
       }
     }
-
     return canRemovable
   }
 
