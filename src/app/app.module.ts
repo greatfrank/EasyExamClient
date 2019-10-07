@@ -26,6 +26,11 @@ import { QuestionToggleButtonsComponent } from './study-center/question-toggle-b
 import { SubmitExamSuccessComponent } from './study-center/submit-exam-success/submit-exam-success.component';
 import { ExamDesignComponent } from './manage-center/exam/exam-design/exam-design.component';
 import { ExamMarkComponent } from './manage-center/exam/exam-mark/exam-mark.component';
+import { ChoicesModalComponent } from './manage-center/question-bank/choices-modal/choices-modal.component';
+import { FillsModalComponent } from './manage-center/question-bank/fills-modal/fills-modal.component';
+import { JudgesModalComponent } from './manage-center/question-bank/judges-modal/judges-modal.component';
+import { ShortAnswersModalComponent } from './manage-center/question-bank/short-answers-modal/short-answers-modal.component';
+import { CodingsModalComponent } from './manage-center/question-bank/codings-modal/codings-modal.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +54,11 @@ import { ExamMarkComponent } from './manage-center/exam/exam-mark/exam-mark.comp
     SubmitExamSuccessComponent,
     ExamDesignComponent,
     ExamMarkComponent,
+    ChoicesModalComponent,
+    FillsModalComponent,
+    JudgesModalComponent,
+    ShortAnswersModalComponent,
+    CodingsModalComponent,
   ],
   imports: [
     BrowserModule,

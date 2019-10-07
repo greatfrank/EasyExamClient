@@ -29,6 +29,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   isSubmitingChoice = false
   totalChoices = 0
   savedChoices = []
+  choicesModalObj = {
+    course_name: '',
+    list: []
+  }
 
   // 填空题
   fillForm = this.fb.group({
@@ -41,6 +45,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   isSubmitingFill = false
   totalFills = 0
   savedFills = []
+  fillsModalObj = {
+    course_name: '',
+    list: []
+  }
 
   // 判断题
   judgeForm = this.fb.group({
@@ -52,6 +60,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   isSubmitingJudge = false
   totalJudges = 0
   savedJudges = []
+  judgesModalObj = {
+    course_name: '',
+    list: []
+  }
 
   // 简答题
   shortAnswerForm = this.fb.group({
@@ -63,6 +75,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   isSubmitingShortAnswer = false
   totalShortAnswers = 0
   savedShortAnswers = []
+  shortAnswersModalObj = {
+    course_name: '',
+    list: []
+  }
 
   // 编程题
   codingForm = this.fb.group({
@@ -75,6 +91,11 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
   isSubmitingCoding = false
   totalCodings = 0
   savedCodings = []
+  codingsModalObj = {
+    course_name: '',
+    list: []
+  }
+
   // -------------------------------------------
   courses: any
   currentQuestionTitle: any
@@ -486,6 +507,36 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       })
     }
     return resultArr
+  }
+
+  showQuestionsModal(questionType: string, courseName: string, list: any) {
+    switch (questionType) {
+      case 'choices':
+        this.choicesModalObj.course_name = courseName
+        this.choicesModalObj.list = list
+        $('#' + questionType + 'Modal').modal('show')
+        break;
+      case 'fills':
+        this.fillsModalObj.course_name = courseName
+        this.fillsModalObj.list = list
+        $('#' + questionType + 'Modal').modal('show')
+        break;
+      case 'judges':
+        this.judgesModalObj.course_name = courseName
+        this.judgesModalObj.list = list
+        $('#' + questionType + 'Modal').modal('show')
+        break;
+      case 'shortAnswers':
+        this.shortAnswersModalObj.course_name = courseName
+        this.shortAnswersModalObj.list = list
+        $('#' + questionType + 'Modal').modal('show')
+        break;
+      default:
+        this.codingsModalObj.course_name = courseName
+        this.codingsModalObj.list = list
+        $('#' + questionType + 'Modal').modal('show')
+        break;
+    }
   }
 
 
