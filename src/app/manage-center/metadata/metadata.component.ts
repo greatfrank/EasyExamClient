@@ -80,7 +80,6 @@ export class MetadataComponent implements OnInit {
       }
       this.classNums.push(num)
     }
-    // this.sources = GlobalData.globalSources
     this.fetchMetadatas()
     this.fetchAllExams()
   }
@@ -104,7 +103,6 @@ export class MetadataComponent implements OnInit {
     let savedExams = []
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
       savedExams = result['response']
-      console.log(savedExams);
       savedExams.forEach(exam => {
         exam['classes'] = JSON.parse(exam['classes'])
       });

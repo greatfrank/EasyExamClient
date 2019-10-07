@@ -37,5 +37,9 @@ export class UtilityService {
     }, 500)
   }
 
+  replaceAll(str: string, searchStr: string, replaceStr: string) {
+    return str.split(searchStr).join(replaceStr)
+  }
+
 
 }

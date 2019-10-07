@@ -173,6 +173,8 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       });
       self.totalChoices = tempArr.length
       this.savedChoices = this.groupCourseByName(tempArr)
+      console.log(this.savedChoices);
+
     })
   }
 
@@ -180,16 +182,17 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     let self = this
     this.isSubmitingChoice = true
     let content = {
-      question: this.choiceForm.get('question').value,
+      question: this.utilityService.replaceAll(this.choiceForm.get('question').value, '\n', '<br>'),
       options: this.choiceForm.get('options').value,
       standard_answer: this.choiceForm.get('standard_answer').value,
-      explanation: this.choiceForm.get('explanation').value
+      explanation: this.utilityService.replaceAll(this.choiceForm.get('explanation').value, '\n', '<br>')
     }
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       course_id: this.choiceForm.get('course_id').value,
       content: JSON.stringify(content)
     }
+
     this.backendService.addNewByTableName('choices', body).subscribe(data => {
       self.isSubmitingChoice = false
       if (data['effect_rows'] == 1 && data['message'] == 'complete') {
@@ -243,6 +246,8 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       });
       self.totalFills = tempArr.length
       this.savedFills = this.groupCourseByName(tempArr)
+      console.log(this.savedFills);
+
     })
   }
 
@@ -250,9 +255,9 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     let self = this
     this.isSubmitingFill = true
     let content = {
-      question: this.fillForm.get('question').value,
+      question: this.utilityService.replaceAll(this.fillForm.get('question').value, '\n', '<br>'),
       standard_answer: this.fillForm.get('standard_answer').value,
-      explanation: this.fillForm.get('explanation').value
+      explanation: this.utilityService.replaceAll(this.fillForm.get('explanation').value, '\n', '<br>')
     }
     let body = {
       id: this.utilityService.getIdByTimestamp(),
@@ -302,6 +307,8 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       });
       self.totalJudges = tempArr.length
       this.savedJudges = this.groupCourseByName(tempArr)
+      console.log(this.savedJudges);
+
     })
   }
 
@@ -309,9 +316,9 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     let self = this
     this.isSubmitingJudge = true
     let content = {
-      question: this.judgeForm.get('question').value,
+      question: this.utilityService.replaceAll(this.judgeForm.get('question').value, '\n', '<br>'),
       standard_answer: this.judgeForm.get('standard_answer').value,
-      explanation: this.judgeForm.get('explanation').value
+      explanation: this.utilityService.replaceAll(this.judgeForm.get('explanation').value, '\n', '<br>')
     }
     let body = {
       id: this.utilityService.getIdByTimestamp(),
@@ -351,6 +358,8 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       });
       self.totalShortAnswers = tempArr.length
       this.savedShortAnswers = this.groupCourseByName(tempArr)
+      console.log(this.savedShortAnswers);
+
     })
   }
 
@@ -358,9 +367,9 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     let self = this
     this.isSubmitingShortAnswer = true
     let content = {
-      question: this.shortAnswerForm.get('question').value,
-      standard_answer: this.shortAnswerForm.get('standard_answer').value,
-      explanation: this.shortAnswerForm.get('explanation').value
+      question: this.utilityService.replaceAll(this.shortAnswerForm.get('question').value, '\n', '<br>'),
+      standard_answer: this.utilityService.replaceAll(this.shortAnswerForm.get('standard_answer').value, '\n', '<br>'),
+      explanation: this.utilityService.replaceAll(this.shortAnswerForm.get('explanation').value, '\n', '<br>')
     }
     let body = {
       id: this.utilityService.getIdByTimestamp(),
@@ -400,6 +409,8 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       });
       self.totalCodings = tempArr.length
       this.savedCodings = this.groupCourseByName(tempArr)
+      console.log(this.savedCodings);
+
     })
   }
 
@@ -407,10 +418,10 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     let self = this
     this.isSubmitingCoding = true
     let content = {
-      question: this.codingForm.get('question').value,
-      standard_answer: this.codingForm.get('standard_answer').value,
-      result: this.codingForm.get('result').value,
-      explanation: this.codingForm.get('explanation').value
+      question: this.utilityService.replaceAll(this.codingForm.get('question').value, '\n', '<br>'),
+      standard_answer: this.utilityService.replaceAll(this.codingForm.get('standard_answer').value, '\n', '<br>'),
+      result: this.utilityService.replaceAll(this.codingForm.get('result').value, '\n', '<br>'),
+      explanation: this.utilityService.replaceAll(this.codingForm.get('explanation').value, '\n', '<br>')
     }
     let body = {
       id: this.utilityService.getIdByTimestamp(),
