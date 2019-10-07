@@ -25,6 +25,7 @@ import { ConfirmDeactivateGuardService } from "./confirm-deactivate-guard.servic
 import { QuestionToggleButtonsComponent } from './study-center/question-toggle-buttons/question-toggle-buttons.component';
 import { SubmitExamSuccessComponent } from './study-center/submit-exam-success/submit-exam-success.component';
 import { ExamDesignComponent } from './manage-center/exam/exam-design/exam-design.component';
+import { ExamMarkComponent } from './manage-center/exam/exam-mark/exam-mark.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { ExamDesignComponent } from './manage-center/exam/exam-design/exam-desig
     QuestionToggleButtonsComponent,
     SubmitExamSuccessComponent,
     ExamDesignComponent,
+    ExamMarkComponent,
   ],
   imports: [
     BrowserModule,

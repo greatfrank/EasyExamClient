@@ -1,4 +1,10 @@
 .manage-center{
+    .active{
+        color: #ccc !important;
+        &:hover{
+            color: white !important;
+        }
+    }
     .dropdown-item{
         &:hover{
             background-color: orangered;

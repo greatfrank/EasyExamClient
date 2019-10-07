@@ -55,12 +55,12 @@ export class GlobalData {
       dropdown: [
         {
           title: '考试设计',
-          icon: '',
+          icon: 'fa-ruler-combined',
           url: 'exam-design'
         },
         {
           title: '考试阅卷',
-          icon: '',
+          icon: 'fa-user-edit',
           url: 'exam-mark'
         }
       ]

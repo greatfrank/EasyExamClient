@@ -34,12 +34,10 @@ export class TeacherProfileComponent implements OnInit {
 
   setupTeacherInfo() {
     let self = this
-    setTimeout(() => {
-      self.backService.fetchAllByTableName('teachers').subscribe(result => {
-        self.teacher = result['response'][0]
-        sessionStorage.setItem('teacher', JSON.stringify(self.teacher))
-      })
-    }, 500);
+    this.backService.fetchAllByTableName('teachers').subscribe(result => {
+      self.teacher = result['response'][0]
+      sessionStorage.setItem('teacher', JSON.stringify(self.teacher))
+    })
   }
 
   modifyProfileInfo(key, label) {

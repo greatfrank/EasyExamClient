@@ -37,15 +37,13 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item ml-4 dropdown" *ngFor="let menu of menuList; let i=index">
                     <!-- 如果 没有 下拉菜单选项 -->
-                    <a *ngIf="!menu.dropdown" class="nav-link"
-                        (click)="selectMenu(i)" [routerLink]="menu.base_url" role="button">
+                    <a *ngIf="!menu.dropdown" class="nav-link active" [routerLink]="menu.base_url" role="button">
                         <i class="fas mr-2" [ngClass]="menu.icon"></i>
                         {{menu.title}}
                     </a>
                     <!-- 如果 有 下拉菜单选项 -->
-                    <a *ngIf="menu.dropdown" href="#" class="nav-link" [ngClass]="{'dropdown-toggle': menu.dropdown}"
-                        (click)="selectMenu(i)" role="button" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false">
+                    <a *ngIf="menu.dropdown" href="#" class="nav-link active" [ngClass]="{'dropdown-toggle': menu.dropdown}"
+                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fas mr-2" [ngClass]="menu.icon"></i>
                         {{menu.title}}
                     </a>
@@ -58,7 +56,7 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown mx-5 border-left border-1 border-light pl-3">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                    <a class="nav-link active dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-user mr-2"></i>
                         教师信息

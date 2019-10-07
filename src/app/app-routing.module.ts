@@ -12,6 +12,7 @@ import { StudyCenterComponent } from "./study-center/study-center.component";
 import { StudentProfileComponent } from "./study-center/student-profile/student-profile.component";
 import { StudentExamComponent } from "./study-center/student-exam/student-exam.component";
 import { SubmitExamSuccessComponent } from "./study-center/submit-exam-success/submit-exam-success.component";
+import { ExamMarkComponent } from "./manage-center/exam/exam-mark/exam-mark.component";
 
 import { ConfirmDeactivateGuardService } from "./confirm-deactivate-guard.service";
 
@@ -51,7 +52,7 @@ const routes: Routes = [
           {
             // 考试阅卷
             path: 'exam-mark',
-            component: ExamDesignComponent
+            component: ExamMarkComponent
           }
         ]
       },
