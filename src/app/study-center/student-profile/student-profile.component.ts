@@ -59,9 +59,11 @@ export class StudentProfileComponent implements OnInit {
         return
       }
 
+      // 过滤掉未发布的考试信息。即没有发布的考试，学生不能进入考试
       self.exams = result['response'].filter(element => {
         return element['state'] == 'active'
       })
+      // 过滤掉给这个学生的班级不相关的考试信息
       self.exams = self.exams.filter(element => {
         let flag = false
         let classes = JSON.parse(element['classes'])
@@ -73,14 +75,13 @@ export class StudentProfileComponent implements OnInit {
         }
         return flag
       })
+      // 因为当前的考试信息都是与这个班级相关的考试，所以可以去掉考试中涉及到的所有班级的信息，然后把当前的班级信息放入考试列表中。
       self.exams.forEach(element => {
         delete element['classes']
         element['class'] = self.student['class']
       });
 
       self.checkExamSubmited()
-
-      console.log(self.exams);
 
     })
   }
@@ -108,18 +109,34 @@ export class StudentProfileComponent implements OnInit {
 
   checkExamSubmited() {
     let self = this
-    this.backendService.fetchAllByTableName('student_exam', null).subscribe(result => {
-      let arr = result['response']
-      arr.forEach(element => {
+    this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
+      // 得到所有的学生交卷的情况记录
+      let stu_exams = result['response']
+      // 这里不考虑实际的试卷题目，去掉
+      stu_exams.forEach(element => {
         delete element['paper']
       });
-      console.log(arr);
-      for (let i = 0; i < arr.length; i++) {
-        let item = arr[i]
-        for (let j = 0; j < self.exams.length; j++) {
-          const exam = self.exams[j];
-          exam['submit'] = item['exam_id'] == exam['id'] ? true : false
+
+      // 遍历与这位学生相关的考试信息
+      for (let i = 0; i < self.exams.length; i++) {
+        let myexam = self.exams[i];
+        let submit = false
+        // 拿着一个考试信息，去遍历所有交卷信息
+        for (let j = 0; j < stu_exams.length; j++) {
+          const stu_exam = stu_exams[j];
+          // 如果再交卷信息里，有这个学生的班级ID和考试信息，说明该学生已经完成了这门考试，并交卷。
+          if (stu_exam['exam_id'] == myexam['id'] && stu_exam['class_id'] == myexam['class']['id']) {
+            // 则设定这位学生的这门考试的状态为【已交卷】
+            submit = true
+            break
+          } else {
+            // 否则设定这门考试的状态为【未交卷】，继续比对下一个交卷信息
+            submit = false
+            continue
+          }
         }
+        // 把最后判断出来的交卷状态设定到当前的这门考试对象里
+        myexam['submit'] = submit
       }
     })
   }

@@ -174,8 +174,7 @@
                                                 <select class="form-control" formControlName="class_id">
                                                     <option value="" disabled>-- 选择要添加的班级 --</option>
                                                     <option [value]="class.id" *ngFor="let class of savedClasses">
-                                                        {{class.type}}
-                                                        {{class.major}} {{class.regist_year}}-{{class.num}} 班</option>
+                                                        {{class.full_name}} 班</option>
                                                 </select>
                                                 <div class="text-danger" *ngIf="exam['classes'].length==0">
                                                     此项考试还没有添加班级，所以暂时不能用于实际的考试中。</div>

@@ -67,14 +67,17 @@
                 <!-- === Choices content box === -->
                 <div class="choices-content-box"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='choices'">
-                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <h4>
+                        {{myexam['questions'][questionIndex]['title']}}
+                        <span class="ml-2 text-warning">
+                            {{questionIndex+1}}.{{contentIndex+1}}
+                        </span>
+                    </h4>
                     <hr>
                     <div class="py-3">
-                        <p class="font-weight-bolder lead">
-                            <span class="mr-2 text-warning">
-                                {{questionIndex+1}}.{{contentIndex+1}}
-                            </span>
-                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <pre class="font-weight-bolder lead text-white"
+                            [innerHTML]="myexam['questions'][questionIndex]['contents'][contentIndex]['question']">
+                        </pre>
                         <hr>
                         <form>
                             <div class="form-group lead font-weight-bold"
@@ -89,14 +92,15 @@
                 </div>
                 <!-- === Fills content box === -->
                 <div class="fills-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
-                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <h4>
+                        {{myexam['questions'][questionIndex]['title']}}
+                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                    </h4>
                     <hr>
                     <div class="py-3">
-                        <p class="font-weight-bolder lead">
-                            <span class="mr-2 text-warning">
-                                {{questionIndex+1}}.{{contentIndex+1}}
-                            </span>
-                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <pre class="font-weight-bolder lead text-white"
+                            [innerHTML]="myexam['questions'][questionIndex]['contents'][contentIndex]['question']">
+                        </pre>
                         <hr>
                         <form>
                             <label>在以下的输入框填写答案。输入框的顺序与题目中空白的顺序一致</label>
@@ -111,14 +115,15 @@
                 </div>
                 <!-- ======== Judges content box ======== -->
                 <div class="judges-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
-                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <h4>
+                        {{myexam['questions'][questionIndex]['title']}}
+                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                    </h4>
                     <hr>
                     <div class="py-3">
-                        <p class="font-weight-bolder lead">
-                            <span class="mr-2 text-warning">
-                                {{questionIndex+1}}.{{contentIndex+1}}
-                            </span>
-                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <pre class="font-weight-bolder lead text-white"
+                            [innerHTML]="myexam['questions'][questionIndex]['contents'][contentIndex]['question']">
+                        </pre>
                         <hr>
                         <form>
                             <div class="form-check form-check-inline mr-5">
@@ -147,14 +152,15 @@
                 <!-- === ShortAnswers content box === -->
                 <div class="short_answers-content-box"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='short_answers'">
-                    <h4>{{myexam['questions'][questionIndex]['title']}}</h4>
+                    <h4>
+                        {{myexam['questions'][questionIndex]['title']}}
+                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                    </h4>
                     <hr>
                     <div class="py-3">
-                        <p class="font-weight-bolder lead">
-                            <span class="mr-2 text-warning">
-                                {{questionIndex+1}}.{{contentIndex+1}}
-                            </span>
-                            {{myexam['questions'][questionIndex]['contents'][contentIndex]['question']}}</p>
+                        <pre class="text-white lead font-weight-bolder"
+                            [innerHTML]="myexam['questions'][questionIndex]['contents'][contentIndex]['question']">
+                        </pre>
                         <hr>
                         <form>
                             <div class="form-group font-weight-bold">
