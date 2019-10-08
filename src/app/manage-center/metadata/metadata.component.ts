@@ -30,7 +30,7 @@ export class MetadataComponent implements OnInit {
     major: ['', Validators.required],
     type: ['', Validators.required],
     regist_year: ['', Validators.required],
-    num: ['', Validators.required],
+    num: ['', Validators.required]
   })
   classesTableHeads = Object.keys(this.classForm.value)
   class = new Class()
@@ -154,8 +154,12 @@ export class MetadataComponent implements OnInit {
       case 'classes':
         this.isSubmitingClass = true
         this.classForm.patchValue({
-          id: this.utilityService.getIdByTimestamp()
+          id: this.utilityService.getIdByTimestamp(),
+          full_name: this.classForm.get('type').value + this.classForm.get('major').value + this.classForm.get('regist_year').value + '-' + this.classForm.get('num').value
         })
+        let body = this.classForm.value
+        body['full_name'] = this.classForm.get('type').value + this.classForm.get('major').value + ' ' + this.classForm.get('regist_year').value + '-' + this.classForm.get('num').value
+
         this.backendService.addNewByTableName(tableName, this.classForm.value).subscribe(data => {
           if (data['effect_rows'] == 1 && data['message'] == 'complete') {
             alert('添加成功')

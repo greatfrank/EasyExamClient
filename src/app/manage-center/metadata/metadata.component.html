@@ -65,8 +65,7 @@
                                 <tr *ngFor="let classObj of sources['classes']; let i=index">
                                     <td>{{i+1}}</td>
                                     <td>{{classObj['id']}}</td>
-                                    <td>{{classObj['type']}} {{classObj['major']}}
-                                        {{classObj['regist_year']}}-{{classObj['num']}}</td>
+                                    <td>{{classObj['full_name']}}</td>
                                     <td>
                                         <button class="btn btn-outline-primary btn-sm"
                                             *ngIf="detectCanRemovable(classObj['id'],null)"

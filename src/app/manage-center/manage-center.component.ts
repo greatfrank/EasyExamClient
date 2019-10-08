@@ -24,6 +24,7 @@ export class ManageCenterComponent implements OnInit {
   teacherInfo: any
 
   constructor(
+    private backendService: BackendService,
     private messageService: MessageService,
     private utilityService: UtilityService,
     private router: Router
@@ -32,6 +33,13 @@ export class ManageCenterComponent implements OnInit {
   ngOnInit() {
     this.utilityService.checkTeacherLogin()
     this.teacherInfo = JSON.parse(sessionStorage.getItem('teacher'))
+
+    this.backendService.fetchAllByTableName('courses').subscribe(result => {
+      GlobalData.globalSources['courses'] = result['response']
+    })
+    this.backendService.fetchAllByTableName('classes').subscribe(result => {
+      GlobalData.globalSources['classes'] = result['response']
+    })
   }
 
   selectMenu(index) {
@@ -39,7 +47,7 @@ export class ManageCenterComponent implements OnInit {
   }
 
   handleQuestionTitleChanged(questionTitle: string) {
-    if (questionTitle.indexOf('exam')!=-1) {
+    if (questionTitle.indexOf('exam') != -1) {
       return
     }
     this.messageService.sendQuestionTitleMessage(questionTitle)

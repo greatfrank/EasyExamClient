@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
+import { GlobalData } from 'src/app/global/global-data';
 
 @Component({
   selector: 'app-statistic',
