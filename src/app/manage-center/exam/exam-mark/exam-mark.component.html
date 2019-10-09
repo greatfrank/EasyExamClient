@@ -12,9 +12,12 @@
                             <span class="badge badge-secondary">{{group['list'].length}}</span>
                         </h4>
                         <div>
-                            <button class=" btn btn-outline-primary font-weight-bold m-2 px-4"
-                                *ngFor="let item of group['list']; let y=index" (click)="selectPaper(x,y)">
-                                {{y+1}}
+                            <button class="btn font-weight-bold m-2"
+                                *ngFor="let item of group['list']; let y=index"
+                                [ngClass]="{'btn-primary': item['marked']==1, 'btn-outline-primary':item['marked']==0}"
+                                [disabled]="item['marked']==1" (click)="selectPaper(x,y)">
+                                <i class="fas fa-book-open"></i>
+                                {{y+1}}&nbsp;&nbsp;&nbsp;{{item['score']}} 分
                             </button>
                         </div>
                     </li>
@@ -28,6 +31,17 @@
                             {{currentPaper['course_name']}} 》</span>
                         试卷ID: {{currentPaper['id']}}
                     </p>
+                    <div class="alert alert-primary">
+                        <ul class="m-0 py-0">
+                            <li>完成所有题目的评分工作后，请在试卷最下方点击【完成阅卷】按钮。</li>
+                            <li>因为【选择题】、【填空题】、【判断题】都属于标准化题目，评分工作由程序自动完成。请教师直接评阅【简答题】或者【编程题】。</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-warning">
+                        <ul class="m-0 py-0">
+                            <li>如果试题的得分大于其分值，或者没有给与该试题得分，则无法点击【完成阅卷】按钮。</li>
+                        </ul>
+                    </div>
                     <div class="content-area" *ngFor="let item of currentPaper['paper']; let x=index">
                         <!-- Choices -->
                         <div *ngIf="item['question']=='choices'">
@@ -110,11 +124,39 @@
                                         <i class="fas fa-caret-right mr-2"></i>
                                         考生答案
                                     </label>
-                                    <pre class="bg-info text-white p-2 answer"
-                                        [innerHTML]="content['stu_answer']"></pre>
+                                    <pre class="text-info p-2 answer" [innerHTML]="content['stu_answer']"></pre>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text font-weight-bolder text-success">
+                                                        得分
+                                                    </span>
+                                                </div>
+                                                <input type="number" class="form-control form-control-lg text-success"
+                                                    placeholder="分值" aria-label="Username"
+                                                    aria-describedby="basic-addon1" [(ngModel)]="content['score']"
+                                                    (keyup)="checkInvalidScore()">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text font-weight-bolder">/
+                                                        {{item['point']}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col lead">
+                                            分值必须是整数数字，但是分值不能大于该题的分值
+                                        </div>
+                                    </div>
                                 </li>
                             </ol>
                         </div>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-lg btn-danger" (click)="finishMarkPaper()" [disabled]="invalidScore">
+                            <i class="fas fa-check mr-2"></i>
+                            完成阅卷
+                        </button>
                     </div>
                 </div>
             </div>
