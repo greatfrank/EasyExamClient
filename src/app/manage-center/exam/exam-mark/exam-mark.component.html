@@ -1,8 +1,122 @@
-<div id="exam-mark" class="exam-mark">
+<div id="exam-mark" class="exam-mark bg-light py-4">
     <div class="container-fluid">
         <div class="row">
-            <div class="col">
+            <!-- =========== Menus Area =========== -->
+            <div class="col-4">
                 <h1>考试阅卷</h1>
+                <hr>
+                <ul class="list-unstyled">
+                    <li class="my-4" *ngFor="let group of groupedMenuList; let x=index">
+                        <h4>
+                            《 {{group['course_name']}} 》
+                            <span class="badge badge-secondary">{{group['list'].length}}</span>
+                        </h4>
+                        <div>
+                            <button class=" btn btn-outline-primary font-weight-bold m-2 px-4"
+                                *ngFor="let item of group['list']; let y=index" (click)="selectPaper(x,y)">
+                                {{y+1}}
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- =========== Papers Area =========== -->
+            <div class="col">
+                <div class="paper" *ngIf="currentPaper">
+                    <p class="lead font-weight-normal" style="font-size: 2.5rem">
+                        <span class="bg-primary text-white px-2 py-1 font-weight-bold mr-2">《
+                            {{currentPaper['course_name']}} 》</span>
+                        试卷ID: {{currentPaper['id']}}
+                    </p>
+                    <div class="content-area" *ngFor="let item of currentPaper['paper']; let x=index">
+                        <!-- Choices -->
+                        <div *ngIf="item['question']=='choices'">
+                            <h4 class="question-type">
+                                {{item['title']}}
+                                <small class="badge badge-warning">每题 {{item['point']}} 分</small>
+                            </h4>
+                            <ol class="content-list">
+                                <li class="content-obj" *ngFor="let content of item['contents']">
+                                    <pre class="content-question" [innerHTML]="content['question']"></pre>
+                                    <ul class="list-unstyled option-list">
+                                        <li class="option" *ngFor="let option of content['options']">{{option}}
+                                            <span class="mx-2 badge badge-dark"
+                                                *ngIf="option==content['standard_answer']">标准答案</span>
+                                            <span class="mx-2 badge badge-info"
+                                                *ngIf="option==content['stu_answer']">学生答案</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                        <!-- Fills -->
+                        <div *ngIf="item['question']=='fills'">
+                            <h4 class="question-type">
+                                {{item['title']}}
+                                <small class="badge badge-warning">每题 {{item['point']}} 分</small>
+                            </h4>
+                            <ol class="content-list">
+                                <li class="content-obj" *ngFor="let content of item['contents']">
+                                    <pre class="content-question" [innerHTML]="content['question']"></pre>
+                                    <div class="answer font-weight-bold">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        标准答案：
+                                        <span class="mr-4" *ngFor="let sa of content['standard_answer']">{{sa}}</span>
+                                    </div>
+                                    <div class="answer font-weight-bold text-info">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        考生答案：
+                                        <span class="mr-4" *ngFor="let sa of content['stu_answer']">{{sa}}</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <!-- Judges -->
+                        <div *ngIf="item['question']=='judges'">
+                            <h4 class="question-type">
+                                {{item['title']}}
+                                <small class="badge badge-warning">每题 {{item['point']}} 分</small>
+                            </h4>
+                            <ol class="content-list">
+                                <li class="content-obj" *ngFor="let content of item['contents']">
+                                    <pre class="content-question" [innerHTML]="content['question']"></pre>
+                                    <div class="answer font-weight-bolder">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        标准答案：{{content['standard_answer']}}
+                                    </div>
+                                    <div class="answer font-weight-bolder text-info">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        考生答案：{{content['stu_answer']}}
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <!-- Short Answer -->
+                        <div *ngIf="item['question']=='short_answers'">
+                            <h4 class="question-type">
+                                {{item['title']}}
+                                <small class="badge badge-warning">每题 {{item['point']}} 分</small>
+                            </h4>
+                            <ol class="content-list">
+                                <li class="content-obj" *ngFor="let content of item['contents']">
+                                    <pre class="content-question" [innerHTML]="content['question']"></pre>
+                                    <label class="font-weight-bold">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        参考答案
+                                    </label>
+                                    <pre class="bg-dark p-2 text-white answer"
+                                        [innerHTML]="content['standard_answer']"></pre>
+                                    <label class="font-weight-bold text-info">
+                                        <i class="fas fa-caret-right mr-2"></i>
+                                        考生答案
+                                    </label>
+                                    <pre class="bg-info text-white p-2 answer"
+                                        [innerHTML]="content['stu_answer']"></pre>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

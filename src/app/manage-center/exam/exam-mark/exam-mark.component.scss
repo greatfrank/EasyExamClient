@@ -1,0 +1,42 @@
+.exam-mark{
+    // 题型标题
+    .question-type{
+        margin-bottom: 1rem;
+        border-left: solid 4px #aaa;
+        border-top: solid 4px #aaa;
+        padding: 1rem;
+    }
+    // 题目列表
+    .content-list{
+        // 单个的题目对象
+        .content-obj{
+            margin-bottom: 2rem !important;
+            // 题干
+            .content-question{
+                color: rgb(197, 55, 4);
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem !important;
+                font-weight: bold;
+            }
+        }
+    }
+    // 选项列表
+    .option-list{
+        margin-top: 0rem;
+        // 选项
+        .option{
+            margin-bottom: 0.5rem !important;
+            font-size: 1.1rem;
+        }
+    }
+    .answer{
+        font-size: 1.1rem;
+    }
+    pre{
+        white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+        white-space: -pre-wrap; /* Opera */
+        white-space: -o-pre-wrap; /* Opera */
+        white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+        word-wrap: break-word; /* IE 5.5+ */
+    }  
+}

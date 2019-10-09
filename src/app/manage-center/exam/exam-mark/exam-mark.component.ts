@@ -11,6 +11,8 @@ export class ExamMarkComponent implements OnInit {
   details = []
   classes = []
   courses = []
+  groupedMenuList = []
+  currentPaper = null
 
   constructor(
     private backendService: BackendService
@@ -39,12 +41,58 @@ export class ExamMarkComponent implements OnInit {
               detail['class_name'] = class_name
             }
           }
-          console.log(self.details);
+          // console.log(self.details);
+          this.groupAllDetails()
         })
       })
     })
   }
 
+  groupAllDetails() {
+    let self = this
+    this.details.forEach(element => {
+      self.groupedMenuList.push({
+        course_id: element['course_id'],
+        course_name: element['course_name']
+      })
+    })
+
+    this.groupedMenuList = this.removeDuplicateObjects(this.groupedMenuList)
+
+    for (let i = 0; i < this.groupedMenuList.length; i++) {
+      const g = this.groupedMenuList[i];
+      g['list'] = []
+      for (let j = 0; j < self.details.length; j++) {
+        let element = self.details[j];
+        element['marked'] = false
+        if (element['course_id'] == g['course_id']) {
+          g['list'].push(element)
+        }
+      }
+    }
+
+    console.log(this.groupedMenuList);
+  }
+
+  selectPaper(courseIndex, paperIndex) {
+    this.currentPaper = null
+    this.currentPaper = this.groupedMenuList[courseIndex]['list'][paperIndex]
+    if (typeof (this.currentPaper['paper']) == 'string') {
+      this.currentPaper['paper'] = JSON.parse(this.currentPaper['paper'])
+    }
+    console.log(this.currentPaper);
+
+  }
+
+
+
+  /**
+   * Tools function
+   */
+  removeDuplicateObjects(array: any[]) {
+    return [...new Set(array.map(s => JSON.stringify(s)))]
+      .map(s => JSON.parse(s));
+  }
 
   searchValueInObjArray(searchKey, searchValue, resultKey, searchArray) {
     let result = null
