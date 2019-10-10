@@ -193,9 +193,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
         tempArr.push(json)
       });
       self.totalChoices = tempArr.length
-      this.savedChoices = this.groupCourseByName(tempArr)
-      console.log(this.savedChoices);
-
+      self.savedChoices = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
     })
   }
 
@@ -266,9 +264,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
         tempArr.push(json)
       });
       self.totalFills = tempArr.length
-      this.savedFills = this.groupCourseByName(tempArr)
-      console.log(this.savedFills);
-
+      self.savedFills = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
     })
   }
 
@@ -327,9 +323,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
         tempArr.push(json)
       });
       self.totalJudges = tempArr.length
-      this.savedJudges = this.groupCourseByName(tempArr)
-      console.log(this.savedJudges);
-
+      self.savedJudges = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
     })
   }
 
@@ -378,8 +372,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
         tempArr.push(json)
       });
       self.totalShortAnswers = tempArr.length
-      this.savedShortAnswers = this.groupCourseByName(tempArr)
-      console.log(this.savedShortAnswers);
+      self.savedShortAnswers = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
 
     })
   }
@@ -429,9 +422,7 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
         tempArr.push(json)
       });
       self.totalCodings = tempArr.length
-      this.savedCodings = this.groupCourseByName(tempArr)
-      console.log(this.savedCodings);
-
+      self.savedCodings = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
     })
   }
 
@@ -472,41 +463,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       }
     });
     return courseName
-  }
-
-  groupCourseByName(courseArr: any[]) {
-    let resultArr = []
-
-    // Sort original array
-    var compareFun = function (emp1: any, emp2: any) {
-      if (emp1['course_id'] > emp2['course_id']) {
-        return -1
-      }
-      if (emp1['course_id'] < emp2['course_id']) {
-        return 1
-      }
-      return 0
-    }
-    let sortedCourseArr = courseArr.sort(compareFun)
-
-    // Set group array
-    let nameSet = new Set()
-    courseArr.forEach(element => {
-      nameSet.add(element['course_name'])
-    });
-    for (const name of nameSet) {
-      let subArr = []
-      sortedCourseArr.forEach(course => {
-        if (course['course_name'] == name) {
-          subArr.push(course)
-        }
-      });
-      resultArr.push({
-        course_name: name,
-        list: subArr
-      })
-    }
-    return resultArr
   }
 
   showQuestionsModal(questionType: string, courseName: string, list: any) {

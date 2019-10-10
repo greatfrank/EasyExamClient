@@ -3,6 +3,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ChartModule, HIGHCHARTS_MODULES } from "angular-highcharts";
+import exporting from 'highcharts/modules/exporting.src.js';
+export function highchartsModules() {
+    return [exporting]
+}
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,11 +70,16 @@ import { CodingsModalComponent } from './manage-center/question-bank/codings-mod
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChartModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    ConfirmDeactivateGuardService
+    ConfirmDeactivateGuardService,
+    {
+      provide:HIGHCHARTS_MODULES,
+      useFactory:highchartsModules
+    }
   ],
   bootstrap: [AppComponent]
 })

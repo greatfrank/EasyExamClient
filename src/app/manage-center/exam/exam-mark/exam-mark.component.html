@@ -5,21 +5,22 @@
             <div class="col-4">
                 <h1>考试阅卷</h1>
                 <hr>
-                <ul class="list-unstyled">
-                    <li class="my-4" *ngFor="let group of groupedMenuList; let x=index">
-                        <h4>
-                            《 {{group['course_name']}} 》
-                            <span class="badge badge-secondary">{{group['list'].length}}</span>
-                        </h4>
-                        <div>
-                            <button class="btn font-weight-bold m-2"
-                                *ngFor="let item of group['list']; let y=index"
-                                [ngClass]="{'btn-primary': item['marked']==1, 'btn-outline-primary':item['marked']==0}"
-                                [disabled]="item['marked']==1" (click)="selectPaper(x,y)">
-                                <i class="fas fa-book-open"></i>
-                                {{y+1}}&nbsp;&nbsp;&nbsp;{{item['score']}} 分
-                            </button>
-                        </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item pl-0 border-0" *ngFor="let courseGroup of groupedMenuList; let x=index">
+                        <h3>《 {{courseGroup['course_name']}} 》</h3>
+                        <ul class="list-group">
+                            <li class="list-group-item" *ngFor="let classGroup of courseGroup['list']; let y=index">
+                                <h5>{{classGroup['class_name']}} <span class="text-info">班</span></h5>
+                                <button class="btn font-weight-bold mt-2 mr-2"
+                                    *ngFor="let item of classGroup['list']; let z=index"
+                                    [ngClass]="{'btn-primary': item['marked']==1, 'btn-outline-primary':item['marked']==0}"
+                                    [disabled]="item['marked']==1" (click)="selectPaper(x,y,z)">
+                                    <i class="fas fa-book-open"></i>
+                                    {{y+1}}&nbsp;&nbsp;&nbsp;{{item['score']}} 分
+                                </button>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

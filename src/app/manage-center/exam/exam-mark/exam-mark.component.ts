@@ -14,6 +14,7 @@ export class ExamMarkComponent implements OnInit {
   courses = []
   groupedMenuList = []
   courseIndex = -1
+  classIndex = -1
   paperIndex = -1
   currentPaper = null
 
@@ -54,35 +55,26 @@ export class ExamMarkComponent implements OnInit {
     })
   }
 
+  // 首先按照课程进行分组，然后再按照班级进行分组
   groupAllDetails() {
     let self = this
-    this.details.forEach(element => {
-      self.groupedMenuList.push({
-        course_id: element['course_id'],
-        course_name: element['course_name']
-      })
-    })
-
-    this.groupedMenuList = this.removeDuplicateObjects(this.groupedMenuList)
+    console.log(this.details);
+    this.groupedMenuList = this.utilityService.groupData(this.details, 'course_id', 'course_name', 'list')
 
     for (let i = 0; i < this.groupedMenuList.length; i++) {
-      const g = this.groupedMenuList[i];
-      g['list'] = []
-      for (let j = 0; j < self.details.length; j++) {
-        let element = self.details[j];
-        if (element['course_id'] == g['course_id']) {
-          g['list'].push(element)
-        }
-      }
+      let classDetail = this.groupedMenuList[i]['list']
+      this.groupedMenuList[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
     }
+    console.log(this.groupedMenuList);
   }
 
-  selectPaper(courseIndex, paperIndex) {
+  selectPaper(courseIndex, classIndex, paperIndex) {
     this.currentPaper = null
     this.invalidScore = false
     this.courseIndex = courseIndex
+    this.classIndex = classIndex
     this.paperIndex = paperIndex
-    this.currentPaper = this.groupedMenuList[courseIndex]['list'][paperIndex]
+    this.currentPaper = this.groupedMenuList[courseIndex]['list'][classIndex]['list'][paperIndex]
     if (typeof (this.currentPaper['paper']) == 'string') {
       this.currentPaper['paper'] = JSON.parse(this.currentPaper['paper'])
     }
@@ -98,6 +90,8 @@ export class ExamMarkComponent implements OnInit {
         }
       }
     }
+    console.log(this.currentPaper);
+    
   }
 
   checkInvalidScore() {
@@ -162,11 +156,6 @@ export class ExamMarkComponent implements OnInit {
   /**
    * Tools function
    */
-  removeDuplicateObjects(array: any[]) {
-    return [...new Set(array.map(s => JSON.stringify(s)))]
-      .map(s => JSON.parse(s));
-  }
-
   searchValueInObjArray(searchKey, searchValue, resultKey, searchArray) {
     let result = null
     for (let i = 0; i < searchArray.length; i++) {
