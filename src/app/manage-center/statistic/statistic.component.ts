@@ -44,10 +44,22 @@ export class StatisticComponent implements OnInit {
     classes: [],
     courses: []
   }
+  originalStudents = []
   students = []
   exams = []
 
+  // 分组后的学生考试信息
   studentExams = []
+  // 选中的 course_id
+  selectedCourseId = ""
+  // 选中的 class_id
+  selectedClassId = ""
+  // 选中的班级列表
+  selectedClassList = []
+  // 通过course_id 和 class_id 得到的学生列表
+  selectedStudents = []
+  // 平时成绩与考试成绩的百分比
+  percentage = 40
 
   constructor(
     private backendService: BackendService,
@@ -63,6 +75,7 @@ export class StatisticComponent implements OnInit {
   setupMetadata() {
     this.setupClassesData()
     this.setupCoursesData()
+    this.setupStudents()
   }
 
   // 获得班级信息
@@ -70,8 +83,7 @@ export class StatisticComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.metadata.classes = result['response']
-      console.log(self.metadata.classes);
-
+      // console.log(self.metadata.classes);
     })
   }
 
@@ -80,8 +92,7 @@ export class StatisticComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('courses').subscribe(result => {
       self.metadata.courses = result['response']
-      console.log(self.metadata.courses);
-
+      // console.log(self.metadata.courses);
     })
   }
 
@@ -99,14 +110,15 @@ export class StatisticComponent implements OnInit {
           }
         }
       }
+      // Save the original Data of students before group
+      self.originalStudents = self.students
+      // group students data by class
       self.students = self.utilityService.groupData(self.students, 'class_id', 'class_name', 'list')
     })
   }
 
-  // >>> 结构化学生考试的数据
+  // >>> 结构化学生考试成绩的数据
   setupStudentExam() {
-    console.log('run student exam');
-
     let self = this
     this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
       let originalStudentExams = result['response']
@@ -131,6 +143,13 @@ export class StatisticComponent implements OnInit {
             continue
           }
         }
+        // Add student_name for student by student_id
+        for (let i = 0; i < self.originalStudents.length; i++) {
+          const student = self.originalStudents[i];
+          if (element['student_id'] == student['id']) {
+            element['student_name'] = student['username']
+          }
+        }
       });
 
       self.studentExams = self.utilityService.groupData(originalStudentExams, 'course_id', 'course_name', 'list')
@@ -139,8 +158,65 @@ export class StatisticComponent implements OnInit {
         const classDetail = self.studentExams[i]['list'];
         self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
       }
-      console.log(self.studentExams);
+      console.log(originalStudentExams);
+      // console.log(self.studentExams);
     })
+  }
+
+  handleCourseSelectorChanged() {
+    this.selectedClassId = ''
+    this.selectedStudents = []
+    for (let i = 0; i < this.studentExams.length; i++) {
+      if (this.studentExams[i]['course_id'] == this.selectedCourseId) {
+        this.selectedClassList = this.studentExams[i]['list']
+        break
+      } else {
+        continue
+      }
+    }
+  }
+
+  handleClassSelectorChanged() {
+    console.log(this.selectedClassId);
+    this.selectedStudents = []
+    for (let i = 0; i < this.selectedClassList.length; i++) {
+      const students = this.selectedClassList[i];
+      if (students['class_id'] == this.selectedClassId) {
+        this.selectedStudents = students['list']
+        break
+      } else {
+        continue
+      }
+    }
+
+    // according to the percentage, comput the total_mark for every student
+    for (let i = 0; i < this.selectedStudents.length; i++) {
+      const element = this.selectedStudents[i];
+      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
+    }
+    console.log(this.selectedStudents);
+  }
+
+  handlePercentageChange() {
+    if (this.selectedStudents.length == 0) {
+      return
+    }
+    for (let i = 0; i < this.selectedStudents.length; i++) {
+      const element = this.selectedStudents[i];
+      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
+    }
+  }
+
+  handleRegularGradeChange(index) {
+    let regular_grade = this.selectedStudents[index]['regular_grade']
+    // Check the range of regular_grade, if invalid then reset it
+    if (regular_grade < 0 || regular_grade > 100) {
+      this.selectedStudents[index]['regular_grade'] = 0
+    }
+    // re-assign the variable regular_grade
+    regular_grade = this.selectedStudents[index]['regular_grade']
+    let score = this.selectedStudents[index]['score']
+    this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
   }
 
   // >>> 结构化课程与考试模板之间的关系
@@ -198,11 +274,8 @@ export class StatisticComponent implements OnInit {
           }]
         } as any)
       });
-      console.log(self.exams);
     })
   }
-
-  // >>> 结构化成绩分析数据
 
   toggleLeftMenu(index) {
     this.currentMenuIndex = index
@@ -211,7 +284,6 @@ export class StatisticComponent implements OnInit {
         this.setupMetadata()
         break
       case 1:
-        this.setupStudents()
         break
       case 2:
         this.setupExam()
@@ -223,6 +295,10 @@ export class StatisticComponent implements OnInit {
         this.setupMetadata()
         break
     }
+  }
+
+  computTotalMark(regularGrade, score) {
+    return Math.round(regularGrade * this.percentage * 0.01 + score * (100 - this.percentage) * 0.01)
   }
 
 }

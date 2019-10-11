@@ -97,7 +97,8 @@
                         <div class="col-12 mb-5 p-4 shadow" *ngFor="let exam of exams">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h3 class="mt-0 mb-4 text-center font-weight-bold text-info">《 {{exam['course_name']}} 》</h3>
+                                    <h3 class="mt-0 mb-4 text-center font-weight-bold text-info">《
+                                        {{exam['course_name']}} 》</h3>
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
@@ -151,10 +152,101 @@
                     </div>
                 </div>
                 <!-- ========== Score Analysis =========== -->
-                <div class="container" *ngIf="currentMenuIndex==3">
-                    <div class="row">
+                <div class="container shadow" *ngIf="currentMenuIndex==3">
+                    <div class="row mt-3 p-4 bg-white">
+                        <div class="col-5">
+                            <form>
+                                <div class="from-group">
+                                    <label for="courses-selector">考试科目（课程）</label>
+                                    <select name="courses-selector" id="courses-selector" class="form-control"
+                                        (change)="handleCourseSelectorChanged()" [(ngModel)]="selectedCourseId">
+                                        <option value="" selected disabled>--- 选择考试科目 ---</option>
+                                        <option [value]="item['course_id']" *ngFor="let item of studentExams">
+                                            {{item['course_name']}}</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-2 text-center text-success">
+                            <label>下一步</label>
+                            <div class="form-group mt-3">
+                                <i class="fas fa-arrow-right lead"></i>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <form>
+                                <div class="from-group">
+                                    <label for="courses-selector">班级</label>
+                                    <select name="courses-selector" id="courses-selector" class="form-control"
+                                        (change)="handleClassSelectorChanged()" [(ngModel)]="selectedClassId"
+                                        [disabled]="!selectedCourseId">
+                                        <option value="" selected disabled>--- 选择班级 ---</option>
+                                        <option [value]="item['class_id']" *ngFor="let item of selectedClassList">
+                                            {{item['class_name']}}</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row bg-white px-4 pb-4">
                         <div class="col">
-                            成绩分析
+                            <form>
+                                <div class="form-group">
+                                    <div class="progress my-3 lead">
+                                        <div class="progress-bar  bg-secondary progress-bar-animated progress-bar-striped"
+                                            role="progressbar" [ngStyle]="{'width': percentage+'%'}"
+                                            [attr.aria-valuenow]="percentage" aria-valuemin="0" aria-valuemax="100">
+                                            平时成绩：{{percentage}} %
+                                        </div>
+                                        <div class="progress-bar bg-success progress-bar-animated progress-bar-striped"
+                                            role="progressbar" [ngStyle]="{'width': (100-percentage)+'%'}"
+                                            [attr.aria-valuenow]="100-percentage" aria-valuemin="0" aria-valuemax="100">
+                                            期末成绩：{{100 - percentage}} %
+                                        </div>
+                                    </div>
+                                    <input name="percentage" type="range" class="form-control-range"
+                                        id="formControlRange" min="0" max="100" [value]="percentage" step="10"
+                                        [(ngModel)]="percentage" (change)="handlePercentageChange()">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row px-4" *ngIf="selectedStudents.length!=0">
+                        <div class="col">
+                            <div class="text-right mb-2">综合评定的计算结果以【四舍五入】处理，最终结果为整数</div>
+                            <table class="table table-hover">
+                                <thead class="bg-success text-white">
+                                    <th></th>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th class="text-center">平时成绩</th>
+                                    <th class="text-center">期末成绩</th>
+                                    <th class="text-center">综合评定</th>
+                                </thead>
+                                <tbody>
+                                    <tr class="font-weight-bold" *ngFor="let student of selectedStudents; let i=index">
+                                        <td></td>
+                                        <td>{{student['id']}}</td>
+                                        <td>{{student['student_name']}}</td>
+                                        <td>
+                                            <input type="number" class="form-control text-center font-weight-bold"
+                                                [(ngModel)]="student['regular_grade']"
+                                                [value]="student['regular_grade']"
+                                                (change)="handleRegularGradeChange(i)">
+                                        </td>
+                                        <td class="text-center">{{student['score']}}</td>
+                                        <td class="text-center" [ngClass]="{'text-danger':student['total_mark']<60}">
+                                            {{student['total_mark']}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="text-right my-5">
+                                <button type="button" class="btn btn-success">
+                                    <i class="fas fa-save mr-2"></i>
+                                    保存学生成绩
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
