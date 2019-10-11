@@ -101,25 +101,25 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                             <tr>
-                                                <td class="font-weight-bold bg-secondary text-white text-center">考试 ID
+                                                <td class="font-weight-bold bg-light text-info text-center">考试 ID
                                                 </td>
                                                 <td>{{exam['id']}}</td>
                                             </tr>
                                             <tr>
-                                                <td class="font-weight-bold bg-secondary text-white text-center">试卷总分
+                                                <td class="font-weight-bold bg-light text-info text-center">试卷总分
                                                 </td>
                                                 <td>{{exam['total']}} <span class="text-info">分</span></td>
                                             </tr>
                                             <tr>
-                                                <td class="font-weight-bold bg-secondary text-white text-center">创建日期
+                                                <td class="font-weight-bold bg-light text-info text-center">创建日期
                                                 </td>
                                                 <td>{{exam['created_datetime']}}</td>
                                             </tr>
                                             <tr>
-                                                <td class="font-weight-bold bg-secondary text-white text-center">
+                                                <td class="font-weight-bold bg-light text-center text-info">
                                                     参与班级
                                                     <br>
-                                                    （已交卷 & 未交卷）
+                                                    <small>（已交卷 & 未交卷）</small>
                                                 </td>
                                                 <td>
                                                     <ul class="list-unstyled m-0 p-0">
@@ -130,7 +130,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="font-weight-bold bg-secondary text-white text-center">
+                                                <td class="font-weight-bold bg-light text-info text-center">
                                                     操作
                                                 </td>
                                                 <td class="text-center">
@@ -147,6 +147,14 @@
                                     <div [chart]="exam['chart']"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ========== Score Analysis =========== -->
+                <div class="container" *ngIf="currentMenuIndex==3">
+                    <div class="row">
+                        <div class="col">
+                            成绩分析
                         </div>
                     </div>
                 </div>

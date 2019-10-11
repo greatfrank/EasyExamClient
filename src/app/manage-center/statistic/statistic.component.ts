@@ -32,7 +32,7 @@ export class StatisticComponent implements OnInit {
     },
     {
       title: '成绩分析',
-      en:'Score Analysis',
+      en: 'Score Analysis',
       icon: 'fa-chart-line',
       url: ''
     }
@@ -47,8 +47,7 @@ export class StatisticComponent implements OnInit {
   students = []
   exams = []
 
-
-  allStudentExams = []
+  studentExams = []
 
   constructor(
     private backendService: BackendService,
@@ -62,7 +61,6 @@ export class StatisticComponent implements OnInit {
 
   // >>> 获得基础数据，包含班级和课程
   setupMetadata() {
-    console.log('run metadata');
     this.setupClassesData()
     this.setupCoursesData()
   }
@@ -82,12 +80,13 @@ export class StatisticComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('courses').subscribe(result => {
       self.metadata.courses = result['response']
+      console.log(self.metadata.courses);
+
     })
   }
 
   // >>> 结构化学生的注册信息，并按照班级进行分组
   setupStudents() {
-    console.log('run setup student');
     let self = this
     this.backendService.fetchAllByTableName('students').subscribe(result => {
       self.students = result['response']
@@ -101,27 +100,50 @@ export class StatisticComponent implements OnInit {
         }
       }
       self.students = self.utilityService.groupData(self.students, 'class_id', 'class_name', 'list')
-      console.log(self.students);
     })
   }
 
   // >>> 结构化学生考试的数据
   setupStudentExam() {
+    console.log('run student exam');
+
     let self = this
     this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
-      console.log(result['response']);
       let originalStudentExams = result['response']
-      self.allStudentExams = self.utilityService.groupData(originalStudentExams, 'course_id', 'course_name', 'list')
+      // Add full_name for class by class_id
+      originalStudentExams.forEach(element => {
+        for (let i = 0; i < self.metadata.classes.length; i++) {
+          const cla = self.metadata.classes[i];
+          if (element['class_id'] == cla['id']) {
+            element['class_name'] = cla['full_name']
+            break
+          } else {
+            continue
+          }
+        }
+        // Add course_name for course by course_id
+        for (let j = 0; j < self.metadata.courses.length; j++) {
+          const course = self.metadata.courses[j];
+          if (element['course_id'] == course['id']) {
+            element['course_name'] = course['name']
+            break
+          } else {
+            continue
+          }
+        }
+      });
 
-      for (let i = 0; i < self.allStudentExams.length; i++) {
-        const classDetail = self.allStudentExams[i]['list'];
-        self.allStudentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
+      self.studentExams = self.utilityService.groupData(originalStudentExams, 'course_id', 'course_name', 'list')
+
+      for (let i = 0; i < self.studentExams.length; i++) {
+        const classDetail = self.studentExams[i]['list'];
+        self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
       }
-      console.log(self.allStudentExams);
+      console.log(self.studentExams);
     })
   }
 
-  // 结构化课程与考试模板之间的关系
+  // >>> 结构化课程与考试模板之间的关系
   setupExam() {
     let self = this
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
@@ -176,12 +198,11 @@ export class StatisticComponent implements OnInit {
           }]
         } as any)
       });
-
-
       console.log(self.exams);
-
     })
   }
+
+  // >>> 结构化成绩分析数据
 
   toggleLeftMenu(index) {
     this.currentMenuIndex = index
@@ -194,6 +215,12 @@ export class StatisticComponent implements OnInit {
         break
       case 2:
         this.setupExam()
+        break
+      case 3:
+        this.setupStudentExam()
+        break
+      default:
+        this.setupMetadata()
         break
     }
   }
