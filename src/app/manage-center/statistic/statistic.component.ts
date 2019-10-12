@@ -319,7 +319,8 @@ export class StatisticComponent implements OnInit {
       let obj = {
         id: element['id'],
         regular_grade: element['regular_grade'],
-        total_mark: element['total_mark']
+        total_mark: element['total_mark'],
+        saved: 1
       }
       dataArr.push(obj)
     });
@@ -340,6 +341,21 @@ export class StatisticComponent implements OnInit {
 
   computTotalMark(regularGrade, score) {
     return Math.round(regularGrade * this.percentage * 0.01 + score * (100 - this.percentage) * 0.01)
+  }
+
+  checkIfSavedTotalMark(data: any): boolean {
+    let result = false
+    for (let i = 0; i < data.length; i++) {
+      const element = data[i];
+      if (element['saved'] == '0') {
+        result = false
+        continue
+      } else {
+        result = true
+        break
+      }
+    }
+    return result
   }
 
 }
