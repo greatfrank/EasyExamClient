@@ -62,6 +62,13 @@ export class StatisticComponent implements OnInit {
   selectedStudents = []
   // 平时成绩与考试成绩的百分比
   percentage = 40
+  // 统计最值时的参照，是按照期末成绩的原始分统计，还是按照综合评定统计
+  minMaxTig = "score"
+  minMaxPass = {
+    min: '',
+    max: '',
+    pass: ''
+  }
 
   constructor(
     private backendService: BackendService,
@@ -282,6 +289,7 @@ export class StatisticComponent implements OnInit {
       const element = this.selectedStudents[i];
       element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
     }
+    this.getMinMaxPassFromStudents(this.selectedStudents)
   }
 
   handlePercentageChange() {
@@ -292,6 +300,7 @@ export class StatisticComponent implements OnInit {
       const element = this.selectedStudents[i];
       element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
     }
+    this.getMinMaxPassFromStudents(this.selectedStudents)
   }
 
   handleRegularGradeChange(index) {
@@ -304,6 +313,7 @@ export class StatisticComponent implements OnInit {
     regular_grade = this.selectedStudents[index]['regular_grade']
     let score = this.selectedStudents[index]['score']
     this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
+    this.getMinMaxPassFromStudents(this.selectedStudents)
   }
 
   saveStudentExamTotalMark(selectedStudents) {
@@ -311,7 +321,6 @@ export class StatisticComponent implements OnInit {
     if (!confirm("确定要保存学生的成绩吗？ 一旦保存，则无法修改")) {
       return
     }
-
 
     let dataArr = []
 
@@ -340,7 +349,9 @@ export class StatisticComponent implements OnInit {
   }
 
   computTotalMark(regularGrade, score) {
-    return Math.round(regularGrade * this.percentage * 0.01 + score * (100 - this.percentage) * 0.01)
+    let result = Math.round(regularGrade * this.percentage * 0.01 + score * (100 - this.percentage) * 0.01)
+    this.getMinMaxPassFromStudents(this.selectedStudents)
+    return result
   }
 
   checkIfSavedTotalMark(data: any): boolean {
@@ -356,6 +367,47 @@ export class StatisticComponent implements OnInit {
       }
     }
     return result
+  }
+
+  getMinMaxPassFromStudents(objList: any) {
+    let arr = []
+
+    switch (this.minMaxTig) {
+      // 按照期末考试的原始成绩计算
+      case 'score':
+        objList.forEach(element => {
+          arr.push(element['score'])
+        });
+        break
+      // 按照综合评定的成绩计算
+      default:
+        objList.forEach(element => {
+          arr.push(element['total_mark'])
+        });
+        break
+    }
+
+    // 计算最值
+    let min = Math.min.apply(null, arr)
+    let max = Math.max.apply(null, arr)
+
+    // 计算及格率
+    let passNum = 0
+    let totalNum = arr.length
+    arr.forEach(v => {
+      if (v >= 60) {
+        passNum += 1
+      }
+    });
+
+    this.minMaxPass.min = String(min)
+    this.minMaxPass.max = String(max)
+    this.minMaxPass.pass = (passNum / totalNum) * 100 + " %"
+  }
+
+  handleMinMaxTigChange(value) {
+    this.minMaxTig = value
+    this.getMinMaxPassFromStudents(this.selectedStudents)
   }
 
 }

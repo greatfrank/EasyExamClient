@@ -153,7 +153,7 @@
                 </div>
                 <!-- ========== Score Analysis =========== -->
                 <div class="container shadow mt-4" *ngIf="currentMenuIndex==3">
-                    <div class="row mt-4 pt-5 pb-5 px-4 bg-white">
+                    <div class="row mt-4 pt-5 pb-3 px-4 bg-white">
                         <div class="col-5">
                             <form>
                                 <div class="from-group">
@@ -188,6 +188,7 @@
                             </form>
                         </div>
                     </div>
+                    <hr>
                     <div class="row bg-white px-4 pb-4">
                         <div class="col">
                             <p>成绩占比：平时成绩 {{percentage}} % / 期末成绩 {{100 - percentage}} %</p>
@@ -233,7 +234,8 @@
                                             <input type="number" class="form-control text-center font-weight-bold"
                                                 [(ngModel)]="student['regular_grade']"
                                                 [value]="student['regular_grade']"
-                                                (change)="handleRegularGradeChange(i)" [disabled]="checkIfSavedTotalMark(selectedStudents)">
+                                                (change)="handleRegularGradeChange(i)"
+                                                [disabled]="checkIfSavedTotalMark(selectedStudents)">
                                         </td>
                                         <td class="text-center">{{student['score']}}</td>
                                         <td class="text-center" [ngClass]="{'text-danger':student['total_mark']<60}">
@@ -242,13 +244,37 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="text-right my-5">
-                                <button type="button" class="btn btn-success"
-                                    (click)="saveStudentExamTotalMark(selectedStudents)"
-                                    *ngIf="!checkIfSavedTotalMark(selectedStudents)">
-                                    <i class="fas fa-save mr-2"></i>
-                                    保存学生成绩
-                                </button>
+                            <div class="row my-5">
+                                <div class="col lead font-weight-bold">
+                                    <div class="form-check form-check-inline mr-4">
+                                        <input class="form-check-input" type="radio" name="min-max-tig" id="score-num" value="score"
+                                            (change)="handleMinMaxTigChange('score')" [(ngModel)]="minMaxTig">
+                                        <label class="form-check-label" for="score-num" [ngClass]="{'text-primary': minMaxTig=='score','text-secondary': minMaxTig=='total_mark'}">期末成绩</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="min-max-tig"
+                                            id="total-mark-num" value="total_mark" (change)="handleMinMaxTigChange('total_mark')"
+                                            [(ngModel)]="minMaxTig">
+                                        <label class="form-check-label" for="total-mark-num" [ngClass]="{'text-secondary': minMaxTig=='score','text-primary': minMaxTig=='total_mark'}">综合评定</label>
+                                    </div>
+                                    <span class="text-danger ml-5 mr-3">
+                                        最低分 : {{minMaxPass['min']}}
+                                    </span>
+                                    <span class="text-success mx-3">
+                                        最高分 : {{minMaxPass['max']}}
+                                    </span>
+                                    <span class="text-dark mx-3">
+                                        及格率 : {{minMaxPass['pass']}}
+                                    </span>
+                                </div>
+                                <div class="col-3 text-right">
+                                    <button type="button" class="btn btn-success"
+                                        (click)="saveStudentExamTotalMark(selectedStudents)"
+                                        *ngIf="!checkIfSavedTotalMark(selectedStudents)">
+                                        <i class="fas fa-save mr-2"></i>
+                                        保存学生成绩
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
