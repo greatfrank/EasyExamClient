@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-3">
                 <h2 class="mb-4 text-center">统计信息 | Statistic Info</h2>
-                <div class="list-group">
+                <div class="list-group left-menu">
                     <a *ngFor="let item of leftMenu; let i=index" href="javascript:;"
                         class="list-group-item list-group-item-action lead font-weight-normal"
                         [ngClass]="{'active': currentMenuIndex==i}" (click)="toggleLeftMenu(i)">
@@ -152,8 +152,8 @@
                     </div>
                 </div>
                 <!-- ========== Score Analysis =========== -->
-                <div class="container shadow" *ngIf="currentMenuIndex==3">
-                    <div class="row mt-3 p-4 bg-white">
+                <div class="container shadow mt-4" *ngIf="currentMenuIndex==3">
+                    <div class="row mt-4 pt-5 pb-5 px-4 bg-white">
                         <div class="col-5">
                             <form>
                                 <div class="from-group">
@@ -169,7 +169,7 @@
                         </div>
                         <div class="col-2 text-center text-success">
                             <label>下一步</label>
-                            <div class="form-group mt-3">
+                            <div class="form-group mt-2">
                                 <i class="fas fa-arrow-right lead"></i>
                             </div>
                         </div>
@@ -190,16 +190,17 @@
                     </div>
                     <div class="row bg-white px-4 pb-4">
                         <div class="col">
+                            <p>成绩占比：平时成绩 {{percentage}} % / 期末成绩 {{100 - percentage}} %</p>
                             <form>
                                 <div class="form-group">
                                     <div class="progress my-3 lead">
-                                        <div class="progress-bar  bg-secondary progress-bar-animated progress-bar-striped"
-                                            role="progressbar" [ngStyle]="{'width': percentage+'%'}"
-                                            [attr.aria-valuenow]="percentage" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar  bg-secondary" role="progressbar"
+                                            [ngStyle]="{'width': percentage+'%'}" [attr.aria-valuenow]="percentage"
+                                            aria-valuemin="0" aria-valuemax="100">
                                             平时成绩：{{percentage}} %
                                         </div>
-                                        <div class="progress-bar bg-success progress-bar-animated progress-bar-striped"
-                                            role="progressbar" [ngStyle]="{'width': (100-percentage)+'%'}"
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                            [ngStyle]="{'width': (100-percentage)+'%'}"
                                             [attr.aria-valuenow]="100-percentage" aria-valuemin="0" aria-valuemax="100">
                                             期末成绩：{{100 - percentage}} %
                                         </div>
@@ -226,7 +227,7 @@
                                 <tbody>
                                     <tr class="font-weight-bold" *ngFor="let student of selectedStudents; let i=index">
                                         <td></td>
-                                        <td>{{student['id']}}</td>
+                                        <td>{{student['student_id']}}</td>
                                         <td>{{student['student_name']}}</td>
                                         <td>
                                             <input type="number" class="form-control text-center font-weight-bold"
@@ -242,7 +243,8 @@
                                 </tbody>
                             </table>
                             <div class="text-right my-5">
-                                <button type="button" class="btn btn-success">
+                                <button type="button" class="btn btn-success"
+                                    (click)="saveStudentExamTotalMark(selectedStudents)">
                                     <i class="fas fa-save mr-2"></i>
                                     保存学生成绩
                                 </button>

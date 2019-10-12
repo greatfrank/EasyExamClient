@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
 import { Chart } from "angular-highcharts";
+import { filter } from 'minimatch';
+import { ResourceLoader } from '@angular/compiler';
 
 @Component({
   selector: 'app-statistic',
@@ -71,7 +73,28 @@ export class StatisticComponent implements OnInit {
     this.setupMetadata()
   }
 
-  // >>> 获得基础数据，包含班级和课程
+  // >>>>>>>>>>>>>>>>> 处理左侧菜单的切换
+  toggleLeftMenu(index) {
+    this.currentMenuIndex = index
+    switch (this.currentMenuIndex) {
+      case 0:
+        this.setupMetadata()
+        break
+      case 1:
+        break
+      case 2:
+        this.setupExam()
+        break
+      case 3:
+        this.setupStudentExam()
+        break
+      default:
+        this.setupMetadata()
+        break
+    }
+  }
+
+  // >>>>>>>>>>>>>>>>> 获得基础数据，包含班级和课程
   setupMetadata() {
     this.setupClassesData()
     this.setupCoursesData()
@@ -96,7 +119,7 @@ export class StatisticComponent implements OnInit {
     })
   }
 
-  // >>> 结构化学生的注册信息，并按照班级进行分组
+  // >>>>>>>>>>>>>>>>> 结构化学生的注册信息，并按照班级进行分组
   setupStudents() {
     let self = this
     this.backendService.fetchAllByTableName('students').subscribe(result => {
@@ -117,109 +140,7 @@ export class StatisticComponent implements OnInit {
     })
   }
 
-  // >>> 结构化学生考试成绩的数据
-  setupStudentExam() {
-    let self = this
-    this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
-      let originalStudentExams = result['response']
-      // Add full_name for class by class_id
-      originalStudentExams.forEach(element => {
-        for (let i = 0; i < self.metadata.classes.length; i++) {
-          const cla = self.metadata.classes[i];
-          if (element['class_id'] == cla['id']) {
-            element['class_name'] = cla['full_name']
-            break
-          } else {
-            continue
-          }
-        }
-        // Add course_name for course by course_id
-        for (let j = 0; j < self.metadata.courses.length; j++) {
-          const course = self.metadata.courses[j];
-          if (element['course_id'] == course['id']) {
-            element['course_name'] = course['name']
-            break
-          } else {
-            continue
-          }
-        }
-        // Add student_name for student by student_id
-        for (let i = 0; i < self.originalStudents.length; i++) {
-          const student = self.originalStudents[i];
-          if (element['student_id'] == student['id']) {
-            element['student_name'] = student['username']
-          }
-        }
-      });
-
-      self.studentExams = self.utilityService.groupData(originalStudentExams, 'course_id', 'course_name', 'list')
-
-      for (let i = 0; i < self.studentExams.length; i++) {
-        const classDetail = self.studentExams[i]['list'];
-        self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
-      }
-      console.log(originalStudentExams);
-      // console.log(self.studentExams);
-    })
-  }
-
-  handleCourseSelectorChanged() {
-    this.selectedClassId = ''
-    this.selectedStudents = []
-    for (let i = 0; i < this.studentExams.length; i++) {
-      if (this.studentExams[i]['course_id'] == this.selectedCourseId) {
-        this.selectedClassList = this.studentExams[i]['list']
-        break
-      } else {
-        continue
-      }
-    }
-  }
-
-  handleClassSelectorChanged() {
-    console.log(this.selectedClassId);
-    this.selectedStudents = []
-    for (let i = 0; i < this.selectedClassList.length; i++) {
-      const students = this.selectedClassList[i];
-      if (students['class_id'] == this.selectedClassId) {
-        this.selectedStudents = students['list']
-        break
-      } else {
-        continue
-      }
-    }
-
-    // according to the percentage, comput the total_mark for every student
-    for (let i = 0; i < this.selectedStudents.length; i++) {
-      const element = this.selectedStudents[i];
-      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
-    }
-    console.log(this.selectedStudents);
-  }
-
-  handlePercentageChange() {
-    if (this.selectedStudents.length == 0) {
-      return
-    }
-    for (let i = 0; i < this.selectedStudents.length; i++) {
-      const element = this.selectedStudents[i];
-      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
-    }
-  }
-
-  handleRegularGradeChange(index) {
-    let regular_grade = this.selectedStudents[index]['regular_grade']
-    // Check the range of regular_grade, if invalid then reset it
-    if (regular_grade < 0 || regular_grade > 100) {
-      this.selectedStudents[index]['regular_grade'] = 0
-    }
-    // re-assign the variable regular_grade
-    regular_grade = this.selectedStudents[index]['regular_grade']
-    let score = this.selectedStudents[index]['score']
-    this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
-  }
-
-  // >>> 结构化课程与考试模板之间的关系
+  // >>>>>>>>>>>>>>>>> 结构化课程与考试模板之间的关系
   setupExam() {
     let self = this
     this.backendService.fetchAllByTableName('exams').subscribe(result => {
@@ -277,24 +198,144 @@ export class StatisticComponent implements OnInit {
     })
   }
 
-  toggleLeftMenu(index) {
-    this.currentMenuIndex = index
-    switch (this.currentMenuIndex) {
-      case 0:
-        this.setupMetadata()
+  // >>>>>>>>>>>>>>>>> 结构化学生考试成绩的数据
+  setupStudentExam() {
+    this.studentExams = []
+    this.selectedCourseId = ""
+    this.selectedClassId = ""
+    this.selectedClassList = []
+    this.selectedStudents = []
+    this.percentage = 40
+
+    let self = this
+    this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
+      let originalStudentExams = result['response']
+
+      originalStudentExams = originalStudentExams.filter(element => element['marked'] == '1')
+
+      // Add full_name for class by class_id
+      originalStudentExams.forEach(element => {
+        for (let i = 0; i < self.metadata.classes.length; i++) {
+          const cla = self.metadata.classes[i];
+          if (element['class_id'] == cla['id']) {
+            element['class_name'] = cla['full_name']
+            break
+          } else {
+            continue
+          }
+        }
+        // Add course_name for course by course_id
+        for (let j = 0; j < self.metadata.courses.length; j++) {
+          const course = self.metadata.courses[j];
+          if (element['course_id'] == course['id']) {
+            element['course_name'] = course['name']
+            break
+          } else {
+            continue
+          }
+        }
+        // Add student_name for student by student_id
+        for (let i = 0; i < self.originalStudents.length; i++) {
+          const student = self.originalStudents[i];
+          if (element['student_id'] == student['id']) {
+            element['student_name'] = student['username']
+          }
+        }
+      });
+
+      self.studentExams = self.utilityService.groupData(originalStudentExams, 'course_id', 'course_name', 'list')
+
+      for (let i = 0; i < self.studentExams.length; i++) {
+        const classDetail = self.studentExams[i]['list'];
+        self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
+      }
+    })
+  }
+
+  handleCourseSelectorChanged() {
+    this.selectedClassId = ''
+    this.selectedStudents = []
+    for (let i = 0; i < this.studentExams.length; i++) {
+      if (this.studentExams[i]['course_id'] == this.selectedCourseId) {
+        this.selectedClassList = this.studentExams[i]['list']
         break
-      case 1:
-        break
-      case 2:
-        this.setupExam()
-        break
-      case 3:
-        this.setupStudentExam()
-        break
-      default:
-        this.setupMetadata()
-        break
+      } else {
+        continue
+      }
     }
+  }
+
+  handleClassSelectorChanged() {
+    this.selectedStudents = []
+    for (let i = 0; i < this.selectedClassList.length; i++) {
+      const students = this.selectedClassList[i];
+      if (students['class_id'] == this.selectedClassId) {
+        this.selectedStudents = students['list']
+        break
+      } else {
+        continue
+      }
+    }
+
+    // according to the percentage, comput the total_mark for every student
+    for (let i = 0; i < this.selectedStudents.length; i++) {
+      const element = this.selectedStudents[i];
+      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
+    }
+  }
+
+  handlePercentageChange() {
+    if (this.selectedStudents.length == 0) {
+      return
+    }
+    for (let i = 0; i < this.selectedStudents.length; i++) {
+      const element = this.selectedStudents[i];
+      element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
+    }
+  }
+
+  handleRegularGradeChange(index) {
+    let regular_grade = this.selectedStudents[index]['regular_grade']
+    // Check the range of regular_grade, if invalid then reset it
+    if (regular_grade < 0 || regular_grade > 100) {
+      this.selectedStudents[index]['regular_grade'] = 0
+    }
+    // re-assign the variable regular_grade
+    regular_grade = this.selectedStudents[index]['regular_grade']
+    let score = this.selectedStudents[index]['score']
+    this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
+  }
+
+  saveStudentExamTotalMark(selectedStudents) {
+
+    if (!confirm("确定要保存学生的成绩吗？ 一旦保存，则无法修改")) {
+      return
+    }
+
+
+    let dataArr = []
+
+    selectedStudents.forEach(element => {
+      let obj = {
+        id: element['id'],
+        regular_grade: element['regular_grade'],
+        total_mark: element['total_mark']
+      }
+      dataArr.push(obj)
+    });
+
+    let body = {
+      data: JSON.stringify(dataArr)
+    }
+
+    this.backendService.modifyRowsByTableName('student_exam', body).subscribe(result => {
+      console.log(result);
+      if (result['message'] == 'complete') {
+        alert('保存成功 ！')
+      } else {
+        alert('保存失败，请重试')
+      }
+    })
   }
 
   computTotalMark(regularGrade, score) {

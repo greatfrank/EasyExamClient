@@ -47,6 +47,15 @@ export class BackendService {
     return this.httpClient.post('/update/' + tableName, body, httpOptions)
   }
 
+  modifyRowsByTableName(tableName: string, jsonObj: any): Observable<any> {
+    let params = new URLSearchParams()
+    Object.keys(jsonObj).forEach(key => {
+      params.append(key, jsonObj[key])
+    });
+    let body = params.toString()
+    return this.httpClient.post('/modify-rows/' + tableName, body, httpOptions)
+  }
+
   /**
    * 
    * @param tableName 
@@ -61,6 +70,8 @@ export class BackendService {
     let body = params.toString()
     return this.httpClient.post('/query/' + tableName + '/' + limit, body, httpOptions)
   }
+
+
 
 
 }
