@@ -329,7 +329,7 @@
                                                 </button>
                                             </div>
                                             <div class="col">
-                                                <div *ngIf="finishComputRanges" [chart]="rangeChart"></div>
+                                                <div *ngIf="finishComputRanges && ranges.length!=0" [chart]="rangeChart"></div>
                                             </div>
                                         </div>
                                         <!--  -->

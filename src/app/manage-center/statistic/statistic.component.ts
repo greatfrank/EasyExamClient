@@ -267,6 +267,7 @@ export class StatisticComponent implements OnInit {
         const classDetail = self.studentExams[i]['list'];
         self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
       }
+      
     })
   }
 
@@ -356,7 +357,8 @@ export class StatisticComponent implements OnInit {
     this.backendService.modifyRowsByTableName('student_exam', body).subscribe(result => {
       console.log(result);
       if (result['message'] == 'complete') {
-        alert('保存成功 ！')
+        alert('保存成功，页面将自动刷新 ！')
+        window.location.reload()
       } else {
         alert('保存失败，请重试')
       }
