@@ -77,6 +77,7 @@ export class StatisticComponent implements OnInit {
     people: [0]
   })
   ranges = []
+  rangeChart = null
   finishComputRanges = false
 
   constructor(
@@ -283,6 +284,7 @@ export class StatisticComponent implements OnInit {
   }
 
   handleClassSelectorChanged() {
+    this.resetRanges()
     this.selectedStudents = []
     for (let i = 0; i < this.selectedClassList.length; i++) {
       const students = this.selectedClassList[i];
@@ -300,6 +302,7 @@ export class StatisticComponent implements OnInit {
       element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
     }
     this.getMinMaxPassFromStudents(this.selectedStudents)
+    this.finishComputRanges = false
   }
 
   handlePercentageChange() {
@@ -325,6 +328,7 @@ export class StatisticComponent implements OnInit {
     let score = this.selectedStudents[index]['score']
     this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
     this.getMinMaxPassFromStudents(this.selectedStudents)
+    this.computRange(this.selectedStudents)
   }
 
   saveStudentExamTotalMark(selectedStudents) {
@@ -470,11 +474,65 @@ export class StatisticComponent implements OnInit {
       }
     }
     this.finishComputRanges = true
+    this.generateRangeChart()
   }
 
   resetRanges() {
     this.ranges = []
     this.rangeForm.reset()
+  }
+
+  generateRangeChart() {
+    let arr = []
+    this.ranges.forEach((range, index) => {
+      if (index == 0) {
+        arr.push({
+          name: range['low'] + ' ~ ' + range['high'],
+          y: range['people'],
+          sliced: true,
+          selected: true
+        })
+      } else {
+        arr.push({
+          name: range['low'] + ' ~ ' + range['high'],
+          y: range['people']
+        })
+      }
+    });
+
+    this.rangeChart = new Chart({
+      chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+      },
+      title: {
+        text: '分值范围人数统计'
+      },
+      tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: true,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+          }
+        }
+      },
+      series: [{
+        name: '人数',
+        colorByPoint: true,
+        data: arr
+      }]
+    } as any)
+
+
+
+
   }
 
 }
