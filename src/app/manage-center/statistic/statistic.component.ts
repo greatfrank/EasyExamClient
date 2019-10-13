@@ -12,17 +12,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class StatisticComponent implements OnInit {
 
-  modalInfo = {
-    info: {
-      title: '',
-      content: '',
-      icon: '',
-      spin: false
-    },
-    judgable: false,
-    result: false
-  }
-
   leftMenu = [
     {
       title: '基础数据',
@@ -544,14 +533,6 @@ export class StatisticComponent implements OnInit {
         data: arr
       }]
     } as any)
-  }
-
-  // child component eventEmitter handler method
-  checkModalInfo(modalInfo) {
-    this.modalInfo = modalInfo
-    console.log(this.modalInfo);
-
-
   }
 
 }
