@@ -2,7 +2,7 @@
     <div class="container-fluid py-4">
         <div class="row">
             <div class="col-3">
-                <h2 class="mb-4 text-center">统计信息 | Statistic Info</h2>
+                <h2 class="mb-4">统计信息 | Statistic Info</h2>
                 <div class="list-group left-menu">
                     <a *ngFor="let item of leftMenu; let i=index" href="javascript:;"
                         class="list-group-item list-group-item-action lead font-weight-normal"
@@ -244,28 +244,79 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="row my-5">
-                                <div class="col lead font-weight-bold">
-                                    <div class="form-check form-check-inline mr-4">
-                                        <input class="form-check-input" type="radio" name="min-max-tig" id="score-num" value="score"
-                                            (change)="handleMinMaxTigChange('score')" [(ngModel)]="minMaxTig">
-                                        <label class="form-check-label" for="score-num" [ngClass]="{'text-primary': minMaxTig=='score','text-secondary': minMaxTig=='total_mark'}">期末成绩</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="min-max-tig"
-                                            id="total-mark-num" value="total_mark" (change)="handleMinMaxTigChange('total_mark')"
+                            <div class="row align-items-center my-5">
+                                <div class="col">
+                                    <div class="form-check form-check-inline mr-4 lead font-weight-bold">
+                                        <input class="form-check-input" type="radio" name="min-max-tig" id="score-num"
+                                            value="score" (change)="handleMinMaxTigChange('score')"
                                             [(ngModel)]="minMaxTig">
-                                        <label class="form-check-label" for="total-mark-num" [ngClass]="{'text-secondary': minMaxTig=='score','text-primary': minMaxTig=='total_mark'}">综合评定</label>
+                                        <label class="form-check-label" for="score-num"
+                                            [ngClass]="{'text-primary': minMaxTig=='score','text-secondary': minMaxTig=='total_mark'}">期末成绩</label>
                                     </div>
-                                    <span class="text-danger ml-5 mr-3">
-                                        最低分 : {{minMaxPass['min']}}
-                                    </span>
-                                    <span class="text-success mx-3">
-                                        最高分 : {{minMaxPass['max']}}
-                                    </span>
-                                    <span class="text-dark mx-3">
-                                        及格率 : {{minMaxPass['pass']}}
-                                    </span>
+                                    <div class="form-check form-check-inline lead font-weight-bold">
+                                        <input class="form-check-input" type="radio" name="min-max-tig"
+                                            id="total-mark-num" value="total_mark"
+                                            (change)="handleMinMaxTigChange('total_mark')" [(ngModel)]="minMaxTig">
+                                        <label class="form-check-label" for="total-mark-num"
+                                            [ngClass]="{'text-secondary': minMaxTig=='score','text-primary': minMaxTig=='total_mark'}">综合评定</label>
+                                    </div>
+                                    <div class="mt-4 font-weight-bold">
+                                        <span class="text-danger">
+                                            最低分 : {{minMaxPass['min']}}
+                                        </span>
+                                        <span class="text-success ml-3">
+                                            最高分 : {{minMaxPass['max']}}
+                                        </span>
+                                        <span class="text-dark ml-3">
+                                            及格率 : {{minMaxPass['pass']}}
+                                        </span>
+                                    </div>
+                                    <hr>
+                                    <div class="mt-4">
+                                        <p>设定多个分值范围，统计人数</p>
+                                        <!--  -->
+                                        <form [formGroup]="rangeForm" (ngSubmit)="addRange()">
+                                            <div class="form-row">
+                                                <div class="col-2">
+                                                    <input form name="low" type="number"
+                                                        class="form-control form-control-sm" placeholder="大于等于"
+                                                        formControlName="low" required>
+                                                </div>
+                                                <div class="col-1 text-center lead font-weight-bolder">~</div>
+                                                <div class="col-2">
+                                                    <input name="high" type="number"
+                                                        class="form-control form-control-sm" placeholder="小于等于"
+                                                        formControlName="high" required>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button type="submit" class="btn btn-outline-dark btn-sm"
+                                                        [disabled]="!rangeForm.valid">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <ul class="list-group">
+                                            <li class="list-group-item" *ngFor="let range of ranges; let i=index">
+                                                <span>{{range['low']}} 分</span>
+                                                <span class="mx-3">~</span>
+                                                <span>{{range['high']}} 分</span>
+                                                <h3 class="badge badge-dark ml-3 lead" style="font-size: 1.1rem;"
+                                                    *ngIf="finishComputRanges">
+                                                    {{range['people']}} 人</h3>
+                                                <button class="btn btn-sm btn-outline-danger ml-3"
+                                                    (click)="removeRange(i)">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                        <button class="btn btn-danger mt-3 btn-sm" [disabled]="ranges.length==0"
+                                            (click)="computRange(selectedStudents)">
+                                            统计人数
+                                        </button>
+                                        <!--  -->
+                                    </div>
                                 </div>
                                 <div class="col-3 text-right">
                                     <button type="button" class="btn btn-success"

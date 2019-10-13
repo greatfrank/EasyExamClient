@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
 import { Chart } from "angular-highcharts";
-import { filter } from 'minimatch';
-import { ResourceLoader } from '@angular/compiler';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-statistic',
@@ -64,13 +63,24 @@ export class StatisticComponent implements OnInit {
   percentage = 40
   // 统计最值时的参照，是按照期末成绩的原始分统计，还是按照综合评定统计
   minMaxTig = "score"
+  // 最低分，最高分，及格率
   minMaxPass = {
     min: '',
     max: '',
     pass: ''
   }
+  // 成绩分段统计人数
+  intPattern = "^[0-9]+$"
+  rangeForm = this.fb.group({
+    low: ['', [Validators.required, Validators.pattern(this.intPattern)]],
+    high: ['', [Validators.required, Validators.pattern(this.intPattern)]],
+    people: [0]
+  })
+  ranges = []
+  finishComputRanges = false
 
   constructor(
+    private fb: FormBuilder,
     private backendService: BackendService,
     private utilityService: UtilityService
   ) { }
@@ -301,6 +311,7 @@ export class StatisticComponent implements OnInit {
       element['total_mark'] = this.computTotalMark(element['regular_grade'], element['score'])
     }
     this.getMinMaxPassFromStudents(this.selectedStudents)
+    this.computRange(this.selectedStudents)
   }
 
   handleRegularGradeChange(index) {
@@ -408,6 +419,62 @@ export class StatisticComponent implements OnInit {
   handleMinMaxTigChange(value) {
     this.minMaxTig = value
     this.getMinMaxPassFromStudents(this.selectedStudents)
+    this.computRange(this.selectedStudents)
+  }
+
+  addRange() {
+    this.finishComputRanges = false
+    if (this.rangeForm.get('low').value >= this.rangeForm.get('high').value) {
+      alert('分值范围不合理，请重试')
+      return
+    }
+    this.ranges.push(this.rangeForm.value)
+    this.rangeForm.reset()
+  }
+
+  removeRange(index) {
+    this.ranges.splice(index, 1)
+  }
+
+  computRange(objList: any) {
+    this.finishComputRanges = false
+    if (this.ranges.length != 0) {
+      this.ranges.forEach(element => {
+        element['people'] = 0
+      });
+    }
+
+    let arr = []
+    switch (this.minMaxTig) {
+      // 按照期末考试的原始成绩计算
+      case 'score':
+        objList.forEach(element => {
+          arr.push(element['score'])
+        });
+        break
+      // 按照综合评定的成绩计算
+      default:
+        objList.forEach(element => {
+          arr.push(element['total_mark'])
+        });
+        break
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+      for (let j = 0; j < this.ranges.length; j++) {
+        const range = this.ranges[j];
+        if (item >= range['low'] && item <= range['high']) {
+          range['people'] += 1
+        }
+      }
+    }
+    this.finishComputRanges = true
+  }
+
+  resetRanges() {
+    this.ranges = []
+    this.rangeForm.reset()
   }
 
 }

@@ -3,8 +3,17 @@
         vertical-align: middle;
     }
     .left-menu{
+        .list-group-item{
+            border-left: solid 5px white !important;
+        }
         .active{
-            color: white !important;
+            color: black !important;
+            background:none !important;
+            border: none !important;
+            border-left: solid 5px red !important;
+            // border-top: solid 1px #444 !important;
+            // border-bottom: solid 1px #444 !important;
+            // border-left: solid 4px #444 !important;
         }
     }
     input[type=radio] {
