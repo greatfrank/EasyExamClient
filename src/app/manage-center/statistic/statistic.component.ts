@@ -12,6 +12,17 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class StatisticComponent implements OnInit {
 
+  modalInfo = {
+    info: {
+      title: '',
+      content: '',
+      icon: '',
+      spin: false
+    },
+    judgable: false,
+    result: false
+  }
+
   leftMenu = [
     {
       title: '基础数据',
@@ -267,7 +278,7 @@ export class StatisticComponent implements OnInit {
         const classDetail = self.studentExams[i]['list'];
         self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
       }
-      
+
     })
   }
 
@@ -334,7 +345,7 @@ export class StatisticComponent implements OnInit {
 
   saveStudentExamTotalMark(selectedStudents) {
 
-    if (!confirm("确定要保存学生的成绩吗？ 一旦保存，则无法修改")) {
+    if (!confirm('确定要保存学生的成绩吗？成绩一般保存，则无法修改。')) {
       return
     }
 
@@ -358,7 +369,9 @@ export class StatisticComponent implements OnInit {
       console.log(result);
       if (result['message'] == 'complete') {
         alert('保存成功，页面将自动刷新 ！')
-        window.location.reload()
+        selectedStudents.forEach(element => {
+          element['saved'] = '1'
+        });
       } else {
         alert('保存失败，请重试')
       }
@@ -531,8 +544,12 @@ export class StatisticComponent implements OnInit {
         data: arr
       }]
     } as any)
+  }
 
-
+  // child component eventEmitter handler method
+  checkModalInfo(modalInfo) {
+    this.modalInfo = modalInfo
+    console.log(this.modalInfo);
 
 
   }

@@ -63,7 +63,7 @@ import { CodingsModalComponent } from './manage-center/question-bank/codings-mod
     FillsModalComponent,
     JudgesModalComponent,
     ShortAnswersModalComponent,
-    CodingsModalComponent,
+    CodingsModalComponent
   ],
   imports: [
     BrowserModule,
