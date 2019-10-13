@@ -117,7 +117,7 @@ export class ExamMarkComponent implements OnInit {
   }
 
   finishMarkPaper() {
-    if (!confirm('确定完成阅卷吗？ 一旦确定，则该试卷的分值无法修改。')) {
+    if (!confirm('确定完成阅卷吗？')) {
       return
     }
     let self = this

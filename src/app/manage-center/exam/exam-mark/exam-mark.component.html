@@ -15,7 +15,7 @@
                                 <button class="btn font-weight-bold mt-2 mr-2"
                                     *ngFor="let item of classGroup['list']; let z=index"
                                     [ngClass]="{'btn-primary': item['marked']==1, 'btn-outline-primary':item['marked']==0}"
-                                    [disabled]="item['marked']==1" (click)="selectPaper(x,y,z)">
+                                    (click)="selectPaper(x,y,z)">
                                     <i class="fas fa-book-open"></i>
                                     {{y+1}}&nbsp;&nbsp;&nbsp;{{item['score']}} 分
                                 </button>
