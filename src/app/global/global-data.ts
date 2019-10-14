@@ -24,11 +24,6 @@ export class GlobalData {
       title: '简答题',
       icon: 'fa-comment-dots',
       url: 'short_answers'
-    },
-    {
-      title: '编程题',
-      icon: 'fa-code',
-      url: 'codings'
     }
   ]
   static menuList: any[] = [

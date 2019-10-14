@@ -35,7 +35,6 @@ import { ChoicesModalComponent } from './manage-center/question-bank/choices-mod
 import { FillsModalComponent } from './manage-center/question-bank/fills-modal/fills-modal.component';
 import { JudgesModalComponent } from './manage-center/question-bank/judges-modal/judges-modal.component';
 import { ShortAnswersModalComponent } from './manage-center/question-bank/short-answers-modal/short-answers-modal.component';
-import { CodingsModalComponent } from './manage-center/question-bank/codings-modal/codings-modal.component';
 
 @NgModule({
   declarations: [
@@ -62,8 +61,7 @@ import { CodingsModalComponent } from './manage-center/question-bank/codings-mod
     ChoicesModalComponent,
     FillsModalComponent,
     JudgesModalComponent,
-    ShortAnswersModalComponent,
-    CodingsModalComponent
+    ShortAnswersModalComponent
   ],
   imports: [
     BrowserModule,

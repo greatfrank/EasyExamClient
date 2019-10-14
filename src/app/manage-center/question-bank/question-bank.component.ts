@@ -80,22 +80,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     list: []
   }
 
-  // 编程题
-  codingForm = this.fb.group({
-    course_id: ['', Validators.required],
-    question: ['', Validators.required],
-    standard_answer: ['', Validators.required],
-    result: ['', Validators.required],
-    explanation: ['']
-  })
-  isSubmitingCoding = false
-  totalCodings = 0
-  savedCodings = []
-  codingsModalObj = {
-    course_name: '',
-    list: []
-  }
-
   // -------------------------------------------
   courses: any
   currentQuestionTitle: any
@@ -127,7 +111,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     this.fetchAllFills()
     this.fetchAllJudges()
     this.fetchAllShortAnswers()
-    this.fetchAllCodings()
 
     let l = this.router.url.split('/').length
     this.locateById(this.router.url.split('/')[l - 1])
@@ -402,56 +385,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
     })
   }
 
-  /**
-   * =======================
-   * Codings 編程题
-   * =======================
-   */
-  fetchAllCodings() {
-    let self = this
-    this.savedCodings = []
-    self.backendService.fetchAllByTableName('codings').subscribe(data => {
-      let arr = data['response']
-      // Setup json data struct for original array
-      let tempArr = []
-      arr.forEach(element => {
-        let json = JSON.parse(element['content'])
-        json['course_id'] = element['course_id']
-        json['course_name'] = self.transferCourseName(element['course_id'])
-        json['id'] = element['id']
-        tempArr.push(json)
-      });
-      self.totalCodings = tempArr.length
-      self.savedCodings = self.utilityService.groupData(tempArr, 'course_id', 'course_name', 'list')
-    })
-  }
-
-  onCodingSubmit() {
-    let self = this
-    this.isSubmitingCoding = true
-    let content = {
-      question: this.utilityService.replaceAll(this.codingForm.get('question').value, '\n', '<br>'),
-      standard_answer: this.utilityService.replaceAll(this.codingForm.get('standard_answer').value, '\n', '<br>'),
-      result: this.utilityService.replaceAll(this.codingForm.get('result').value, '\n', '<br>'),
-      explanation: this.utilityService.replaceAll(this.codingForm.get('explanation').value, '\n', '<br>')
-    }
-    let body = {
-      id: this.utilityService.getIdByTimestamp(),
-      course_id: this.codingForm.get('course_id').value,
-      content: JSON.stringify(content)
-    }
-    this.backendService.addNewByTableName('codings', body).subscribe(data => {
-      self.isSubmitingCoding = false
-      if (data['effect_rows'] == 1 && data['message'] == 'complete') {
-        self.codingForm.reset()
-        self.fetchAllCodings()
-        alert('提交成功')
-      } else {
-        alert('提交失败，请重试')
-      }
-    })
-  }
-
   // -----------------------------------------------
 
   transferCourseName(id: string) {
@@ -485,11 +418,6 @@ export class QuestionBankComponent implements OnInit, OnDestroy {
       case 'shortAnswers':
         this.shortAnswersModalObj.course_name = courseName
         this.shortAnswersModalObj.list = list
-        $('#' + questionType + 'Modal').modal('show')
-        break;
-      default:
-        this.codingsModalObj.course_name = courseName
-        this.codingsModalObj.list = list
         $('#' + questionType + 'Modal').modal('show')
         break;
     }

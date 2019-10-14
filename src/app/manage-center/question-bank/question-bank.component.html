@@ -4,7 +4,6 @@
     <app-fills-modal [fillsModalObj]="fillsModalObj"></app-fills-modal>
     <app-judges-modal [judgesModalObj]="judgesModalObj"></app-judges-modal>
     <app-short-answers-modal [shortAnswersModalObj]="shortAnswersModalObj"></app-short-answers-modal>
-    <app-codings-modal [codingsModalObj]="codingsModalObj"></app-codings-modal>
     <!-- ====== Modals:end ========= -->
     <button class="btn btn-danger" id="top-btn" (click)="goToTop()">
         <i class="fas fa-chevron-up"></i>
@@ -355,86 +354,6 @@
                             </table>
                             <div class="text-right lead font-weight-normal text-white">
                                 共 {{totalShortAnswers}} 道题
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ======================================== -->
-            <div class="col-12 mt-5" id="codings">
-                <p class="question-title">
-                    编 程 题
-                    <small class="ml-3 alert alert-info">题目的数据涉及到考试设计和学生试卷，一旦提交无法修改或删除。请注意在提交前检查题目的内容。</small>
-                </p>
-                <div class="row">
-                    <div class="col-5">
-                        <form class="question-bank-form" [formGroup]="codingForm" (ngSubmit)="onCodingSubmit()">
-                            <div class="form-group">
-                                <label>课程</label>
-                                <select name="course_id" class="form-control" formControlName="course_id">
-                                    <option value="" disabled selected></option>
-                                    <option [value]="item.id" *ngFor="let item of courses">{{item.name}}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>题目</label>
-                                <textarea rows="8" placeholder="XXXXXXXXXX ?" class="form-control"
-                                    formControlName="question"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>程序代码</label>
-                                <textarea rows="8" name="standard_answer" class="form-control"
-                                    formControlName="standard_answer"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>运行结果</label>
-                                <textarea rows="8" name="result" class="form-control"
-                                    formControlName="result"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>本题详解（选填）</label>
-                                <textarea rows="8" name="explaination" class="form-control"
-                                    formControlName="explanation"></textarea>
-                            </div>
-                            <div class="form-group text-right mt-4">
-                                <span class="mr-3 lead" *ngIf="isSubmitingCoding">
-                                    <i class="fas fa-cog fa-spin mr-2"></i>处理中 ...
-                                </span>
-                                <button class="btn btn-secondary" type="reset">重置</button>
-                                <button class="btn btn-primary ml-3" type="submit" [disabled]="!codingForm.valid">完成 并
-                                    提交</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col">
-                        <div class="text-center display-4" *ngIf="savedCodings.length==0">
-                            <i class="fas fa-cog fa-spin"></i> 加载数据中 ...
-                        </div>
-                        <div *ngIf="savedCodings.length!=0" class="bg-secondary p-3">
-
-                            <table class="table table-striped text-white lead font-weight-normal">
-                                <thead class="bg-warning text-dark">
-                                    <td></td>
-                                    <td>课程</td>
-                                    <td class="text-center">题目数量</td>
-                                    <td class="text-center">详情</td>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let group of savedCodings; let i=index">
-                                        <td class="text-center">{{i+1}}</td>
-                                        <td>{{group['course_name']}}</td>
-                                        <td class="text-center">{{group['list'].length}}</td>
-                                        <td class="text-center">
-                                            <button class="btn btn-outline-light btn-sm" (click)="showQuestionsModal('codings',group['course_name'],group['list'])">
-                                                <i class="fas fa-bars"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="text-right lead font-weight-normal text-white">
-                                共 {{totalCodings}} 道题
                             </div>
                         </div>
                     </div>
