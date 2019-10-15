@@ -99,7 +99,7 @@ export class RegistComponent implements OnInit {
         alert('学生注册成功 ！')
         sessionStorage.setItem('student', JSON.stringify(self.studentForm.value))
         self.studentForm.reset()
-        self.router.navigateByUrl('study-center')
+        self.router.navigateByUrl('study-center/student-profile')
         // 直接跳转到学习页面或者考试页面，注意值的传递
       } else {
         alert('注册失败，请重试')
