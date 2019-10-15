@@ -35,42 +35,42 @@ export class FooterComponent implements OnInit {
     }
   ]
 
-  technologyStack=[
+  technologyStack = [
     {
-      icon:'angular.png',
-      title:'Angular'
+      icon: 'angular.png',
+      title: 'Angular'
     },
     {
-      icon:'bootstrap.png',
-      title:'Bootstrap'
+      icon: 'golang.svg',
+      title: 'Golang'
     },
     {
-      icon:'fontawesome.png',
-      title:'Font Awesome'
+      icon: 'mysql.png',
+      title: 'MySQL'
     },
     {
-      icon:'jquery.png',
-      title:'jQuery'
+      icon: 'gin.png',
+      title: 'Gin'
     },
     {
-      icon:'nodejs.svg',
-      title:'NodeJS'
+      icon: 'bootstrap.png',
+      title: 'Bootstrap'
     },
     {
-      icon:'golang.svg',
-      title:'Golang'
+      icon: 'fontawesome.png',
+      title: 'Font Awesome'
     },
     {
-      icon:'gin.png',
-      title:'Gin'
+      icon: 'jquery.png',
+      title: 'jQuery'
     },
     {
-      icon:'graphql.png',
-      title:'GraphQL'
+      icon: 'nodejs.svg',
+      title: 'NodeJS'
     },
     {
-      icon:'mysql.png',
-      title:'MySQL'
+      icon: 'graphql.png',
+      title: 'GraphQL'
     }
   ]
 

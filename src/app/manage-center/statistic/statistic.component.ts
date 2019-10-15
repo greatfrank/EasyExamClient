@@ -99,6 +99,7 @@ export class StatisticComponent implements OnInit {
         this.setupMetadata()
         break
       case 1:
+        this.setupStudents()
         break
       case 2:
         this.setupExam()
@@ -116,7 +117,6 @@ export class StatisticComponent implements OnInit {
   setupMetadata() {
     this.setupClassesData()
     this.setupCoursesData()
-    this.setupStudents()
   }
 
   // 获得班级信息
