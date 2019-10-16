@@ -10,7 +10,7 @@
                             <i class="fas fa-book mr-1"></i>
                             课程
                         </label>
-                        <select name="course_id" class="form-control form-control-lg" formControlName="course_id"
+                        <select name="course_id" class="form-control" formControlName="course_id"
                             (change)="onCourseSelectChanged()">
                             <option value="" disabled selected></option>
                             <option [value]="item.id" *ngFor="let item of courses">{{item.name}}
@@ -22,14 +22,14 @@
                             <i class="fas fa-clock mr-1"></i>
                             考试时长&nbsp;&nbsp;&nbsp;&nbsp;( 分钟 )
                         </label>
-                        <input type="number" class="form-control form-control-lg" formControlName="duration">
+                        <input type="number" class="form-control" formControlName="duration">
                     </div>
                     <div class="form-group">
                         <label class="lead">
                             <i class="fas fa-flag mr-1"></i>
                             总分
                         </label>
-                        <input type="number" class="form-control form-control-lg" formControlName="total">
+                        <input type="number" class="form-control" formControlName="total">
                     </div>
                     <div class="form-group">
                         <label class="lead">
@@ -40,7 +40,7 @@
                             <div class="row">
                                 <div class="col">
                                     <label>题型</label>
-                                    <select class="form-control form-control-lg" formControlName="question">
+                                    <select class="form-control" formControlName="question">
                                         <option value="" disabled selected></option>
                                         <option [value]="q.url+'@'+q.title" *ngFor="let q of questions">{{q.title}}
                                         </option>
@@ -48,16 +48,16 @@
                                 </div>
                                 <div class="col">
                                     <label>数量</label>
-                                    <input type="number" class="form-control form-control-lg" formControlName="count">
+                                    <input type="number" class="form-control" formControlName="count">
                                 </div>
                                 <div class="col">
-                                    <label>每题的分值</label>
-                                    <input type="number" class="form-control form-control-lg" formControlName="point">
+                                    <label>每题分值</label>
+                                    <input type="number" class="form-control" formControlName="point">
                                 </div>
-                                <div class="col">
-                                    <label>添加新题型</label>
+                                <div class="col-2">
+                                    <label>添加</label>
                                     <div>
-                                        <button class="btn btn-block btn-lg btn-danger" type="submit"
+                                        <button class="btn btn-block btn-danger" type="submit"
                                             [disabled]="!questionForm.valid">
                                             <i class="fas fa-plus"></i>
                                         </button>
@@ -83,7 +83,7 @@
                             {{examForm.get('total').value - currentTotalQuestionsPoints}}</h5>
                     </div>
                     <div class="form-group mt-4">
-                        <button class="btn btn-lg btn-warning" type="submit"
+                        <button class="btn btn-warning" type="submit"
                             [disabled]="!examForm.valid || examForm.get('total').value!=currentTotalQuestionsPoints || isSubmitingExam">提交
                             &
                             保存</button>

@@ -14,7 +14,7 @@
                                 <h5>{{classGroup['class_name']}} <span class="text-info">班</span></h5>
                                 <button class="btn font-weight-bold mt-2 mr-2"
                                     *ngFor="let item of classGroup['list']; let z=index"
-                                    [ngClass]="{'btn-primary': item['marked']==1, 'btn-outline-primary':item['marked']==0}"
+                                    [ngClass]="{'btn-primary': item['saved']==1, 'btn-outline-primary':item['saved']==0}"
                                     (click)="selectPaper(x,y,z)">
                                     <i class="fas fa-book-open"></i>
                                     {{y+1}}&nbsp;&nbsp;&nbsp;{{item['score']}} 分
@@ -138,7 +138,7 @@
                                                 <input type="number" class="form-control form-control-lg text-success"
                                                     placeholder="分值" aria-label="Username"
                                                     aria-describedby="basic-addon1" [(ngModel)]="content['score']"
-                                                    [disabled]="currentPaper['marked']=='1'"
+                                                    [disabled]="currentPaper['saved']=='1'"
                                                     (keyup)="checkInvalidScore()">
                                                 <div class="input-group-append">
                                                     <span class="input-group-text font-weight-bolder">/
@@ -156,7 +156,7 @@
                     </div>
                     <div class="text-right">
                         <button class="btn btn-lg btn-danger" (click)="finishMarkPaper()"
-                            [disabled]="invalidScore || currentPaper['marked']=='1'">
+                            [disabled]="invalidScore || currentPaper['saved']=='1'">
                             <i class="fas fa-check mr-2"></i>
                             完成阅卷
                         </button>

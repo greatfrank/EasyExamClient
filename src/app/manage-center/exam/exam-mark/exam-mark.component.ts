@@ -58,7 +58,7 @@ export class ExamMarkComponent implements OnInit {
   // 首先按照课程进行分组，然后再按照班级进行分组
   groupAllDetails() {
     let self = this
-    console.log(this.details);
+    // console.log(this.details);
     this.groupedMenuList = this.utilityService.groupData(this.details, 'course_id', 'course_name', 'list')
 
     for (let i = 0; i < this.groupedMenuList.length; i++) {
