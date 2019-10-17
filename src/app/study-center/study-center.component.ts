@@ -35,6 +35,7 @@ export class StudyCenterComponent implements OnInit {
 
   studentLogout() {
     sessionStorage.removeItem('student')
+    sessionStorage.removeItem('exam')
     this.router.navigateByUrl('/')
   }
 

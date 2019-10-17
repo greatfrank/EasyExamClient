@@ -27,7 +27,9 @@ export class UtilityService {
 
   checkStudentLogin() {
     if (!sessionStorage.getItem('student')) {
-      this.router.navigateByUrl('/')
+      return false
+    } else {
+      return true
     }
   }
 

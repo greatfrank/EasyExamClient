@@ -13,6 +13,7 @@ declare var $: any
 })
 export class StudentProfileComponent implements OnInit {
 
+  isLogin = false
   student: any
   classes = []
   exams = []
@@ -35,6 +36,11 @@ export class StudentProfileComponent implements OnInit {
 
   ngOnInit() {
     let self = this
+    this.isLogin = this.utilityService.checkStudentLogin()
+    if (!this.isLogin) {
+      this.router.navigateByUrl("/")
+      return
+    }
     this.setupStudentAndExam()
   }
 
@@ -120,7 +126,7 @@ export class StudentProfileComponent implements OnInit {
   }
 
   startExam(exam) {
-    GlobalData.studentSelectedExam = exam
+    sessionStorage.setItem('exam', JSON.stringify(exam))
     let baseUrl = this.router.url.split('/')[1]
     this.router.navigateByUrl(baseUrl + '/student-exam')
   }

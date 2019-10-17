@@ -13,6 +13,8 @@ import * as moment from 'moment'
 })
 export class StudentExamComponent implements OnInit {
 
+  isLogin = false
+
   myexam: any
 
   questionType = ''
@@ -30,56 +32,97 @@ export class StudentExamComponent implements OnInit {
     private router: Router,
     private backendService: BackendService,
     private utilityService: UtilityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.utilityService.goToTop()
-    this.utilityService.checkStudentLogin()
-    this.checkStudentSelectedExam()
-    this.setupMyexam()
-    this.setupTime()
-  }
-
-  // 从上一个页面（选择考试）传递过来的考试数据
-  checkStudentSelectedExam() {
-    if (!GlobalData.studentSelectedExam) {
-      console.log('student unlogin');
-      sessionStorage.removeItem('student')
-      this.router.navigateByUrl('/')
+    this.isLogin = this.utilityService.checkStudentLogin()
+    if (this.isLogin) {
+      this.initMyExam()
     } else {
-      console.log('Not default, but student selected exam');
-      this.myexam = GlobalData.studentSelectedExam
+      alert("这位同学，请先登录")
+      this.router.navigateByUrl("/")
+      return
     }
   }
 
-  // 设置时间，开始倒计时
-  setupTime() {
-    let self = this
-    this.totalDuration = parseInt(this.myexam.duration)
-    let allSeconds = this.totalDuration * 60
-    this.displayTotalDuration = this.totalDuration + ' 分钟'
-    // 每分钟计算剩余的时间
-    let durationInterval = setInterval(() => {
-      if (allSeconds == 0) {
-        clearInterval(durationInterval)
-        self.finishExam()
-        // MISSION: submit paper
-      }
-
-      --allSeconds
-      let minute = parseInt(String(allSeconds / 60))
-      let second = allSeconds % 60
-      self.displayTotalDuration = minute + ' 分 ' + second + ' 秒'
-    }, 1000)
+  initMyExam() {
+    this.myexam = JSON.parse(sessionStorage.getItem('exam'))
+    this.setupMyexam()
   }
 
+  // 组织试卷结构，生成试卷的实际内容
   setupMyexam() {
     let self = this
+    this.isFetchingAllQuestions = true
     this.myexam['questions'] = JSON.parse(this.myexam['questions'])
 
     let body = {
       course_id: this.myexam['course_id']
     }
+
+    let arr = []
+    let questionLength = this.myexam['questions'].length
+    for (let i = 0; i < questionLength; i++) {
+      let questionObj = this.myexam['questions'][i]
+      arr.push({
+        tableName: questionObj['question'],
+        limit: questionObj['count'],
+        obj: body
+      })
+    }
+    this.backendService.queryQuestionsRandom(arr).subscribe(result => {
+      console.log(result);
+      this.isFetchingAllQuestions = false
+      for (let i = 0; i < questionLength; i++) {
+        self.myexam['questions'][i]['contents'] = result[i]['response']
+        let questionObj = self.myexam['questions'][i]
+        for (let j = 0; j < questionObj['contents'].length; j++) {
+          /**
+           * Reformat content json data struct
+           */
+          let tempJson = JSON.parse(questionObj['contents'][j]['content']
+          )
+          Object.keys(tempJson).forEach(key => {
+            questionObj['contents'][j][key] = tempJson[key]
+          });
+          /**
+           * 给每一道题预设一个得分。默认为 -1 分，表示还没有判分。
+           * 有些题型，比如单选、判断、填空，可以由程序自动判分，在方法 onChoicesGetAnswer, onFillsGetAnswer, onJudgesGetAnswer 里就可以完成判分。有些题型，比如 short_answer 和 codings，后期由可能需要借助 AI来完成，或者通过教师人工判分。
+           */
+          questionObj['contents'][j]['score'] = -1
+          delete questionObj['contents'][j]['content']
+          // Add a feature "stu_answer" to every content object
+          switch (questionObj['question']) {
+            case 'choices':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+            case 'fills':
+              const len = questionObj['contents'][j]['standard_answer'].length
+              let arr = []
+              for (let i = 0; i < len; i++) {
+                arr.push('')
+              }
+              questionObj['contents'][j]['stu_answer'] = arr
+              questionObj['contents'][j]['is_full'] = false
+              break
+            case 'judges':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+            case 'short_answers':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+          }
+        }
+      }
+    })
+
+    this.myexam['total_score'] = 0
+    this.setupTime()
+
+
+
+    return
     // 根据考试设计里的题型，从题库里随机抽题
     for (let i = 0; i < this.myexam['questions'].length; i++) {
       this.isFetchingAllQuestions = true
@@ -127,8 +170,31 @@ export class StudentExamComponent implements OnInit {
         }
       })
     }
-    this.myexam['total_score'] = 0
+
   }
+
+  // 设置时间，开始倒计时
+  setupTime() {
+    let self = this
+    this.totalDuration = parseInt(this.myexam.duration)
+    let allSeconds = this.totalDuration * 60
+    this.displayTotalDuration = this.totalDuration + ' 分钟'
+    // 每分钟计算剩余的时间
+    let durationInterval = setInterval(() => {
+      if (allSeconds == 0) {
+        clearInterval(durationInterval)
+        self.finishExam()
+        // MISSION: submit paper
+      }
+
+      --allSeconds
+      let minute = parseInt(String(allSeconds / 60))
+      let second = allSeconds % 60
+      self.displayTotalDuration = minute + ' 分 ' + second + ' 秒'
+    }, 1000)
+  }
+
+
 
   toggleQuestion(questionType, questionIndex, contentIndex) {
     this.questionType = questionType

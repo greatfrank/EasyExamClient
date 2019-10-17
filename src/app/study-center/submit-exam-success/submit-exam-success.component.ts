@@ -28,6 +28,7 @@ export class SubmitExamSuccessComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    sessionStorage.removeItem('exam')
     this.sub.unsubscribe()
   }
 

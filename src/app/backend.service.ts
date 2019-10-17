@@ -83,7 +83,22 @@ export class BackendService {
     return this.httpClient.post('/query/' + tableName + '/' + limit, body, httpOptions)
   }
 
-
+  /**
+   * 
+   * @param tableNames 
+   * [{
+   *  tableName:"",
+   *  limit: 10,
+   *  obj:{}
+   * }]
+   */
+  queryQuestionsRandom(tableNames: any[]) {
+    let requestArray = []
+    tableNames.forEach(element => {
+      requestArray.push(this.queryQuestionsByTableNameAndLimit(element['tableName'], element['limit'], element['obj']))
+    });
+    return forkJoin(requestArray)
+  }
 
 
 }
