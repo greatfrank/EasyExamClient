@@ -30,19 +30,7 @@ export class StudentExamComponent implements OnInit {
     private router: Router,
     private backendService: BackendService,
     private utilityService: UtilityService
-  ) {
-    // this.myexam = {
-    //   class: { id: "16448", major: "计算机信息管理", num: "01", regist_year: "2017", type: "高职" },
-    //   course_id: "1234",
-    //   course_name: "Python程序设计",
-    //   created_datetime: "2019-10-03 00:23:43",
-    //   duration: "90",
-    //   id: "1570033423",
-    //   questions: '[{"count": 10, "point": 2, "title": "选择题", "question": "choices"}, {"count": 10, "point": 2, "title": "填空题", "question": "fills"}, {"count": 10, "point": 2, "title": "判断题", "question": "judges"}, {"count": 5, "point": 8, "title": "简答题", "question": "short_answers"}]',
-    //   state: "active",
-    //   total: "100"
-    // }
-  }
+  ) {}
 
   ngOnInit() {
     this.utilityService.goToTop()

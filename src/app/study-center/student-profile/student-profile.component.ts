@@ -16,6 +16,7 @@ export class StudentProfileComponent implements OnInit {
   student: any
   classes = []
   exams = []
+  stu_exams = []
   isFetchingExams = false
 
   examNotice = [
@@ -34,92 +35,79 @@ export class StudentProfileComponent implements OnInit {
 
   ngOnInit() {
     let self = this
-    this.setupStudentProfile()
-    setTimeout(() => {
-      self.setupExamForStudent()
-    }, 500);
+    this.setupStudentAndExam()
   }
 
-  fetchAllClasses(classId: string) {
-    let self = this
-    this.backendService.fetchAllByTableName('classes').subscribe(result => {
-      self.classes = result['response']
-      self.transferClass(self.classes, classId)
-      // console.log(self.student);
-    })
-  }
-
-  setupExamForStudent() {
+  // @@@@@@@@@@@@@@@@@@@@@@@@@@@
+  setupStudentAndExam() {
     let self = this
     this.isFetchingExams = true
-    this.backendService.fetchAllByTableName('exams').subscribe(result => {
-      self.isFetchingExams = false
-      self.exams = result['response'].length
-      if (self.exams.length == 0) {
-        return
-      }
-
-      // 过滤掉未发布的考试信息。即没有发布的考试，学生不能进入考试
-      self.exams = result['response'].filter(element => {
-        return element['state'] == 'active'
-      })
-      // 过滤掉跟这个学生的班级不相关的考试信息
-      self.exams = self.exams.filter(element => {
-        let flag = false
-        let classes = JSON.parse(element['classes'])
-        for (let i = 0; i < classes.length; i++) {
-          if (classes[i]['id'] == self.student['class_id']) {
-            flag = true
-            break
-          }
-        }
-        return flag
-      })
-      // 因为当前的考试信息都是与这个班级相关的考试，所以可以去掉考试中涉及到的所有班级的信息，然后把当前的班级信息放入考试列表中。
-      self.exams.forEach(element => {
-        delete element['classes']
-        element['class'] = self.student['class']
-      });
-
-      self.checkExamSubmited()
-
-    })
-  }
-
-  checkExamSubmited() {
-    let self = this
-
-    console.log('all students in this class will join the exams as below:');
-    console.log(this.exams);
-
-    this.backendService.fetchAllByTableName('student_exam').subscribe(result => {
-      // 得到所有的学生交卷的情况记录
-      let stu_exams = result['response']
-      // 这里不考虑实际的试卷题目，去掉
-      stu_exams.forEach(element => {
-        delete element['paper']
-      });
-
-      for (let i = 0; i < self.exams.length; i++) {
-        const exam = self.exams[i];
-        for (let j = 0; j < stu_exams.length; j++) {
-          const stu_exam = stu_exams[j];
-          if (stu_exam['student_id'] == self.student['id'] && stu_exam['class_id'] == exam['class']['id'] && stu_exam['course_id'] == exam['course_id'] && stu_exam['exam_id'] == exam['id']) {
-            exam['submit'] = true
-            break
-          } else {
-            exam['submit'] = false
-            continue
-          }
-        }
-      }
-    })
-  }
-
-  setupStudentProfile() {
-    let self = this
     this.student = JSON.parse(sessionStorage.getItem('student'))
-    this.fetchAllClasses(this.student['class_id'])
+    this.backendService.fetchMultipleTables(['classes', 'exams', 'student_exam']).subscribe(result => {
+      self.isFetchingExams = false
+      // --- Setup student info by classes and sessionStorage ---
+      self.classes = result[0]['response']
+      self.transferClass(self.classes, self.student['class_id'])
+      // --- Setup exams by stu_exams ---
+      self.exams = result[1]['response']
+      self.stu_exams = result[2]['response']
+      this.handleExamForStudent()
+    })
+  }
+
+  // 根据学生的class_id，从发布的考试信息中过滤掉没有这个班的考试信息
+  handleExamForStudent() {
+    if (this.exams.length == 0) {
+      return
+    }
+
+    // 过滤掉未发布的考试信息。即没有发布的考试，学生不能进入考试
+    this.exams = this.exams.filter(element => {
+      return element['state'] == 'active'
+    })
+
+    // 过滤掉跟这个学生的班级不相关的考试信息
+    this.exams = this.exams.filter(element => {
+      let flag = false
+      let classes = JSON.parse(element['classes'])
+      for (let i = 0; i < classes.length; i++) {
+        if (classes[i]['id'] == this.student['class_id']) {
+          flag = true
+          break
+        }
+      }
+      return flag
+    })
+
+    // 因为当前的考试信息都是与这个班级相关的考试，所以可以去掉考试中涉及到的所有班级的信息，然后把当前的班级信息放入考试列表中。
+    this.exams.forEach(element => {
+      delete element['classes']
+      element['class'] = this.student['class']
+    });
+    this.checkExamMarked()
+  }
+
+  // 检测某一门考试，这个学生是否已经交卷。对应着数据表中的记录的marked字段的值，1 表示已交卷，0 表示未交卷。
+  checkExamMarked() {
+    let self = this
+    // 这里不考虑实际的试卷题目，去掉
+    this.stu_exams.forEach(element => {
+      delete element['paper']
+    });
+
+    for (let i = 0; i < this.exams.length; i++) {
+      const exam = this.exams[i];
+      for (let j = 0; j < this.stu_exams.length; j++) {
+        const stu_exam = this.stu_exams[j];
+        if (stu_exam['student_id'] == self.student['id'] && stu_exam['class_id'] == exam['class']['id'] && stu_exam['course_id'] == exam['course_id'] && stu_exam['exam_id'] == exam['id']) {
+          exam['marked'] = true
+          break
+        } else {
+          exam['marked'] = false
+          continue
+        }
+      }
+    }
   }
 
   transferClass(classes: any, classId: string) {
