@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
 import { Teacher } from "./model/teacher";
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,6 +15,18 @@ const httpOptions = {
 export class BackendService {
 
   constructor(private httpClient: HttpClient) { }
+
+  getContacts() {
+    return this.httpClient.get("/contacts")
+  }
+
+  fetchMultipleTables(tableNameArr: string[], body?: any) {
+    let arr = []
+    tableNameArr.forEach(tableName => {
+      arr.push(this.fetchAllByTableName(tableName))
+    });
+    return forkJoin(arr)
+  }
 
   fetchAllByTableName(tableName: string, body?: any) {
     return this.httpClient.post("/fetch/" + tableName, body, httpOptions)

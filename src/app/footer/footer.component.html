@@ -1,28 +1,29 @@
 <div id="footer" class="footer pt-4">
   <div class="container">
     <div class="row py-3">
-      <div class="col">
-        <ul class="list-unstyled mt-3 py-0">
+      <div class="col pt-3">
+        <div class="col-10 mb-4 text-warning lead border-bottom border-secondary pb-2">联系方式</div>
+        <ul class="list-unstyled mt-4 py-0">
           <li *ngFor="let contact of contacts" class="my-1">
             <span class="mr-3">{{contact.key}}</span>
-            <span class="ml-2" *ngIf="contact.name!='home'">{{contact.value}}</span>
+            <span class="ml-2" *ngIf="contact.key!='主页'">{{contact.value}}</span>
             <a target="_blank" class="text-warning ml-2" [attr.href]="contact.value"
-              *ngIf="contact.name=='home'">{{contact.value}}</a>
-          </li>
-          <li class="mt-5">
-            <img src="/assets/images/auth-qrcode.jpg" alt="frank li qrcode" class="img-fluid qrcode-img img-thumbnail">
-            <p class="mx-2 text-success mt-1"><i class="fab fa-weixin mr-1"></i> 个人微信</p>
+              *ngIf="contact.key=='主页'">{{contact.value}}</a>
           </li>
         </ul>
       </div>
       <div class="col tech-stack pt-3">
         <div class="row justify-content-center">
-          <div class="col-10 text-center mb-4 text-warning lead border-bottom border-secondary pb-2">技术栈</div>
+          <div class="col-10 mb-4 text-warning lead border-bottom border-secondary pb-2">技术栈</div>
           <div class="col-4 text-center mb-3" *ngFor="let item of technologyStack">
             <img [src]="'/assets/images/'+item.icon" alt="" class="icon img-fluid">
             <p class="title text-center w-100 mt-1">{{item.title}}</p>
           </div>
         </div>
+      </div>
+      <div class="col pt-5 text-right">
+        <img src="/assets/images/auth-qrcode.jpg" alt="frank li qrcode" class="img-fluid qrcode-img img-thumbnail">
+        <p class="mx-2 text-success mt-1"><i class="fab fa-weixin mr-1"></i> 个人微信</p>
       </div>
     </div>
     <div class="row">

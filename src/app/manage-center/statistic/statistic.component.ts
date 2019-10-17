@@ -87,6 +87,7 @@ export class StatisticComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    let self = this
     this.utilityService.goToTop()
     this.setupMetadata()
   }
@@ -115,8 +116,11 @@ export class StatisticComponent implements OnInit {
 
   // >>>>>>>>>>>>>>>>> 获得基础数据，包含班级和课程
   setupMetadata() {
-    this.setupClassesData()
-    this.setupCoursesData()
+    let self = this
+    this.backendService.fetchMultipleTables(['classes', 'courses']).subscribe(result => {
+      self.metadata.classes = result[0]['response']
+      self.metadata.courses = result[1]['response']
+    })
   }
 
   // 获得班级信息
@@ -124,7 +128,6 @@ export class StatisticComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.metadata.classes = result['response']
-      // console.log(self.metadata.classes);
     })
   }
 
@@ -133,7 +136,6 @@ export class StatisticComponent implements OnInit {
     let self = this
     this.backendService.fetchAllByTableName('courses').subscribe(result => {
       self.metadata.courses = result['response']
-      // console.log(self.metadata.courses);
     })
   }
 
