@@ -94,9 +94,11 @@ export class BackendService {
    */
   queryQuestionsRandom(tableNames: any[]) {
     let requestArray = []
-    tableNames.forEach(element => {
+    tableNames.forEach((element, index) => {
+      console.log('request-' + index);
       requestArray.push(this.queryQuestionsByTableNameAndLimit(element['tableName'], element['limit'], element['obj']))
     });
+    // 当上面所有的请求都完成后，再返回给函数调用者
     return forkJoin(requestArray)
   }
 

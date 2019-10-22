@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilityService } from "../../utility.service";
 
 @Component({
   selector: 'app-features',
@@ -52,7 +53,7 @@ export class FeaturesComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private utilityService: UtilityService) { }
 
   ngOnInit() {
   }

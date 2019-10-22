@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row py-3">
       <div class="col pt-3">
-        <div class="col-10 mb-4 text-warning lead border-bottom border-secondary pb-2">联系方式</div>
+        <div class="col-10 pl-0 mb-4 text-warning lead border-bottom border-secondary pb-2">作者信息</div>
         <ul class="list-unstyled mt-4 py-0">
           <li *ngFor="let contact of contacts" class="my-1">
             <span class="mr-3">{{contact.key}}</span>
@@ -14,20 +14,28 @@
       </div>
       <div class="col tech-stack pt-3">
         <div class="row justify-content-center">
-          <div class="col-10 mb-4 text-warning lead border-bottom border-secondary pb-2">技术栈</div>
+          <div class="col-10 pl-0 mb-4 text-warning lead border-bottom border-secondary pb-2">技术栈</div>
           <div class="col-4 text-center mb-3" *ngFor="let item of technologyStack">
             <img [src]="'/assets/images/'+item.icon" alt="" class="icon img-fluid">
             <p class="title text-center w-100 mt-1">{{item.title}}</p>
           </div>
         </div>
       </div>
-      <div class="col pt-5 text-right">
-        <img src="/assets/images/auth-qrcode.jpg" alt="frank li qrcode" class="img-fluid qrcode-img img-thumbnail">
-        <p class="mx-2 text-success mt-1"><i class="fab fa-weixin mr-1"></i> 个人微信</p>
+      <div class="col pt-5 text-right text-right">
+        <div class="row no-gutters">
+          <div class="col">
+            <img src="/assets/images/auth-qrcode.jpg" alt="frank li qrcode" class="img-fluid qrcode-img img-thumbnail">
+          </div>
+          <div class="col">
+            <a href="http://www.xianyangzhiyuan.cn/" target="_blank">
+              <img src="/assets/images/xyzy.png" alt="咸阳职业技术学院" class="img-fluid qrcode-img">
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col text-center pb-3 pt-4">
+    <div class="row border-top border-secondary">
+      <div class="col text-center py-2">
         <small>&copy; {{current_year}} Frank Li All Rights Reserved 版权所有者 李鹏</small>
       </div>
     </div>
