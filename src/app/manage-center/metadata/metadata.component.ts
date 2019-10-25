@@ -15,11 +15,8 @@ import { GlobalData } from 'src/app/global/global-data';
 export class MetadataComponent implements OnInit {
 
   // for select menus init data
-  majors = [
-    '计算机应用技术',
-    '大数据与安全',
-    '计算机信息管理',
-  ]
+  majors = GlobalData.majors
+  classTypes = GlobalData.classTypes
   registYears = []
   classNums = []
 

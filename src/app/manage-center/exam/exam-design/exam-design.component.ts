@@ -98,7 +98,6 @@ export class ExamDesignComponent implements OnInit {
           self.inactiveLength += 1
         }
       });
-      console.log(self.savedExams);
     })
 
   }

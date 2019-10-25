@@ -4,6 +4,15 @@ import { Student } from '../model/student'
 export class GlobalData {
   static currentTeacher: Teacher
   static currentStudent: Student
+  static majors = [
+    '计算机应用技术',
+    '大数据与安全',
+    '计算机信息管理',
+  ]
+  static classTypes = [
+    '高职',
+    '五年制',
+  ]
   static questions = [
     {
       title: '选择题',

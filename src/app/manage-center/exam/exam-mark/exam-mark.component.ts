@@ -65,7 +65,6 @@ export class ExamMarkComponent implements OnInit {
       let classDetail = this.groupedMenuList[i]['list']
       this.groupedMenuList[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
     }
-    console.log(this.groupedMenuList);
   }
 
   selectPaper(courseIndex, classIndex, paperIndex) {
@@ -90,8 +89,6 @@ export class ExamMarkComponent implements OnInit {
         }
       }
     }
-    console.log(this.currentPaper);
-    
   }
 
   checkInvalidScore() {
@@ -170,8 +167,5 @@ export class ExamMarkComponent implements OnInit {
     }
     return result
   }
-
-
-
 
 }

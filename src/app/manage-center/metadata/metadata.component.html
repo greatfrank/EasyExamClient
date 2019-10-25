@@ -22,8 +22,9 @@
                             <div class="form-group">
                                 <label>类型</label>
                                 <select name="class-type" class="form-control" formControlName="type">
-                                    <option value="高职">高职</option>
-                                    <option value="五年制">五年制</option>
+                                    <!-- <option value="高职">高职</option>
+                                    <option value="五年制">五年制</option> -->
+                                    <option [value]="type" *ngFor="let type of classTypes">{{type}}</option>
                                 </select>
                             </div>
                             <div class="form-group">

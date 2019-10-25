@@ -5,7 +5,6 @@
             <div class="col-4">
                 <h1>考试阅卷</h1>
                 <hr>
-
                 <ul class="list-group">
                     <li class="list-group-item pl-0 border-0" *ngFor="let courseGroup of groupedMenuList; let x=index">
                         <h3>《 {{courseGroup['course_name']}} 》</h3>
@@ -43,14 +42,14 @@
                             <li>如果试题的得分大于其分值，或者没有给与该试题得分，则无法点击【完成阅卷】按钮。</li>
                         </ul>
                     </div>
-                    <div class="content-area" *ngFor="let item of currentPaper['paper']; let x=index">
+                    <div class="content-area shadow" *ngFor="let item of currentPaper['paper']; let x=index">
                         <!-- Choices -->
                         <div *ngIf="item['question']=='choices'">
-                            <h4 class="question-type">
+                            <h4 class="p-4">
                                 {{item['title']}}
                                 <small class="badge badge-warning">每题 {{item['point']}} 分</small>
                             </h4>
-                            <ol class="content-list">
+                            <ol class="content-list pb-3">
                                 <li class="content-obj" *ngFor="let content of item['contents']">
                                     <pre class="content-question" [innerHTML]="content['question']"></pre>
                                     <ul class="list-unstyled option-list">
@@ -66,11 +65,11 @@
                         </div>
                         <!-- Fills -->
                         <div *ngIf="item['question']=='fills'">
-                            <h4 class="question-type">
+                            <h4 class="p-4">
                                 {{item['title']}}
                                 <small class="badge badge-warning">每题 {{item['point']}} 分</small>
                             </h4>
-                            <ol class="content-list">
+                            <ol class="content-list pb-3">
                                 <li class="content-obj" *ngFor="let content of item['contents']">
                                     <pre class="content-question" [innerHTML]="content['question']"></pre>
                                     <div class="answer font-weight-bold">
@@ -88,11 +87,11 @@
                         </div>
                         <!-- Judges -->
                         <div *ngIf="item['question']=='judges'">
-                            <h4 class="question-type">
+                            <h4 class="p-4">
                                 {{item['title']}}
                                 <small class="badge badge-warning">每题 {{item['point']}} 分</small>
                             </h4>
-                            <ol class="content-list">
+                            <ol class="content-list pb-3">
                                 <li class="content-obj" *ngFor="let content of item['contents']">
                                     <pre class="content-question" [innerHTML]="content['question']"></pre>
                                     <div class="answer font-weight-bolder">
@@ -108,18 +107,18 @@
                         </div>
                         <!-- Short Answer -->
                         <div *ngIf="item['question']=='short_answers'">
-                            <h4 class="question-type">
+                            <h4 class="p-4">
                                 {{item['title']}}
                                 <small class="badge badge-warning">每题 {{item['point']}} 分</small>
                             </h4>
-                            <ol class="content-list">
+                            <ol class="content-list pb-3">
                                 <li class="content-obj" *ngFor="let content of item['contents']">
                                     <pre class="content-question" [innerHTML]="content['question']"></pre>
-                                    <label class="font-weight-bold">
+                                    <label class="font-weight-bold mt-2">
                                         <i class="fas fa-caret-right mr-2"></i>
                                         参考答案
                                     </label>
-                                    <pre class="bg-dark p-2 text-white answer"
+                                    <pre class="px-2 py-0 answer"
                                         [innerHTML]="content['standard_answer']"></pre>
                                     <label class="font-weight-bold text-info">
                                         <i class="fas fa-caret-right mr-2"></i>
@@ -154,7 +153,7 @@
                             </ol>
                         </div>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right mt-5">
                         <button class="btn btn-lg btn-danger" (click)="finishMarkPaper()"
                             [disabled]="invalidScore || currentPaper['saved']=='1'">
                             <i class="fas fa-check mr-2"></i>

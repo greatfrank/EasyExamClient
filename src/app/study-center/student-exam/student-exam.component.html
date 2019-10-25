@@ -65,11 +65,11 @@
             </div>
             <div class="col questions-area">
                 <!-- === Choices content box === -->
-                <div class="choices-content-box p-4 border border-secondary"
+                <div class="choices-content-box p-4 border border-secondary bg-black"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='choices'">
-                    <h4>
+                    <h4 class="text-warning">
                         {{myexam['questions'][questionIndex]['title']}}
-                        <span class="ml-2 text-warning">
+                        <span class="ml-2">
                             {{questionIndex+1}}.{{contentIndex+1}}
                         </span>
                     </h4>
@@ -91,10 +91,10 @@
                     </div>
                 </div>
                 <!-- === Fills content box === -->
-                <div class="fills-content-box p-4 border border-secondary" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
-                    <h4>
+                <div class="fills-content-box p-4 border border-secondary bg-black" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
+                    <h4 class="text-warning">
                         {{myexam['questions'][questionIndex]['title']}}
-                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                        <span class="ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
                     </h4>
                     <hr>
                     <div class="py-3">
@@ -103,21 +103,21 @@
                         </pre>
                         <hr>
                         <form>
-                            <label>在以下的输入框填写答案。输入框的顺序与题目中空白的顺序一致</label>
-                            <div class="form-group font-weight-bold"
+                            <div class="form-group"
                                 *ngFor="let item of myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']; let i=index">
-                                <input placeholder="第 {{i+1}} 个空" type="text" name="answer-{{i}}" [(ngModel)]="item"
-                                    class="form-control form-control-lg lead"
+                                <label class="text-warning">第 {{i+1}} 个空</label>
+                                <input type="text" name="answer-{{i}}" [(ngModel)]="item"
+                                    class="form-control font-weight-bolder"
                                     (change)="onFillsGetAnswer(questionIndex,contentIndex,i,item)">
                             </div>
                         </form>
                     </div>
                 </div>
                 <!-- ======== Judges content box ======== -->
-                <div class="judges-content-box p-4 border border-secondary" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
-                    <h4>
+                <div class="judges-content-box p-4 border border-secondary bg-black" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
+                    <h4 class="text-warning">
                         {{myexam['questions'][questionIndex]['title']}}
-                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                        <span class="ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
                     </h4>
                     <hr>
                     <div class="py-3">
@@ -150,11 +150,11 @@
                     </div>
                 </div>
                 <!-- === ShortAnswers content box === -->
-                <div class="short_answers-content-box p-4 border border-secondary"
+                <div class="short_answers-content-box p-4 border border-secondary bg-black"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='short_answers'">
-                    <h4>
+                    <h4 class="text-warning">
                         {{myexam['questions'][questionIndex]['title']}}
-                        <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
+                        <span class="ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
                     </h4>
                     <hr>
                     <div class="py-3">
@@ -164,7 +164,7 @@
                         <hr>
                         <form>
                             <div class="form-group font-weight-bold">
-                                <textarea class="form-control form-control-lg" name="stu_answer" cols="30" rows="10"
+                                <textarea class="form-control font-weight-bolder" name="stu_answer" cols="30" rows="10"
                                     [(ngModel)]="myexam['questions'][questionIndex]['contents'][contentIndex][stu_answer]"
                                     (change)="onShortAnswersGetAnswer(questionIndex,contentIndex,myexam['questions'][questionIndex]['contents'][contentIndex][stu_answer])"></textarea>
                             </div>
