@@ -162,6 +162,7 @@ export class StudentExamComponent implements OnInit {
     this.myexam['questions'][questionIndex]['contents'][contentIndex]['is_full'] = this.checkArrFull(this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer'])
 
     let stu_answer = this.myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']
+
     this.giveScoreToQuestion(questionIndex, contentIndex, stu_answer)
   }
 

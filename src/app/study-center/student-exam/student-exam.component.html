@@ -1,7 +1,7 @@
 <div id="student-exam" class="student-exam">
     <div class="container-fluid p-5 my-0 bg-dark text-white" *ngIf="isLogin">
-        <div class="row">
-            <div class="col">
+        <div class="row align-items-center">
+            <div class="col-5">
                 <h3 class="">
                     <span class="font-weight-bold">《 {{myexam['course_name']}} 》</span><small
                         class="text-secondary ml-3">考试</small>
@@ -65,7 +65,7 @@
             </div>
             <div class="col questions-area">
                 <!-- === Choices content box === -->
-                <div class="choices-content-box"
+                <div class="choices-content-box p-4 border border-secondary"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='choices'">
                     <h4>
                         {{myexam['questions'][questionIndex]['title']}}
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <!-- === Fills content box === -->
-                <div class="fills-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
+                <div class="fills-content-box p-4 border border-secondary" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='fills'">
                     <h4>
                         {{myexam['questions'][questionIndex]['title']}}
                         <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
@@ -106,7 +106,7 @@
                             <label>在以下的输入框填写答案。输入框的顺序与题目中空白的顺序一致</label>
                             <div class="form-group font-weight-bold"
                                 *ngFor="let item of myexam['questions'][questionIndex]['contents'][contentIndex]['stu_answer']; let i=index">
-                                <input placeholder="第 {{i+1}} 个空" type="text" name="'answer-'+i" [(ngModel)]="item"
+                                <input placeholder="第 {{i+1}} 个空" type="text" name="answer-{{i}}" [(ngModel)]="item"
                                     class="form-control form-control-lg lead"
                                     (change)="onFillsGetAnswer(questionIndex,contentIndex,i,item)">
                             </div>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <!-- ======== Judges content box ======== -->
-                <div class="judges-content-box" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
+                <div class="judges-content-box p-4 border border-secondary" *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='judges'">
                     <h4>
                         {{myexam['questions'][questionIndex]['title']}}
                         <span class="text-warning ml-2">{{questionIndex+1}}.{{contentIndex+1}}</span>
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <!-- === ShortAnswers content box === -->
-                <div class="short_answers-content-box"
+                <div class="short_answers-content-box p-4 border border-secondary"
                     *ngIf="questionIndex!=-1 && contentIndex!=-1 && questionType=='short_answers'">
                     <h4>
                         {{myexam['questions'][questionIndex]['title']}}
@@ -171,7 +171,6 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="codings-content-box"></div> -->
             </div>
         </div>
     </div>

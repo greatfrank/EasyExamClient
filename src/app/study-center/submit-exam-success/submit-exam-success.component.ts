@@ -18,7 +18,6 @@ export class SubmitExamSuccessComponent implements OnInit, OnDestroy {
   ngOnInit() {
     let self = this
     this.sub = this.route.params.subscribe(params => {
-      console.log(params);
       self.info = params
     },
       err => {
