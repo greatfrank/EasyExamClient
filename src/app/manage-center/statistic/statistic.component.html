@@ -93,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- ========== Exam Info ========== -->
+                <!-- ========== About Exam ========== -->
                 <div class="container" *ngIf="currentMenuIndex==2">
                     <div class="row">
                         <div class="col-12 mb-5 p-4 shadow" *ngFor="let exam of exams">
@@ -136,7 +136,7 @@
                                                 <td class="font-weight-bold bg-light text-info text-center">
                                                     操作
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-left">
                                                     <a class="btn btn-info" [routerLink]="[ './../exam/exam-design' ]">
                                                         <i class="fas fa-info-circle mr-1"></i>
                                                         了解详情

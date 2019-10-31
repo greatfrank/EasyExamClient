@@ -1,4 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face{
+  font-family: 'easy-exam-font';
+  src: url('assets/font/Alibaba-PuHuiTi-Regular.ttf') format('truetype');
+  // src: url('assets/font/Alibaba-PuHuiTi-Heavy.ttf') format('truetype');
+  // src: url('assets/font/Alibaba-PuHuiTi-Bold.ttf') format('truetype');
+  // src: url('assets/font/Alibaba-PuHuiTi-Medium.ttf') format('truetype');
+}
+
+*{
+  font-family: 'easy-exam-font';
+}
+
 .text-weight-normal {
   font-weight: 300;
 }
