@@ -14,17 +14,16 @@
                     <div class="col-4">
                         <form class="metadata-form" [formGroup]="classForm" (ngSubmit)="onSubmit('classes')">
                             <div class="form-group">
-                                <label>专业</label>
-                                <select name="class-major" class="form-control" formControlName="major">
-                                    <option [value]="major" *ngFor="let major of majors">{{major}}</option>
+                                <label>类型</label>
+                                <select name="class-type" class="form-control" formControlName="type"
+                                    (change)="handleTypeChanged()">
+                                    <option [value]="type" *ngFor="let type of classTypes">{{type}}</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>类型</label>
-                                <select name="class-type" class="form-control" formControlName="type">
-                                    <!-- <option value="高职">高职</option>
-                                    <option value="五年制">五年制</option> -->
-                                    <option [value]="type" *ngFor="let type of classTypes">{{type}}</option>
+                                <label>专业</label>
+                                <select name="class-major" class="form-control" formControlName="major">
+                                    <option [value]="major" *ngFor="let major of majorList">{{major}}</option>
                                 </select>
                             </div>
                             <div class="form-group">

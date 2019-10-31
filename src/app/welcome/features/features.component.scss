@@ -1,5 +1,17 @@
 .features{
+  position: relative;
   .feature-icon{
     height: 5rem;
+  }
+  .bg-box, .bg-box-2{
+    position: absolute;
+  }
+  .bg-box{
+    left: 0rem;
+    top: 5%; 
+  }
+  .bg-box-2{
+    right: 0rem;
+    bottom: -2rem;
   }
 }

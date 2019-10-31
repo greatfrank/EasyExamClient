@@ -1,22 +1,28 @@
 <div id="features" class="features py-5 bg-white">
-  <div class="container pt-5 pb-0">
+  <div class="bg-box">
+    <img src="assets/images/feature-bg.png" alt="EasyExam">
+  </div>
+  <div class="bg-box-2">
+    <img src="assets/images/feature-bg-2.png" alt="EasyExam">
+  </div>
+  <div class="container pt-5 pb-0 mb-4">
     <div class="row justify-content-between">
       <div class="col-3 text-center" *ngFor="let feature of features">
         <img [src]="'/assets/images/'+feature.icon" alt="" class="img-fluid feature-icon mb-2">
-        <h3 class="text-primary display-4">{{feature.title}}</h3>
+        <h3 class="display-4">{{feature.title}}</h3>
         <p class="lead">{{feature.desc}}</p>
       </div>
     </div>
   </div>
   <!-- ================= Feature Details ================== -->
-  <div class="container-fluid">
+  <div class="container-fluid my-5">
     <div class="row justify-content-center my-5 align-items-center p-5"
       *ngFor="let item of featureDetails; let i=index">
-      <div class="col-4 lead" [ngClass]="{'order-4': i%2==0}">
+      <div class="col-4 lead px-5" [ngClass]="{'order-4': i%2==0}">
         <div class="media my-4" *ngFor="let text of item['texts']">
-          <i class="fas fa-check-circle mr-3 my-2 text-primary"></i>
+          <i class="fas fa-check-circle mr-3 my-2 text-info"></i>
           <div class="media-body font-weight-bold">
-              {{text}}
+            {{text}}
           </div>
         </div>
       </div>

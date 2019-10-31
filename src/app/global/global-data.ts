@@ -4,11 +4,21 @@ import { Student } from '../model/student'
 export class GlobalData {
   static currentTeacher: Teacher
   static currentStudent: Student
-  static majors = [
-    '计算机应用技术',
-    '大数据与安全',
-    '计算机信息管理',
-  ]
+  static majorList = {
+    highVocation: [
+      '大数据技术应用',
+      '电子信息工程技术管理',
+      '计算机信息管理',
+      '计算机应用技术',
+      '软件技术',
+      '数字媒体艺术设计',
+      '应用电子技术'],
+    fiveYears: [
+      '计算机网络技术',
+      '应用电子技术'
+    ]
+  }
+
   static classTypes = [
     '高职',
     '五年制',

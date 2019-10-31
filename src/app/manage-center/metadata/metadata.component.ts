@@ -15,11 +15,10 @@ import { GlobalData } from 'src/app/global/global-data';
 export class MetadataComponent implements OnInit {
 
   // for select menus init data
-  majors = GlobalData.majors
+  majorList = []
   classTypes = GlobalData.classTypes
   registYears = []
   classNums = []
-
 
   // form model
   classForm = this.fb.group({
@@ -141,6 +140,20 @@ export class MetadataComponent implements OnInit {
         }
       }
       return removable
+    }
+  }
+
+  handleTypeChanged() {
+    let type = this.classForm.get('type').value
+    switch (type) {
+      case '高职':
+        this.majorList = GlobalData.majorList['highVocation']
+        break;
+      case '五年制':
+        this.majorList = GlobalData.majorList['fiveYears']
+        break;
+      default:
+        break;
     }
   }
 

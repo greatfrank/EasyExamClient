@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, Route } from "@angular/router";
+import { Router } from "@angular/router";
 import { Teacher } from "../model/teacher";
 import { Student } from "../model/student";
 import { FormBuilder, Validators } from '@angular/forms';
 import { BackendService } from "../backend.service";
 import { UtilityService } from "../utility.service";
-import { GlobalData } from "../global/global-data";
+
+declare var $: any
 
 /**
  * ================================
@@ -72,6 +73,10 @@ export class RegistComponent implements OnInit {
     this.backendService.fetchAllByTableName('classes').subscribe(result => {
       self.classes = result['response']
     })
+
+    setTimeout(() => {
+      $("#exampleModalCenter").modal('show')
+    }, 500);
   }
 
   onTeacherSubmit(): void {
