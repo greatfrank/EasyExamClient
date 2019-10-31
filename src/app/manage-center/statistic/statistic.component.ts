@@ -40,7 +40,6 @@ export class StatisticComponent implements OnInit {
   ]
   currentMenuIndex = 0
 
-
   metadata = {
     classes: [],
     courses: []

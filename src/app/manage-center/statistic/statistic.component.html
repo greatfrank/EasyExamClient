@@ -154,8 +154,14 @@
                     </div>
                 </div>
                 <!-- ========== Score Analysis =========== -->
-                <div class="container shadow mt-4" *ngIf="currentMenuIndex==3">
-                    <div class="row mt-4 pt-5 pb-3 px-4 bg-white">
+                <div class="container shadow my-5" *ngIf="currentMenuIndex==3">
+                    <div class="row pb-3 px-4 bg-white">
+                        <div class="col-12 mt-4 mb-3 text-right">
+                            <a class="btn btn-link" [routerLink]="[ '/manage-center/exam/exam-mark' ]">
+                                <i class="fas fa-edit mr-2"></i>
+                                去阅卷，设定学生的卷面分
+                            </a>
+                        </div>
                         <div class="col-5">
                             <form>
                                 <div class="from-group">
@@ -254,7 +260,7 @@
                                     保存学生成绩
                                 </button>
                             </div>
-                            <!-- ============ Analysis =============== -->
+                            <!-- ===== Analysis ===== -->
                             <div class="row align-items-center my-5">
                                 <div class="col">
                                     <div class="form-check form-check-inline mr-4 lead font-weight-bold">
