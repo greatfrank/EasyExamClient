@@ -109,7 +109,6 @@ export class RegistComponent implements OnInit {
       } else {
         alert('注册失败，请重试')
       }
-
     })
   }
 

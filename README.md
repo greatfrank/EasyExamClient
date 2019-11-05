@@ -1,54 +1,4 @@
-# EasyExamClient
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.1.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
-
-
-## Building Product
-
-
-Building the dist folder
-```
-$ ng build --prod --base-href=/ee/
-```
-
-At the browser, run command as below
-```
-http://SERVER_IP_ADDRESS:8000/ee
-```
-
-# 《开发文档》
-
-```
-开发文档包括：《功能要求》、《需求分析》、《技术分析》、《系统分析》、《数据库文档》、《功能函数文档》、《界面文档》、《编译手册》、《QA文档》、《项目总结》等。此次我编写的是软件开发文档。
-
-产品文档包括：《产品简介》、《产品技术白皮书》、《评测报告》、《安装手册》、《使用手册》、《维护手册》、 《用户报告》、《销售培训》等。
-
-《功能函数文档》——包括变量名、变量初值、功能、函数名、参数、如何调用、备注、注意事项等。以《系统分析》为基础，进行详细的说明，列出哪个功能涉及多少个函数，以便以后程序员修改、接手和扩展。
-```
+# 《 EasyExam 在线考试系统 》开发文档
 
 # 需求分析
 
@@ -96,6 +46,20 @@ EasyExam系统采用了前后端分离的架构。该系统在设计之初，就
 * 试卷结构以及与之相关的分值分布、科目和考试班级信息
 * 学生的答卷数据，包括随机抽取的题目以及获得的成绩
 
+# 系统架构
+
+EasyExam 在线考试系统是基于 B/S 架构设计的。前端客户端全部通过 Web 网站的形式，在前端浏览器上实现运转。前端运行的主体是每一位学生的学生电脑。后端运行一套 Web Server 程序，作为前端的服务器。服务器程序主要由两大功能，一个是接收前端浏览器对网站的访问，另一个功能是连接数据库服务器程序，对数据库进行访问，提供数据的读取和写入等操作。
+
+为了适应学校机房的特殊环境，避免考试时骤增的网络流量，这套系统以每一个机房的局域网为一个网络单元，各个机房之间相互隔离。这样处理既避免了巨大的网络流量对系统造成的拥塞，也降低了系统部署的难度，而且也为学校降低了服务器的成本。
+
+本系统以每一个机房内的教师电脑作为服务器，将系统所有的程序代码部署在教师机内，学生机仅需要与教师机连接在同一个局域网中即可。学生机不需要安装任何第三方软件，只需要由一个主流的浏览器软件即可开始使用。学生机通过在浏览器中访问教师机的 IP 地址即可开始使用该系统。
+
+在系统使用的过程中，产生的所有数据都会保存在教师机内的数据库中，保证了数据的完整和安全。
+
+以下是整个系统的简单架构图:
+
+![系统架构图](/src/assets/images/LAN.jpg)
+
 # 技术分析
 
 ## 前端技术
@@ -112,9 +76,13 @@ Go 语言拥有十多年的历史，在云计算等领域有着广泛的应用�
 
 Go 语言是一款强类型语言，可以非常方便的规范数据的结构，很适合在线考试中对数据的要求。
 
+Go 语言原生的支持 Web 程序开发，具有类似 C 语言的运行特性。所以非常适合作为后端服务器程序的开发语言。而且 Go 语言需要编译为可执行程序后才能运行，所以具有部署部署方便，部署成本低的特性，非常适合开发中小型应用的场景。
+
 ## 数据库技术
 
 数据库采用 MySQL 的开源版本，在MySQL中对数据的操作采用的是 SQL 语句，它有着很好的可阅读性，而且编写方便。
+
+MySQL 数据库占用系统内存小，可以提供对数万行级别的数据进行高效读写的特性，非常适合作为中小型系统的数据库平台。
 
 另外 MySQL 是一款成熟的数据库系统，很多开发语言和框架都有相关的框架，能够很好的与 MySQL 数据库联合工作。
 
@@ -196,6 +164,443 @@ Go 语言是一款强类型语言，可以非常方便的规范数据的结构�
 
 一旦学生完成答卷，提交试卷后，系统将关闭该生重复考试的渠道。
 
+# 主要算法实现
+
+## 登录/注册算法实现
+
+在前端页面的表单中，根据用户需要填写的内容，在JavaScript代码中定义若干个类，这里主要有两个，一个是教师类，一个是学生类。
+
+```
+teacherForm = this.formBuilder.group({
+    id: ['', [Validators.required, Validators.pattern(this.idPattern)]],
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+    department: ['电子信息学院', Validators.required],
+  })
+```
+
+```
+studentForm = this.formBuilder.group({
+    id: ['', [Validators.required, Validators.pattern(this.idPattern)]],
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
+    class_id: ['', Validators.required],
+    phone: ['', [Validators.required, Validators.pattern(this.mobilePhonePattern)]],
+    gender: ['', Validators.required]
+  })
+```
+
+通过将类的相关属性与页面中表单的对应输入框进行双向数据绑定，即可从用户在输入框中数据的内容中获取类中相关属性的值。
+
+*教师注册表单*
+```
+<form [formGroup]="teacherForm" (ngSubmit)="onTeacherSubmit()" class="regist-form"
+                    *ngIf="!isTeacherRegisted">
+                    <div class="form-group">
+                        <label>工号</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" formControlName="id"
+                            [ngClass]="{'input-error': teacherForm.controls['id'].invalid && (teacherForm.controls['id'].dirty || teacherForm.controls['id'].touched)}">
+                        <small
+                            *ngIf="teacherForm.controls['id'].invalid && (teacherForm.controls['id'].dirty || teacherForm.controls['id'].touched)"
+                            class="form-text text-danger">必须全部是数字</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username"
+                            formControlName="username"
+                            [ngClass]="{'input-error': teacherForm.controls['username'].invalid && (teacherForm.controls['username'].dirty || teacherForm.controls['username'].touched)}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" placeholder="Teacher Password"
+                            formControlName="password"
+                            [ngClass]="{'input-error': teacherForm.controls['password'].invalid && (teacherForm.controls['password'].dirty || teacherForm.controls['password'].touched)}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" placeholder="Teacher Email" formControlName="email"
+                            [ngClass]="{'input-error': teacherForm.controls['email'].invalid && (teacherForm.controls['email'].dirty || teacherForm.controls['email'].touched)}">
+                        <small class="form-text text-danger"
+                            *ngIf="teacherForm.controls['email'].invalid && (teacherForm.controls['email'].dirty || teacherForm.controls['email'].touched)">邮箱格式不正确</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>学院/系部</label>
+                        <input type="text" class="form-control" placeholder="Teacher ID" formControlName="department"
+                            [ngClass]="{'input-error': teacherForm.controls['department'].invalid && (teacherForm.controls['department'].dirty || teacherForm.controls['department'].touched)}">
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary"
+                            [disabled]="!teacherForm.valid || isRunTeacherRegisting">
+                            <i class="fas fa-check mr-2"></i>
+                            注 册
+                        </button>
+                        <span *ngIf="isRunTeacherRegisting"><i class="fas fa-cog fa-lg fa-spin ml-4 mr-2"></i>正在处理中
+                            ...</span>
+                    </div>
+                </form>
+```
+
+*学生注册表单*
+```
+<form [formGroup]="studentForm" (ngSubmit)="onStudentSubmit()" class="regist-form">
+                    <div class="form-group">
+                        <label>学号</label>
+                        <input type="text" class="form-control" placeholder="Student ID" formControlName="id"
+                            [ngClass]="{'input-error': studentForm.controls['id'].invalid && (studentForm.controls['id'].dirty || studentForm.controls['id'].touched)}">
+                        <small
+                            *ngIf="studentForm.controls['id'].invalid && (studentForm.controls['id'].dirty || studentForm.controls['id'].touched)"
+                            class="form-text text-danger">必须全部是数字</small>
+                    </div>
+                    <div class="form-group">
+                        <label>姓名</label>
+                        <input type="text" class="form-control" placeholder="Teacher Username"
+                            formControlName="username"
+                            [ngClass]="{'input-error': studentForm.controls['username'].invalid && (studentForm.controls['username'].dirty || studentForm.controls['username'].touched)}">
+                    </div>
+                    <div class="form-group">
+                        <label>班级</label>
+                        <select name="stu-class" class="form-control" formControlName="class_id"
+                            [ngClass]="{'input-error': studentForm.controls['class_id'].invalid && (studentForm.controls['class_id'].dirty || studentForm.controls['class_id'].touched)}">
+                            <option [value]="item.id" *ngFor="let item of classes">
+                                {{item.type}}{{item.major}}{{item.regist_year}} {{item.num}} 班</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" placeholder="Student Password"
+                            formControlName="password"
+                            [ngClass]="{'input-error': studentForm.controls['password'].invalid && (studentForm.controls['password'].dirty || studentForm.controls['password'].touched)}">
+                    </div>
+                    <div class="form-group lead my-4">
+                        <span class="mr-5">
+                            <input type="radio" name="gender" formControlName="gender" value="男"> 男
+                        </span>
+                        <span>
+                            <input type="radio" name="gender" formControlName="gender" value="女"> 女
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label>邮箱</label>
+                        <input type="email" class="form-control" placeholder="Student Email" formControlName="email"
+                            [ngClass]="{'input-error': studentForm.controls['email'].invalid && (studentForm.controls['email'].dirty || studentForm.controls['email'].touched)}">
+                    </div>
+                    <div class="form-group">
+                        <label>电话</label>
+                        <input type="text" class="form-control" placeholder="Student Phone" formControlName="phone"
+                            [ngClass]="{'input-error': studentForm.controls['phone'].invalid && (studentForm.controls['phone'].dirty || studentForm.controls['phone'].touched)}">
+                        <small class="form-text text-danger"
+                            *ngIf="studentForm.controls['phone'].invalid && (studentForm.controls['phone'].dirty || studentForm.controls['phone'].touched)">11
+                            位手机号码</small>
+                    </div>
+                    <div class="form-group mt-4">
+                        <button class="btn btn-success" [disabled]="!studentForm.valid || isRunStudentRegisting">
+                            <i class="fas fa-check mr-2"></i>
+                            注 册
+                        </button>
+                        <span *ngIf="isRunStudentRegisting"><i class="fas fa-cog fa-lg fa-spin ml-4 mr-2"></i>正在处理中
+                            ...</span>
+                    </div>
+                </form>
+```
+
+![form](/src/assets/images/form.jpg)
+
+当用户点击注册或者登录按钮后，前端程序响应用户的点击操作，执行函数onTeacherSubmit() 或 onStudentSubmit()
+
+```
+onTeacherSubmit(): void {
+    let self = this
+    this.isRunTeacherRegisting = true
+
+    this.backendService.addNewByTableName('teachers', this.teacherForm.value).subscribe(data => {
+      self.isRunTeacherRegisting = false
+      if (data['effect_rows'] == 1) {
+        alert('教师注册成功 ！')
+        // 直接跳转到管理页面，注意值的传递
+      } else {
+        alert('注册失败，请重试')
+      }
+    })
+  }
+```
+
+```
+onStudentSubmit(): void {
+    let self = this
+    this.isRunStudentRegisting = true
+
+    this.backendService.addNewByTableName('students', this.studentForm.value).subscribe(data => {
+      self.isRunStudentRegisting = false
+      if (data['effect_rows'] == 1) {
+        alert('学生注册成功 ！')
+        sessionStorage.setItem('student', JSON.stringify(self.studentForm.value))
+        self.studentForm.reset()
+        self.router.navigateByUrl('study-center/student-profile')
+        // 直接跳转到学习页面或者考试页面，注意值的传递
+      } else {
+        alert('注册失败，请重试')
+      }
+    })
+  }
+```
+在这些函数中，调用全局的网络访问服务 backendService 中的 addNewByTableName() 方法
+
+```
+addNewByTableName(tableName: string, jsonObj: any): Observable<any> {
+    let params = new URLSearchParams()
+    Object.keys(jsonObj).forEach(key => {
+      params.append(key, jsonObj[key])
+    });
+    let body = params.toString()
+    return this.httpClient.post<Teacher>('/new/' + tableName, body, httpOptions)
+  }
+```
+这个方法会将用户填写的数据先转换为 JSON 格式的键值对，然后再转换为字符串，和网络请求一起传递到后端服务器。这个方法是以异步的形式运行的，当这个方法运行后，前端浏览器会启动一个新的进程，这个进程会在一定的时间内等待后端返回的数据。
+
+后端服务器的路由规则会监听前端的网络请求 `/new/:obj`，然后调用运行对应的处理函数 `AddNewObject()`
+
+```
+func AddNewObject(c *gin.Context) {
+	// 从URL里的path参数获得数据表的名称
+	obj := c.Param("obj")
+	c.Request.ParseForm()
+	// 开始拼接一个INSERT的SQL语句
+	sql := "INSERT INTO " + obj
+	// 定义一个空的切片，用于后面的SQL拼接
+	fields := []string{}
+	// 定义一个空的接口数组，后面将POST里传递过来的值插入到这个切片里，最终由于 Exec 方法的动态参数
+	values := []interface{}{}
+	// 定义一个空数组，作为占位符，这个数组里的所有值都是问号，"?"
+	placeholders := []string{}
+	for a := 0; a < len(c.Request.PostForm); a++ {
+		placeholders = append(placeholders, "?")
+	}
+
+	// 将post请求传递来的数据转换为map的数组，然后分别放入之前定义的数组中
+	for key, value := range c.Request.PostForm {
+		fields = append(fields, key)
+		if key == "password" {
+			// 如果是密码，则加密
+			values = append(values, utility.MD5(value[0]))
+		} else {
+			// 否则就直接添加到values这个接口的数组里
+			values = append(values, value[0])
+		}
+	}
+	// 拼接一个带有问号占位符的SQL语句
+	sql += " (" + utility.ConvertArrayToString(fields) + ") VALUES (" + utility.ConvertArrayToString(placeholders) + ")"
+
+	conn := getDBConnection()
+	defer conn.Close()
+
+	stmt, _ := conn.Prepare(sql)
+	// Exec方法支持传入一个可变参数，这个可变参数其实是一个数组，正好对应了刚才创建的values接口数组
+	result, err := stmt.Exec(values...)
+
+	effectRows, _ := result.RowsAffected()
+	if err != nil {
+		panic(err.Error())
+		c.JSON(400, gin.H{
+			"message":     err.Error(),
+			"effect_rows": 0,
+		})
+	} else {
+		c.JSON(200, gin.H{
+			"message":     "complete",
+			"effect_rows": effectRows,
+		})
+	}
+}
+```
+
+后端处理函数会将前端传递过来的数据重新转换为 key-value 键值对，并拼接成为相应的 SQL 语句。最后连接数据库，并运行 SQL 语句，完成对数据库的操作。
+
+如果操作成功，则构建一个状态值为 200 的 JSON 格式的数据，并返回给前端；如果操作失败，同样构建一个状态值为 400 的 JSON 格式的数据，返回给前端。
+
+前端根据后端服务器返回的数据中的状态值以及相应的数据，对前端的页面进行相应的交互处理，给与用户提示。
+
+以上就是一个完整的从前端到户端的数据请求和返回全过程的算法实现的简介。
+
+## 随机抽题算法实现
+
+当学生登录成功后，前端程序会缓存该学生的班级信息。当学生进入到自己的主页面后，如果教师发布了该班级的考试后，那么该学生就能够看到相应的考试信息，点击后即可开始抽题答卷。
+
+![学生主页](/src/assets/images/stu_profile.jpg)
+
+当学生点击【开始考试】按钮后，系统会将该学生的班级和考试这两个数据以 `sessionStorage` 的方式保存在浏览器。
+
+![学生主页](/src/assets/images/sessionStorage.jpg)
+
+
+在考试抽题页面，前端会从浏览器的 `sessionStorage` 中获取到班级和考试的数据，调用 `setupMyexam()` 方法，随即开始随机抽题，组成试卷。
+
+```
+// 组织试卷结构，生成试卷的实际内容
+  setupMyexam() {
+    let self = this
+    this.isFetchingAllQuestions = true
+    this.myexam['questions'] = JSON.parse(this.myexam['questions'])
+
+    let body = {
+      course_id: this.myexam['course_id']
+    }
+
+    // 为了将所有的题型都抽到，这里定义了一个请求题型的数组
+    let arr = []
+    let questionLength = this.myexam['questions'].length
+    for (let i = 0; i < questionLength; i++) {
+      let questionObj = this.myexam['questions'][i]
+      arr.push({
+        tableName: questionObj['question'],
+        limit: questionObj['count'],
+        obj: body
+      })
+    }
+    this.backendService.queryQuestionsRandom(arr).subscribe(result => {
+      this.isFetchingAllQuestions = false
+      for (let i = 0; i < questionLength; i++) {
+        self.myexam['questions'][i]['contents'] = result[i]['response']
+        let questionObj = self.myexam['questions'][i]
+        for (let j = 0; j < questionObj['contents'].length; j++) {
+          /**
+           * Reformat content json data struct
+           */
+          let tempJson = JSON.parse(questionObj['contents'][j]['content']
+          )
+          Object.keys(tempJson).forEach(key => {
+            questionObj['contents'][j][key] = tempJson[key]
+          });
+          /**
+           * 给每一道题预设一个得分。默认为 -1 分，表示还没有判分。
+           * 有些题型，比如单选、判断、填空，可以由程序自动判分，在方法 onChoicesGetAnswer, onFillsGetAnswer, onJudgesGetAnswer 里就可以完成判分。有些题型，比如 short_answer 和 codings，后期由可能需要借助 AI来完成，或者通过教师人工判分。
+           */
+          questionObj['contents'][j]['score'] = -1
+          delete questionObj['contents'][j]['content']
+          // Add a feature "stu_answer" to every content object
+          switch (questionObj['question']) {
+            case 'choices':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+            case 'fills':
+              const len = questionObj['contents'][j]['standard_answer'].length
+              let arr = []
+              for (let i = 0; i < len; i++) {
+                arr.push('')
+              }
+              questionObj['contents'][j]['stu_answer'] = arr
+              questionObj['contents'][j]['is_full'] = false
+              break
+            case 'judges':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+            case 'short_answers':
+              questionObj['contents'][j]['stu_answer'] = null
+              break
+          }
+        }
+      }
+    })
+
+    this.myexam['total_score'] = 0
+    this.setupTime()
+  }
+```
+
+在 `setupMyexam()` 方法中，会调用全局的网络访问服务 backendService 中的 `queryQuestionsRandom()` 方法。
+
+```
+queryQuestionsRandom(tableNames: any[]) {
+    let requestArray = []
+    tableNames.forEach(element => {
+      requestArray.push(this.queryQuestionsByTableNameAndLimit(element['tableName'], element['limit'], element['obj']))
+    });
+    // 当上面所有的请求都完成后，再返回给函数调用者
+    return forkJoin(requestArray)
+  }
+```
+
+该方法会将学生班级信息以及对应的考试试卷设定信息传递到后端服务器，服务器中的处理函数 `QueryObjectsRandom()` 根据这些数据拼接成一个 SQL 语句，这个 SQL 语句会在对应的题库数据表中随机检索题目数据。然后将随机检索到的题目根据题型重新组合成 JSON 格式的字符串返回给前端。
+
+```
+func QueryObjectsRandom(c *gin.Context) {
+	obj := c.Param("obj")
+	limit := c.Param("limit")
+	c.Request.ParseForm()
+
+	sql := "SELECT * FROM " + obj + " WHERE "
+	conditions := []string{}
+
+	for key, value := range c.Request.PostForm {
+		conditions = append(conditions, key+"="+value[0])
+	}
+	whereCondition := utility.MakeQueryConditionFromArray(conditions)
+	sql += whereCondition + " ORDER BY rand() LIMIT " + limit
+
+	conn := getDBConnection()
+	defer conn.Close()
+
+	// 在数据库里执行这个拼接好的SQL语句
+	rows, err := conn.Query(sql)
+	if err != nil {
+		panic(err.Error())
+		return
+	}
+
+	// 得到所有属性名称组成的数组 columns
+	columns, _ := rows.Columns()
+	// 计算属性的个数
+	count := len(columns)
+
+	tableData := make([]map[string]interface{}, 0)
+	values := make([]interface{}, count)
+	valuePtrs := make([]interface{}, count)
+
+	for rows.Next() {
+		for i := range columns {
+			// valuePtrs 和 values 大小一致，类型一致，这里将values的指针传递给valuePtrs
+			valuePtrs[i] = &values[i]
+		}
+		// 因为Scan方法将一行记录扫描后，返回的是每一个字段的数据的指针。这个方法的参数就是用来接收这些指针的。正好
+		rows.Scan(valuePtrs...)
+
+		// 保存一行记录中的一对 key-value pair
+		entry := make(map[string]interface{})
+
+		// 将每一个key-value 都写入到 entry中
+		for i, col := range columns {
+			var v interface{}
+			val := values[i]
+
+			// 判断 val 的类型是不是 byte 字节类型
+			b, ok := val.([]byte)
+			if ok {
+				v = string(b)
+			} else {
+				v = val
+			}
+			entry[col] = v
+		}
+		// 最终将代表一行记录的entry保存进tableData。 tableData 就表示从这张表里查询出来的所有记录。
+		tableData = append(tableData, entry)
+	}
+
+	h := gin.H{}
+	h["response"] = tableData
+	c.JSON(200, h)
+
+}
+```
+
+前端的 `setupMyexam()` 方法仍然是一个异步函数，会等待后端传来的数据。当得到服务器传递回来的题目数据后，再重新按照题型的分布，重新组合成 JSON 格式的数据，最终将这些数据绑定到页面上对应的 HTML 视图中，学生点击相应的链接，即可看到题目，开始答题。
+
+![stu_exam](/src/assets/images/feature-7.jpg)
 
 # 数据库设计
 
@@ -283,17 +688,27 @@ Go 语言是一款强类型语言，可以非常方便的规范数据的结构�
 ng build --prod --base-href=/ee/
 ```
 
+编译完成后，会在前端项目的根目录下得到一个文件夹
+
+```
+|-- dist
+    |-- EasyExamClient
+```
+将文件夹 `EasyExamClient` 复制到最终的程序目录 `EasyExam` 下。
+
 ## 后端
 
 ```
 go build
 ```
 
+编译完成后，会在后端项目的根目录下得到一个 `EasyExamServer.exe` 可执行文件。将这个文件复制到最终的程序目录 `EasyExam` 下。
+
 # 部署 & 运行
 
 ## 部署
 
-将文件夹 EasyExam 复制到 Windows 系统的 C: 盘 根目录下。
+将最终的程序文件夹 `EasyExam` 复制到 Windows 系统的 C: 盘 根目录下。
 
 ## 运行
 
@@ -314,6 +729,8 @@ go build
 * 1、双击 `Run mysql server.bat` 启动数据库服务器
 * 2、双击 `EasyExamServer.exe` 启动 Web Server 服务器
 * 3、在浏览器地址栏中输入 `http://服务器IP地址:8000/ee`
+
+![easyexam_homepage](/src/assets/images/homepage.jpg)
 
 ### 结束
 
