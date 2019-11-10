@@ -199,10 +199,8 @@ export class StudentExamComponent implements OnInit {
 
   submitExamPaper() {
     if (confirm("确定要交卷吗？ 【交卷后将无法再次考试】")) {
-      console.log('交卷中 ...');
       this.finishExam()
     } else {
-      console.log('继续考试');
     }
   }
 
@@ -225,6 +223,7 @@ export class StudentExamComponent implements OnInit {
     let body = {
       id: this.utilityService.getIdByTimestamp(),
       student_id: JSON.parse(sessionStorage.getItem('student'))['id'],
+      student_name: JSON.parse(sessionStorage.getItem('student'))['username'],
       class_id: this.myexam['class']['id'],
       course_id: this.myexam['course_id'],
       exam_id: this.myexam['id'],

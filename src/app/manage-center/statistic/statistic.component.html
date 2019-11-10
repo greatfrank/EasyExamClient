@@ -230,7 +230,7 @@
                                     <th>学号</th>
                                     <th>姓名</th>
                                     <th class="text-center">平时成绩</th>
-                                    <th class="text-center">期末成绩</th>
+                                    <th class="text-center">卷面成绩</th>
                                     <th class="text-center">综合评定</th>
                                 </thead>
                                 <tbody>
@@ -268,7 +268,7 @@
                                             value="score" (change)="handleMinMaxTigChange('score')"
                                             [(ngModel)]="minMaxTig">
                                         <label class="form-check-label" for="score-num"
-                                            [ngClass]="{'text-primary': minMaxTig=='score','text-secondary': minMaxTig=='total_mark'}">期末成绩</label>
+                                            [ngClass]="{'text-primary': minMaxTig=='score','text-secondary': minMaxTig=='total_mark'}">卷面成绩</label>
                                     </div>
                                     <div class="form-check form-check-inline lead font-weight-bold">
                                         <input class="form-check-input" type="radio" name="min-max-tig"

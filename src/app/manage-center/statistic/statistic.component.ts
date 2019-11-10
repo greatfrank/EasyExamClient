@@ -268,7 +268,6 @@ export class StatisticComponent implements OnInit {
         const classDetail = self.studentExams[i]['list'];
         self.studentExams[i]['list'] = this.utilityService.groupData(classDetail, 'class_id', 'class_name', 'list')
       }
-
     })
   }
 
