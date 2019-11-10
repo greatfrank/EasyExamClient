@@ -1,20 +1,20 @@
 <div id="statistic" class="statistic bg-light">
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-3">
-                <h2 class="mb-4">统计信息 | Statistic Info</h2>
+            <div class="col-2">
+                <h2 class="mb-4">统计信息</h2>
                 <div class="list-group left-menu">
                     <a *ngFor="let item of leftMenu; let i=index" href="javascript:;"
                         class="list-group-item list-group-item-action lead font-weight-normal"
                         [ngClass]="{'active': currentMenuIndex==i}" (click)="toggleLeftMenu(i)">
                         <i class="fas mr-2" [ngClass]="item.icon"></i>
-                        {{item.title}} | {{item.en}}
+                        {{item.title}}
                     </a>
                 </div>
             </div>
             <div class="col">
                 <!-- ========= Metadata ======== -->
-                <div class="container" *ngIf="currentMenuIndex==0">
+                <div class="container-fluid" *ngIf="currentMenuIndex==0">
                     <div class="row py-5">
                         <div class="col all-classes">
                             <div class="card text-center py-4 border-0 shadow">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <!-- ======== Student Info ============= -->
-                <div class="container" *ngIf="currentMenuIndex==1">
+                <div class="container-fluid" *ngIf="currentMenuIndex==1">
                     <div class="row">
                         <div class="col">
                             <div class="mt-3 mb-5 p-4 shadow" *ngFor="let group of students; let i=index">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <!-- ========== About Exam ========== -->
-                <div class="container" *ngIf="currentMenuIndex==2">
+                <div class="container-fluid" *ngIf="currentMenuIndex==2">
                     <div class="row">
                         <div class="col-12 mb-5 p-4 shadow" *ngFor="let exam of exams">
                             <div class="row align-items-center">
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <!-- ========== Score Analysis =========== -->
-                <div class="container shadow my-5" *ngIf="currentMenuIndex==3">
+                <div class="container-fluid shadow my-5" *ngIf="currentMenuIndex==3">
                     <div class="row pb-3 px-4 bg-white">
                         <div class="col-12 mt-4 mb-3 text-right">
                             <a class="btn btn-link" [routerLink]="[ '/manage-center/exam/exam-mark' ]">
@@ -227,8 +227,8 @@
                             <table class="table table-hover">
                                 <thead class="bg-success text-white">
                                     <th></th>
-                                    <th>学号</th>
-                                    <th>姓名</th>
+                                    <th class="text-center">学生学号</th>
+                                    <th class="text-center">学生姓名</th>
                                     <th class="text-center">平时成绩</th>
                                     <th class="text-center">卷面成绩</th>
                                     <th class="text-center">综合评定</th>
@@ -236,8 +236,8 @@
                                 <tbody>
                                     <tr class="font-weight-bold" *ngFor="let student of selectedStudents; let i=index">
                                         <td></td>
-                                        <td>{{student['student_id']}}</td>
-                                        <td>{{student['student_name']}}</td>
+                                        <td class="text-center">{{student['student_id']}}</td>
+                                        <td class="text-center">{{student['student_name']}}</td>
                                         <td>
                                             <input type="number" class="form-control text-center font-weight-bold"
                                                 [(ngModel)]="student['regular_grade']"
@@ -252,6 +252,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <div [chart]="scoreChart" class="my-4"></div>
                             <div class="text-right">
                                 <button type="button" class="btn btn-success"
                                     (click)="saveStudentExamTotalMark(selectedStudents)"

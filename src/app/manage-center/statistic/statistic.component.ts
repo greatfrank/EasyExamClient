@@ -3,6 +3,7 @@ import { BackendService } from "../../backend.service";
 import { UtilityService } from "../../utility.service";
 import { Chart } from "angular-highcharts";
 import { FormBuilder, Validators } from '@angular/forms';
+import { arrayMax } from 'highcharts';
 
 @Component({
   selector: 'app-statistic',
@@ -77,6 +78,7 @@ export class StatisticComponent implements OnInit {
   })
   ranges = []
   rangeChart = null
+  scoreChart = null
   finishComputRanges = false
 
   constructor(
@@ -271,6 +273,7 @@ export class StatisticComponent implements OnInit {
     })
   }
 
+  // 当课程下拉菜单变化时激活该方法
   handleCourseSelectorChanged() {
     this.selectedClassId = ''
     this.selectedStudents = []
@@ -284,6 +287,7 @@ export class StatisticComponent implements OnInit {
     }
   }
 
+  // 当班级下拉菜单变化时激活该方法
   handleClassSelectorChanged() {
     this.resetRanges()
     this.selectedStudents = []
@@ -304,8 +308,10 @@ export class StatisticComponent implements OnInit {
     }
     this.getMinMaxPassFromStudents(this.selectedStudents)
     this.finishComputRanges = false
+    this.generateScoreChart()
   }
 
+  // 当成绩百分比变化时激活该方法
   handlePercentageChange() {
     if (this.selectedStudents.length == 0) {
       return
@@ -316,8 +322,10 @@ export class StatisticComponent implements OnInit {
     }
     this.getMinMaxPassFromStudents(this.selectedStudents)
     this.computRange(this.selectedStudents)
+    this.generateScoreChart()
   }
 
+  // 当学生的平时成绩变化时激活该方法
   handleRegularGradeChange(index) {
     let regular_grade = this.selectedStudents[index]['regular_grade']
     // Check the range of regular_grade, if invalid then reset it
@@ -330,10 +338,10 @@ export class StatisticComponent implements OnInit {
     this.selectedStudents[index]['total_mark'] = this.computTotalMark(regular_grade, score)
     this.getMinMaxPassFromStudents(this.selectedStudents)
     this.computRange(this.selectedStudents)
+    this.generateScoreChart()
   }
 
   saveStudentExamTotalMark(selectedStudents) {
-
     if (!confirm('确定要保存学生的成绩吗？成绩一般保存，则无法修改。')) {
       return
     }
@@ -484,6 +492,71 @@ export class StatisticComponent implements OnInit {
   resetRanges() {
     this.ranges = []
     this.rangeForm.reset()
+  }
+
+  generateScoreChart() {
+    let arr = []
+    let xAxisArr = []
+    let regularGradeArr = []
+    let scoreArr = []
+    let totalMarkArr = []
+
+    this.selectedStudents.forEach(item => {
+      xAxisArr.push(item['student_name'])
+      regularGradeArr.push(parseInt(item['regular_grade']))
+      scoreArr.push(parseInt(item['score']))
+      totalMarkArr.push(parseInt(item['total_mark']))
+    })
+
+    arr.push({
+      name: '平时成绩',
+      data: regularGradeArr
+    })
+    arr.push({
+      name: '卷面成绩',
+      data: scoreArr
+    })
+    arr.push({
+      name: '综合评定',
+      data: totalMarkArr
+    })
+
+    var columnColors = ['#444444', '#009900', '#CC0000', '#E80C7A', '#E80C7A']
+    this.scoreChart = new Chart({
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: '学生成绩'
+      },
+      xAxis: {
+        categories: xAxisArr,
+        crosshair: true
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '分数 (平时成绩、卷面成绩、综合评定)'
+        }
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          '<td style="padding:0"><b>{point.y:f} 分</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0,
+        }
+      },
+      colors: columnColors,
+      series: arr
+    })
+
   }
 
   generateRangeChart() {
